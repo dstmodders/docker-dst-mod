@@ -65,9 +65,9 @@ $ docker pull viktorpopkov/dst-mod:debian
 ```bash
 $ cd <your mod directory>
 $ docker run --rm --interactive --tty \
-	--mount src="$(pwd)",target=/mod/,type=bind \
-	--workdir=/mod \
-	viktorpopkov/dst-mod:alpine
+    --mount src="$(pwd)",target=/mod/,type=bind \
+    --workdir=/mod \
+    viktorpopkov/dst-mod:alpine
 ```
 
 ### Running Tool
@@ -77,10 +77,10 @@ Running [Luacheck][], as an example:
 ```bash
 $ cd <your mod directory>
 $ docker run --rm \
-	--mount src="$(pwd)",target=/mod/,type=bind \
-	--workdir=/mod \
-	viktorpopkov/dst-mod:alpine
-	luacheck .
+    --mount src="$(pwd)",target=/mod/,type=bind \
+    --workdir=/mod \
+    viktorpopkov/dst-mod:alpine
+    luacheck .
 ```
 
 ## License
