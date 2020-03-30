@@ -8,6 +8,7 @@ different tools to improve the existing workflow.
 
 -   [Lua](#lua)
 -   [Tools](#tools)
+-   [Usage](#usage)
 
 ## Lua
 
@@ -42,6 +43,45 @@ complete workflow environment, it also bundles:
 
 However, in general, I recommend using an [Alpine][] image as it has only the
 most essential stuff.
+
+## Usage
+
+### Pulling
+
+#### Alpine
+
+```bash
+$ docker pull viktorpopkov/dst-mod:alpine
+```
+
+#### Debian
+
+```bash
+$ docker pull viktorpopkov/dst-mod:debian
+```
+
+### Interactive Shell
+
+```bash
+$ cd <your mod directory>
+$ docker run --rm --interactive --tty \
+	--mount src="$(pwd)",target=/mod/,type=bind \
+	--workdir=/mod \
+	viktorpopkov/dst-mod:alpine
+```
+
+### Running Tool
+
+Running [Luacheck][], as an example:
+
+```bash
+$ cd <your mod directory>
+$ docker run --rm \
+	--mount src="$(pwd)",target=/mod/,type=bind \
+	--workdir=/mod \
+	viktorpopkov/dst-mod:alpine
+	luacheck .
+```
 
 ## License
 
