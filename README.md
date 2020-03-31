@@ -16,7 +16,7 @@ Even though the latest stable [Lua][] version is 5.3 and even the version 5.4
 will be out soon, the images bundle the v5.1.5 to match the game engine [Lua][]
 interpreter v5.1.
 
-[LuaRocks][] is bundled as well.
+[LuaRocks][] is integrated as well.
 
 ## Tools
 
@@ -25,8 +25,8 @@ The images bundle the [ktools][] created by [nsimplex][]:
 -   [krane][]: decompile Klei Entertainment's animation format
 -   [ktech][]: convert between Klei Entertainment's TEX texture format and PNG
 
-Also, to encourage following the best practices and improve code quality the
-following tools are bundled as well:
+Furthermore, to encourage following the best practices and improve code quality
+they include the following tools as well:
 
 -   [Busted][]
 -   [GNU Make][]
@@ -35,52 +35,48 @@ following tools are bundled as well:
 -   [Luacheck][]
 -   [Prettier][]
 
-Furthermore, in case someone decides to use the [Debian][] image as their
-complete workflow environment, it also bundles:
+Unlike the [Alpine][] image, the main purpose of which is to be as lightweight
+as possible, the [Debian][] image has Bash completion and some additional tools
+(so you could have a more complete development environment):
 
+-   [GNU Wget][]
 -   [Git][]
+-   [UnZip][]
 -   [Vim][]
-
-However, in general, I recommend using an [Alpine][] image as it has only the
-most essential stuff.
+-   [curl][]
+-   [rsync][]
+-   [yarn][]
 
 ## Usage
 
-### Pulling
-
-#### Alpine
-
-```bash
-$ docker pull viktorpopkov/dst-mod:alpine
-```
-
-#### Debian
-
-```bash
-$ docker pull viktorpopkov/dst-mod:debian
-```
-
 ### Interactive Shell
 
+#### Linux
+
+##### Bash
+
 ```bash
 $ cd <your mod directory>
-$ docker run --rm --interactive --tty \
-    --mount src="$(pwd)",target=/mod/,type=bind \
-    --workdir=/mod \
-    viktorpopkov/dst-mod:alpine
+$ docker pull viktorpopkov/dst-mod:debian
+$ docker run --rm --interactive --tty --mount src="$(pwd)",target=/mod/,type=bind --workdir=/mod viktorpopkov/dst-mod:debian
 ```
 
-### Running Tool
+#### Windows
 
-Running [Luacheck][], as an example:
+##### CMD
 
 ```bash
 $ cd <your mod directory>
-$ docker run --rm \
-    --mount src="$(pwd)",target=/mod/,type=bind \
-    --workdir=/mod \
-    viktorpopkov/dst-mod:alpine
-    luacheck .
+$ docker pull viktorpopkov/dst-mod:debian
+$ docker run --rm --interactive --tty --mount src="%CD%",target="/mod/",type=bind --workdir=/mod viktorpopkov/dst-mod:debian
+```
+
+##### PowerShell
+
+```bash
+$ cd <your mod directory>
+$ docker pull viktorpopkov/dst-mod:debian
+$ docker run --rm --interactive --tty --mount src="${PWD}",target="/mod/",type=bind --workdir=/mod viktorpopkov/dst-mod:debian
 ```
 
 ## License
@@ -89,11 +85,13 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 
 [alpine]: https://hub.docker.com/_/alpine
 [busted]: https://olivinelabs.com/busted/
+[curl]: https://curl.haxx.se/
 [debian]: https://hub.docker.com/_/debian
 [docker]: https://www.docker.com/
 [don't starve together]: https://www.klei.com/games/dont-starve-together
 [git]: https://git-scm.com/
 [gnu make]: https://www.gnu.org/software/make/
+[gnu wget]: https://www.gnu.org/software/wget/
 [krane]: https://github.com/nsimplex/ktools#krane
 [ktech]: https://github.com/nsimplex/ktools#ktech
 [ktools]: https://github.com/nsimplex/ktools
@@ -104,4 +102,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [luarocks]: https://luarocks.org/
 [nsimplex]: https://github.com/nsimplex
 [prettier]: https://prettier.io/
+[rsync]: https://rsync.samba.org/
+[unzip]: http://infozip.sourceforge.net/UnZip.html
 [vim]: https://www.vim.org/
+[yarn]: https://yarnpkg.com/
