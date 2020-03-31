@@ -1,5 +1,7 @@
 FROM debian:stable
 
+ENV DS_KTOOLS_KRANE="/usr/local/bin/krane"
+ENV DS_KTOOLS_KTECH="/usr/local/bin/ktech"
 ENV IMAGEMAGICK_VERSION="6.9.11-3"
 ENV KTOOLS_VERSION="4.4.0"
 ENV LUAROCKS_VERSION="3.3.1"
@@ -8,15 +10,19 @@ ENV LUA_VERSION="5.1.5"
 # Install dependencies
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
+        bash-completion \
         build-essential \
         ca-certificates \
         cmake \
         curl \
         git \
+        libpng-dev \
         libreadline-dev \
+        libzip-dev \
         nodejs \
         npm \
         pkg-config \
+        rsync \
         unzip \
         vim \
         wget \
@@ -79,8 +85,5 @@ RUN cd /tmp/ \
 # Remove dependencies
 RUN apt-get remove -y \
     cmake \
-    curl \
     npm \
-    pkg-config \
-    unzip \
-    wget
+    pkg-config
