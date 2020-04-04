@@ -21,6 +21,7 @@ RUN apt-get update \
         libzip-dev \
         nodejs \
         npm \
+        openssh-client \
         pkg-config \
         rsync \
         unzip \
