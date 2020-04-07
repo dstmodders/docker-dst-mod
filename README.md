@@ -41,6 +41,7 @@ as possible, the [Debian][] image has Bash completion and some additional tools
 
 -   [GNU Wget][]
 -   [Git][]
+-   [OpenSSH][] (Client)
 -   [UnZip][]
 -   [Vim][]
 -   [curl][]
@@ -58,7 +59,7 @@ as possible, the [Debian][] image has Bash completion and some additional tools
 ```bash
 $ cd <your mod directory>
 $ docker pull viktorpopkov/dst-mod:debian
-$ docker run --rm --interactive --tty --mount src="$(pwd)",target=/mod/,type=bind --workdir=/mod viktorpopkov/dst-mod:debian
+$ docker run --rm --interactive --tty --mount src="$(pwd)",target='/mod/',type=bind --workdir='/mod/' viktorpopkov/dst-mod:debian
 ```
 
 #### Windows
@@ -68,7 +69,7 @@ $ docker run --rm --interactive --tty --mount src="$(pwd)",target=/mod/,type=bin
 ```bash
 $ cd <your mod directory>
 $ docker pull viktorpopkov/dst-mod:debian
-$ docker run --rm --interactive --tty --mount src="%CD%",target="/mod/",type=bind --workdir=/mod viktorpopkov/dst-mod:debian
+$ docker run --rm --interactive --tty --mount src="%CD%",target='/mod/',type=bind --workdir='/mod/' viktorpopkov/dst-mod:debian
 ```
 
 ##### PowerShell
@@ -76,7 +77,7 @@ $ docker run --rm --interactive --tty --mount src="%CD%",target="/mod/",type=bin
 ```bash
 $ cd <your mod directory>
 $ docker pull viktorpopkov/dst-mod:debian
-$ docker run --rm --interactive --tty --mount src="${PWD}",target="/mod/",type=bind --workdir=/mod viktorpopkov/dst-mod:debian
+$ docker run --rm --interactive --tty --mount src="${PWD}",target='/mod/',type=bind --workdir='/mod/' viktorpopkov/dst-mod:debian
 ```
 
 ## License
@@ -101,6 +102,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [luacov]: https://keplerproject.github.io/luacov/
 [luarocks]: https://luarocks.org/
 [nsimplex]: https://github.com/nsimplex
+[openssh]: https://www.openssh.com/
 [prettier]: https://prettier.io/
 [rsync]: https://rsync.samba.org/
 [unzip]: http://infozip.sourceforge.net/UnZip.html
