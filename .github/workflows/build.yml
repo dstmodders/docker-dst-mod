@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  alpine:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out
+        uses: actions/checkout@v2
+      - name: Setting job-wide environment variables
+        run: |
+          echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
+          echo '::set-env name=GITHUB_JOB_NAME::alpine'
+      - name: Building & pushing an Alpine image on Docker Hub
+        uses: docker/build-push-action@v1
+        if: always()
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+          repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
+          dockerfile: ./alpine/Dockerfile
+          tags: alpine
+      - name: Building & pushing an Alpine image on GitHub Packages
+        uses: docker/build-push-action@v1
+        if: always()
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ secrets.PACKAGES_USERNAME }}
+          password: ${{ secrets.PACKAGES_PASSWORD }}
+          repository: ${{ github.repository }}/alpine
+          cache_froms: docker.pkg.github.com/${{ github.repository }}/alpine:latest
+          dockerfile: ./alpine/Dockerfile
+          tags: latest
+      - name: Prepare success Slack notification
+        if: success()
+        run: echo "::set-env name=SLACK_CUSTOM_PAYLOAD::${SLACK_CUSTOM_PAYLOAD}"
+        env:
+          SLACK_CUSTOM_PAYLOAD: '{"channel":"docker-dst-mod","attachments":[{"color":"#2eb886","fallback":"GitHub Actions {{ GITHUB_WORKFLOW }} workflow {{ GITHUB_JOB_NAME }} job of {{ GITHUB_REPOSITORY }}@{{ BRANCH_NAME }} by {{ GITHUB_ACTOR }} has passed","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"GitHub Actions *<https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}|{{ GITHUB_WORKFLOW }}>* workflow *{{ GITHUB_JOB_NAME }}* job of *<https://github.com/{{ GITHUB_REPOSITORY }}|{{ GITHUB_REPOSITORY }}>@<https://github.com/{{ GITHUB_REPOSITORY }}/tree/{{ BRANCH_NAME }}|{{ BRANCH_NAME }}>* by *{{ GITHUB_ACTOR }}* has passed"}}]}]}'
+      - name: Prepare failure Slack notification
+        if: failure()
+        run: echo "::set-env name=SLACK_CUSTOM_PAYLOAD::${SLACK_CUSTOM_PAYLOAD}"
+        env:
+          SLACK_CUSTOM_PAYLOAD: '{"channel":"docker-dst-mod","attachments":[{"color":"#ed2f00","fallback":"GitHub Actions {{ GITHUB_WORKFLOW }} workflow {{ GITHUB_JOB_NAME }} job of {{ GITHUB_REPOSITORY }}@{{ BRANCH_NAME }} by {{ GITHUB_ACTOR }} has failed","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"GitHub Actions *<https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}|{{ GITHUB_WORKFLOW }}>* workflow *{{ GITHUB_JOB_NAME }}* job of *<https://github.com/{{ GITHUB_REPOSITORY }}|{{ GITHUB_REPOSITORY }}>@<https://github.com/{{ GITHUB_REPOSITORY }}/tree/{{ BRANCH_NAME }}|{{ BRANCH_NAME }}>* by *{{ GITHUB_ACTOR }}* has failed"}}]}]}'
+      - name: Slack notification (codedsolar)
+        uses: Ilshidur/action-slack@master
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_CODEDSOLAR }}
