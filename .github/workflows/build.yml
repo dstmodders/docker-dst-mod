@@ -9,13 +9,13 @@ jobs:
   alpine:
     runs-on: ubuntu-latest
     steps:
-      - name: Checking out
+      - name: Check out
         uses: actions/checkout@v2
-      - name: Setting job-wide environment variables
+      - name: Set a job-wide environment variables
         run: |
           echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
           echo '::set-env name=GITHUB_JOB_NAME::alpine'
-      - name: Building & pushing an Alpine image on Docker Hub
+      - name: Build & push an Alpine image on Docker Hub
         uses: docker/build-push-action@v1
         if: always()
         with:
@@ -25,7 +25,7 @@ jobs:
           cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
           dockerfile: ./alpine/Dockerfile
           tags: alpine
-      - name: Building & pushing an Alpine image on GitHub Packages
+      - name: Build & push an Alpine image on GitHub Packages
         uses: docker/build-push-action@v1
         if: always()
         with:
@@ -46,7 +46,7 @@ jobs:
         run: echo "::set-env name=SLACK_CUSTOM_PAYLOAD::${SLACK_CUSTOM_PAYLOAD}"
         env:
           SLACK_CUSTOM_PAYLOAD: '{"channel":"docker-dst-mod","attachments":[{"color":"#ed2f00","fallback":"GitHub Actions {{ GITHUB_WORKFLOW }} workflow {{ GITHUB_JOB_NAME }} job of {{ GITHUB_REPOSITORY }}@{{ BRANCH_NAME }} by {{ GITHUB_ACTOR }} has failed","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"GitHub Actions *<https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}|{{ GITHUB_WORKFLOW }}>* workflow *{{ GITHUB_JOB_NAME }}* job of *<https://github.com/{{ GITHUB_REPOSITORY }}|{{ GITHUB_REPOSITORY }}>@<https://github.com/{{ GITHUB_REPOSITORY }}/tree/{{ BRANCH_NAME }}|{{ BRANCH_NAME }}>* by *{{ GITHUB_ACTOR }}* has failed"}}]}]}'
-      - name: Slack notification (codedsolar)
+      - name: Send Slack notification
         uses: Ilshidur/action-slack@master
         if: always()
         env:
@@ -55,13 +55,13 @@ jobs:
   debian:
     runs-on: ubuntu-latest
     steps:
-      - name: Checking out
+      - name: Check out
         uses: actions/checkout@v2
-      - name: Setting job-wide environment variables
+      - name: Set a job-wide environment variables
         run: |
           echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
           echo '::set-env name=GITHUB_JOB_NAME::debian'
-      - name: Building & pushing a Debian image on Docker Hub
+      - name: Build & push a Debian image on Docker Hub
         uses: docker/build-push-action@v1
         if: always()
         with:
@@ -71,7 +71,7 @@ jobs:
           cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
           dockerfile: ./debian/Dockerfile
           tags: latest,debian
-      - name: Building & pushing a Debian image on GitHub Packages
+      - name: Build & push a Debian image on GitHub Packages
         uses: docker/build-push-action@v1
         if: always()
         with:
@@ -92,7 +92,7 @@ jobs:
         run: echo "::set-env name=SLACK_CUSTOM_PAYLOAD::${SLACK_CUSTOM_PAYLOAD}"
         env:
           SLACK_CUSTOM_PAYLOAD: '{"channel":"docker-dst-mod","attachments":[{"color":"#ed2f00","fallback":"GitHub Actions {{ GITHUB_WORKFLOW }} workflow {{ GITHUB_JOB_NAME }} job of {{ GITHUB_REPOSITORY }}@{{ BRANCH_NAME }} by {{ GITHUB_ACTOR }} has failed","blocks":[{"type":"section","text":{"type":"mrkdwn","text":"GitHub Actions *<https://github.com/{{ GITHUB_REPOSITORY }}/actions/runs/{{ GITHUB_RUN_ID }}|{{ GITHUB_WORKFLOW }}>* workflow *{{ GITHUB_JOB_NAME }}* job of *<https://github.com/{{ GITHUB_REPOSITORY }}|{{ GITHUB_REPOSITORY }}>@<https://github.com/{{ GITHUB_REPOSITORY }}/tree/{{ BRANCH_NAME }}|{{ BRANCH_NAME }}>* by *{{ GITHUB_ACTOR }}* has failed"}}]}]}'
-      - name: Slack notification (codedsolar)
+      - name: Send Slack notification
         uses: Ilshidur/action-slack@master
         if: always()
         env:
