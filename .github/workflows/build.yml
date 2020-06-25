@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
+          cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
           dockerfile: ./alpine/Dockerfile
           tags: alpine
       - name: Building & pushing an Alpine image on GitHub Packages
@@ -68,7 +68,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
+          cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
           dockerfile: ./debian/Dockerfile
           tags: latest,debian
       - name: Building & pushing a Debian image on GitHub Packages
