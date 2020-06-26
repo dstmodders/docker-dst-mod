@@ -78,7 +78,7 @@ jobs:
         if: always()
         with:
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           always_pull: true
           dockerfile: ./alpine/Dockerfile
           tags: alpine
@@ -88,7 +88,7 @@ jobs:
         if: always()
         with:
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           always_pull: true
           dockerfile: ./debian/Dockerfile
           tags: debian

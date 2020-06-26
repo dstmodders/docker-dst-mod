@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           always_pull: true
           dockerfile: ./alpine/Dockerfile
           tags: alpine
@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.PACKAGES_USERNAME }}
           password: ${{ secrets.PACKAGES_PASSWORD }}
           repository: ${{ github.repository }}/alpine
-          cache_froms: docker.pkg.github.com/${{ github.repository }}/alpine:latest
+          cache_froms: docker.pkg.github.com/${{ github.repository }}/alpine
           always_pull: true
           dockerfile: ./alpine/Dockerfile
           tags: latest
@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           always_pull: true
           dockerfile: ./debian/Dockerfile
           tags: latest,debian
@@ -82,7 +82,7 @@ jobs:
           username: ${{ secrets.PACKAGES_USERNAME }}
           password: ${{ secrets.PACKAGES_PASSWORD }}
           repository: ${{ github.repository }}/debian
-          cache_froms: docker.pkg.github.com/${{ github.repository }}/debian:latest
+          cache_froms: docker.pkg.github.com/${{ github.repository }}/debian
           always_pull: true
           dockerfile: ./debian/Dockerfile
           tags: latest
