@@ -79,6 +79,7 @@ jobs:
         with:
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
+          always_pull: true
           dockerfile: ./alpine/Dockerfile
           tags: alpine
           push: false
@@ -88,6 +89,7 @@ jobs:
         with:
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           cache_froms: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
+          always_pull: true
           dockerfile: ./debian/Dockerfile
           tags: debian
           push: false
