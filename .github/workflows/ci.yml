@@ -73,7 +73,7 @@ jobs:
         run: |
           echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
           echo '::set-env name=GITHUB_JOB_NAME::build'
-      - name: Building an Alpine image on Docker Hub
+      - name: Building an Alpine image
         uses: docker/build-push-action@v1
         if: always()
         with:
@@ -82,7 +82,7 @@ jobs:
           dockerfile: ./alpine/Dockerfile
           tags: alpine
           push: false
-      - name: Building a Debian image on Docker Hub
+      - name: Building a Debian image
         uses: docker/build-push-action@v1
         if: always()
         with:
