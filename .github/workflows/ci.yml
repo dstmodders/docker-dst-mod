@@ -66,6 +66,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    if: github.ref != 'refs/heads/master'
     steps:
       - name: Checking out
         uses: actions/checkout@v2
@@ -77,6 +78,8 @@ jobs:
         uses: docker/build-push-action@v1
         if: always()
         with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           always_pull: true
@@ -87,6 +90,8 @@ jobs:
         uses: docker/build-push-action@v1
         if: always()
         with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
           always_pull: true
