@@ -9,11 +9,6 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    if: always()
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        node_version: [12.x]
     steps:
       - name: Check out
         uses: actions/checkout@v2
@@ -21,10 +16,10 @@ jobs:
         run: |
           echo "::set-env name=BRANCH_NAME::${GITHUB_REF##*/}"
           echo '::set-env name=GITHUB_JOB_NAME::lint'
-      - name: Use Node.js ${{ matrix.node_version }}
+      - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node_version }}
+          node-version: 12.x
       - name: Install Prettier
         run: yarn global add prettier
       - name: Lint
