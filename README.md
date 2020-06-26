@@ -1,5 +1,10 @@
 # docker-dst-mod
 
+[![Docker Image Alpine Size]](https://hub.docker.com/r/viktorpopkov/dst-mod)
+[![Docker Image Debian Size]](https://hub.docker.com/r/viktorpopkov/dst-mod)
+[![GitHub Workflow CI Status][]](https://github.com/victorpopkov/docker-dst-mod/actions?query=workflow%3ACI)
+[![GitHub Workflow Publish Status][]](https://github.com/victorpopkov/docker-dst-mod/actions?query=workflow%3APublish)
+
 ## Overview
 
 The mod development environment [Docker][] images for the game
@@ -97,9 +102,13 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [busted]: https://olivinelabs.com/busted/
 [curl]: https://curl.haxx.se/
 [debian]: https://hub.docker.com/_/debian
+[docker image alpine size]: https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/debian?label=debian%20size
+[docker image debian size]: https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/alpine?label=alpine%20size
 [docker]: https://www.docker.com/
 [don't starve together]: https://www.klei.com/games/dont-starve-together
 [git]: https://git-scm.com/
+[github workflow ci status]: https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/CI?label=CI
+[github workflow publish status]: https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/Publish?label=Publish
 [gnu make]: https://www.gnu.org/software/make/
 [gnu wget]: https://www.gnu.org/software/wget/
 [krane]: https://github.com/nsimplex/ktools#krane
