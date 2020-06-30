@@ -33,11 +33,11 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ secrets.PACKAGES_USERNAME }}
           password: ${{ secrets.PACKAGES_PASSWORD }}
-          repository: ${{ github.repository }}/alpine
-          cache_froms: docker.pkg.github.com/${{ github.repository }}/alpine
+          repository: ${{ github.repository }}/dst-mod
+          cache_froms: docker.pkg.github.com/${{ github.repository }}/dst-mod:alpine
           always_pull: true
           dockerfile: ./alpine/Dockerfile
-          tags: latest
+          tags: alpine
       - name: Prepare success Slack notification
         if: success()
         run: echo "::set-env name=SLACK_CUSTOM_PAYLOAD::${SLACK_CUSTOM_PAYLOAD}"
@@ -81,11 +81,11 @@ jobs:
           registry: docker.pkg.github.com
           username: ${{ secrets.PACKAGES_USERNAME }}
           password: ${{ secrets.PACKAGES_PASSWORD }}
-          repository: ${{ github.repository }}/debian
-          cache_froms: docker.pkg.github.com/${{ github.repository }}/debian
+          repository: ${{ github.repository }}/dst-mod
+          cache_froms: docker.pkg.github.com/${{ github.repository }}/dst-mod:debian
           always_pull: true
           dockerfile: ./debian/Dockerfile
-          tags: latest
+          tags: debian
       - name: Prepare success Slack notification
         if: success()
         run: echo "::set-env name=SLACK_CUSTOM_PAYLOAD::${SLACK_CUSTOM_PAYLOAD}"
