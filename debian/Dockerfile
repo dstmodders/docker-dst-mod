@@ -39,15 +39,15 @@ RUN cd /tmp/ \
   && make linux test \
   && make install \
   && cd /tmp/ \
-  && rm -Rf lua-${LUA_VERSION}* \
+  && rm -Rf "lua-${LUA_VERSION}*" \
   && wget "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && tar zxpf "luarocks-${LUAROCKS_VERSION}.tar.gz" \
-  && cd luarocks-${LUAROCKS_VERSION} \
+  && cd "luarocks-${LUAROCKS_VERSION}" \
   && ./configure \
   && make \
   && make install \
   && cd /tmp/ \
-  && rm -Rf luarocks-${LUAROCKS_VERSION}*
+  && rm -Rf "luarocks-${LUAROCKS_VERSION}*"
 
 # Install tools
 RUN luarocks install busted \
@@ -68,7 +68,7 @@ RUN cd /tmp/ \
   && ldconfig /usr/local/lib \
   && cd /tmp/ \
   && git clone https://github.com/victorpopkov/ktools.git \
-  && cd ktools \
+  && cd ktools/ \
   && cmake \
     -DImageMagick_Magick++_LIBRARY="$(pkg-config --variable=libdir Magick++)/lib$(pkg-config --variable=libname Magick++).so" \
     -DImageMagick_MagickCore_INCLUDE_DIR="$(pkg-config --cflags-only-I MagickCore | tail -c+3)" \
@@ -81,7 +81,7 @@ RUN cd /tmp/ \
   && make install \
   && cd /tmp/ \
   && rm -Rf ktools* \
-  && rm -Rf ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz ImageMagick-${IMAGEMAGICK_VERSION}*
+  && rm -Rf "ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" "ImageMagick-${IMAGEMAGICK_VERSION}*"
 
 # Remove dependencies
 RUN apt-get remove -y \
