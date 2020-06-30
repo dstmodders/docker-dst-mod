@@ -22,7 +22,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
           always_pull: true
           dockerfile: ./alpine/Dockerfile
           tags: alpine
@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           repository: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
-          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
+          cache_froms: ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
           always_pull: true
           dockerfile: ./debian/Dockerfile
           tags: latest,debian
