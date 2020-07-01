@@ -7,84 +7,92 @@ ENV KTOOLS_VERSION="4.4.0"
 ENV LUAROCKS_VERSION="3.3.1"
 ENV LUA_VERSION="5.1.5"
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # Install dependencies
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    bash-completion \
-    build-essential \
-    ca-certificates \
-    cmake \
-    curl \
-    git \
-    libpng-dev \
-    libreadline-dev \
-    libzip-dev \
-    nodejs \
-    npm \
-    openssh-client \
-    pkg-config \
-    rsync \
-    unzip \
-    vim \
-    wget \
+    bash-completion=1:2.8-6 \
+    build-essential=12.6 \
+    ca-certificates=20200601~deb10u1 \
+    cmake=3.13.4-1 \
+    curl=7.64.0-4+deb10u1 \
+    git=1:2.20.1-2+deb10u3 \
+    libpng-dev=1.6.36-6 \
+    libreadline-dev=7.0-5 \
+    libzip-dev=1.5.1-4 \
+    openssh-client=1:7.9p1-10+deb10u2 \
+    pkg-config=0.29-6 \
+    rsync=3.1.3-6 \
+    unzip=6.0-23+deb10u1 \
+    vim=2:8.1.0875-5 \
+    wget=1.20.1-1.1 \
+  # NodeJS and Yarn
+  && wget -P /tmp/ https://deb.nodesource.com/setup_12.x \
+  && bash /tmp/setup_12.x \
+  && apt-get install -y --no-install-recommends nodejs=12.18.2-1nodesource1 \
+  && npm install -g yarn@1.22.4 \
+  # Yarn packages
+  && yarn global add prettier@2.0.5 \
+  # Clean
   && apt-get clean \
-  && rm -Rf /var/lib/apt/lists/* \
-  && npm install -g yarn
+  && rm -Rf /var/lib/apt/lists/*
 
-# Install Lua and LuaRocks
-RUN cd /tmp/ \
-  && wget "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
-  && tar zxf "lua-${LUA_VERSION}.tar.gz" \
-  && cd "lua-${LUA_VERSION}" \
-  && make linux test \
-  && make install \
-  && cd /tmp/ \
-  && rm -Rf "lua-${LUA_VERSION}*" \
-  && wget "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
-  && tar zxpf "luarocks-${LUAROCKS_VERSION}.tar.gz" \
-  && cd "luarocks-${LUAROCKS_VERSION}" \
-  && ./configure \
+# Download and extract Lua, LuaRocks, ImageMagick and ktools
+RUN wget -P /tmp/ "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
+  && tar zxf "/tmp/lua-${LUA_VERSION}.tar.gz" -C /tmp/ \
+  # LuaRocks
+  && wget -P /tmp/ "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
+  && tar zxf "/tmp/luarocks-${LUAROCKS_VERSION}.tar.gz" -C /tmp/ \
+  # ImageMagick
+  && wget -P /tmp/ "https://imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" \
+  && tar xf "/tmp/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" -C /tmp/ \
+  # ktools
+  && git clone https://github.com/victorpopkov/ktools.git /tmp/ktools/
+
+# Build and install Lua
+RUN make -C "/tmp/lua-${LUA_VERSION}/" linux test \
+  && make -C "/tmp/lua-${LUA_VERSION}/" install
+
+# Build and install LuaRocks
+WORKDIR /tmp/luarocks-${LUAROCKS_VERSION}/
+RUN ./configure \
   && make \
-  && make install \
-  && cd /tmp/ \
-  && rm -Rf "luarocks-${LUAROCKS_VERSION}*"
+  && make install
 
-# Install tools
+# Install LuaRocks rocks
+WORKDIR /root/
 RUN luarocks install busted \
   && luarocks install ldoc \
   && luarocks install luacheck \
   && luarocks install luacov \
-  && luarocks install luacov-console \
-  && yarn global add prettier
+  && luarocks install luacov-console
 
-# Install ImageMagick and ktools
-RUN cd /tmp/ \
-  && wget "https://imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" \
-  && tar xf "ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" \
-  && cd "ImageMagick-${IMAGEMAGICK_VERSION}" \
-  && ./configure \
+# Build and install ImageMagick
+WORKDIR /tmp/ImageMagick-${IMAGEMAGICK_VERSION}/
+RUN ./configure \
   && make \
   && make install \
-  && ldconfig /usr/local/lib \
-  && cd /tmp/ \
-  && git clone https://github.com/victorpopkov/ktools.git \
-  && cd ktools/ \
-  && cmake \
+  && ldconfig /usr/local/lib/
+
+# Install ktools
+WORKDIR /tmp/ktools/
+RUN cmake \
     -DImageMagick_Magick++_LIBRARY="$(pkg-config --variable=libdir Magick++)/lib$(pkg-config --variable=libname Magick++).so" \
     -DImageMagick_MagickCore_INCLUDE_DIR="$(pkg-config --cflags-only-I MagickCore | tail -c+3)" \
     -DImageMagick_MagickCore_LIBRARY="$(pkg-config --variable=libdir MagickCore)/lib$(pkg-config --variable=libname MagickCore).so" \
     -DImageMagick_MagickWand_INCLUDE_DIR="$(pkg-config --cflags-only-I MagickWand | tail -c+3)" \
     -DImageMagick_MagickWand_LIBRARY="$(pkg-config --variable=libdir MagickWand)/lib$(pkg-config --variable=libname MagickWand).so" \
-   . \
+    . \
   && ./configure \
   && make \
-  && make install \
-  && cd /tmp/ \
-  && rm -Rf ktools* \
-  && rm -Rf "ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" "ImageMagick-${IMAGEMAGICK_VERSION}*"
+  && make install
 
-# Remove dependencies
+# Remove dependencies and temporary files
 RUN apt-get remove -y \
-  cmake \
-  npm \
-  pkg-config
+    cmake \
+    npm \
+    pkg-config \
+  && rm -Rf /tmp/*
+
+WORKDIR /mod/
