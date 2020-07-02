@@ -55,43 +55,74 @@ as possible, the [Debian][] image has Bash completion and some additional tools
 
 ## Usage
 
+```shell script
+$ cd <your mod directory>
+$ docker pull viktorpopkov/dst-mod
+```
+
 ### Interactive Shell
 
-#### Linux
-
-##### Bash
-
-```bash
-$ cd <your mod directory>
-$ docker pull viktorpopkov/dst-mod:debian
+```shell script
 $ docker run --rm --interactive --tty \
-    --mount src="$(pwd)",target='/mod/',type=bind \
+    --mount src='<your mod directory>',target='/mod/',type=bind \
     --workdir='/mod/' \
-    viktorpopkov/dst-mod:debian
+    viktorpopkov/dst-mod
 ```
 
-#### Windows
+### Non-interactive Shell
 
-##### CMD
-
-```bash
-$ cd <your mod directory>
-$ docker pull viktorpopkov/dst-mod:debian
-$ docker run --rm --interactive --tty \
-    --mount src="%CD%",target='/mod/',type=bind \
+```shell script
+$ docker run --rm \
+    --mount src='<your mod directory>',target='/mod/',type=bind \
     --workdir='/mod/' \
-    viktorpopkov/dst-mod:debian
+    viktorpopkov/dst-mod \
+    luacheck --version
 ```
 
-##### PowerShell
+### Linux
 
-```bash
-$ cd <your mod directory>
-$ docker pull viktorpopkov/dst-mod:debian
-$ docker run --rm --interactive --tty \
-    --mount src="${PWD}",target='/mod/',type=bind \
-    --workdir='/mod/' \
-    viktorpopkov/dst-mod:debian
+#### Bash
+
+##### Interactive Shell
+
+```shell script
+$ docker run --rm -it -v "$(pwd):/mod/" viktorpopkov/dst-mod
+```
+
+##### Non-interactive Shell
+
+```shell script
+$ docker run --rm -v "$(pwd):/mod/" viktorpopkov/dst-mod luacheck --version
+```
+
+### Windows
+
+#### CMD
+
+##### Interactive Shell
+
+```shell script
+$ docker run --rm -it -v "%CD%:/mod/" viktorpopkov/dst-mod
+```
+
+##### Non-interactive Shell
+
+```shell script
+$ docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
+```
+
+#### PowerShell
+
+##### Interactive Shell
+
+```shell script
+$ docker run --rm -it -v "${PWD}:/mod/" viktorpopkov/dst-mod
+```
+
+##### Non-interactive Shell
+
+```shell script
+$ docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ## License
