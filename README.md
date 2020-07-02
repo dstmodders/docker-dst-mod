@@ -13,7 +13,11 @@ different tools to improve the existing workflow.
 
 - [Lua](#lua)
 - [Tools](#tools)
+  - [Alpine & Debian](#alpine--debian)
+  - [Debian](#debian)
 - [Usage](#usage)
+  - [Linux](#linux)
+  - [Windows](#windows)
 
 ## Lua
 
@@ -25,7 +29,12 @@ interpreter v5.1.
 
 ## Tools
 
-The images bundle the [ktools][] created by [nsimplex][]:
+### Alpine & Debian
+
+> If you only need [ktools][] without other tools, then consider using the
+> [docker-ktools][] repository instead.
+
+The images bundle the [ktools][] created by [@nsimplex][]:
 
 - [krane][]: decompile Klei Entertainment's animation format
 - [ktech][]: convert between Klei Entertainment's TEX texture format and PNG
@@ -39,6 +48,9 @@ they include the following tools as well:
 - [LuaCov][]
 - [Luacheck][]
 - [Prettier][]
+- [curl][]
+
+### Debian
 
 Unlike the [Alpine][] image, the main purpose of which is to be as lightweight
 as possible, the [Debian][] image has Bash completion and some additional tools
@@ -49,7 +61,6 @@ as possible, the [Debian][] image has Bash completion and some additional tools
 - [OpenSSH][] (Client)
 - [UnZip][]
 - [Vim][]
-- [curl][]
 - [rsync][]
 - [yarn][]
 
@@ -129,12 +140,14 @@ $ docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
 
 Released under the [MIT License](https://opensource.org/licenses/MIT).
 
+[@nsimplex]: https://github.com/nsimplex
 [alpine]: https://hub.docker.com/_/alpine
 [busted]: https://olivinelabs.com/busted/
 [curl]: https://curl.haxx.se/
 [debian]: https://hub.docker.com/_/debian
 [docker image alpine size]: https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/debian?label=debian%20size
 [docker image debian size]: https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/alpine?label=alpine%20size
+[docker-ktools]: https://github.com/victorpopkov/docker-ktools
 [docker]: https://www.docker.com/
 [don't starve together]: https://www.klei.com/games/dont-starve-together
 [git]: https://git-scm.com/
@@ -150,7 +163,6 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [luacheck]: https://github.com/mpeterv/luacheck
 [luacov]: https://keplerproject.github.io/luacov/
 [luarocks]: https://luarocks.org/
-[nsimplex]: https://github.com/nsimplex
 [openssh]: https://www.openssh.com/
 [prettier]: https://prettier.io/
 [rsync]: https://rsync.samba.org/
