@@ -97,7 +97,7 @@ $ docker run --rm \
 ##### Interactive Shell
 
 ```shell script
-$ docker run --rm -it -v "$(pwd):/mod/" viktorpopkov/dst-mod
+$ docker run --rm -itv "$(pwd):/mod/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
@@ -113,7 +113,7 @@ $ docker run --rm -v "$(pwd):/mod/" viktorpopkov/dst-mod luacheck --version
 ##### Interactive Shell
 
 ```shell script
-$ docker run --rm -it -v "%CD%:/mod/" viktorpopkov/dst-mod
+$ docker run --rm -itv "%CD%:/mod/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
@@ -127,7 +127,7 @@ $ docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
 ##### Interactive Shell
 
 ```shell script
-$ docker run --rm -it -v "${PWD}:/mod/" viktorpopkov/dst-mod
+$ docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
