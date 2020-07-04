@@ -12,57 +12,61 @@ The mod development environment [Docker][] images for the game
 different tools to improve the existing workflow.
 
 - [Lua](#lua)
-- [Tools](#tools)
-  - [Alpine & Debian](#alpine--debian)
-  - [Debian](#debian)
+- [Images & Tools](#images--tools)
+- [Environment variables](#environment-variables)
 - [Usage](#usage)
   - [Linux](#linux)
   - [Windows](#windows)
 
 ## Lua
 
-Even though the latest stable [Lua][] version is 5.3 and even the version 5.4
-will be out soon, the images bundle the v5.1.5 to match the game engine [Lua][]
-interpreter v5.1.
+Even though the latest stable [Lua][] version is 5.4 and, the images bundle the
+v5.1.5 to achieving a closer match with the v5.1 interpreter inside the game
+engine [Lua][].
 
-[LuaRocks][] is integrated as well.
-
-## Tools
-
-### Alpine & Debian
+## Images & Tools
 
 > If you only need [ktools][] without other tools, then consider using the
 > [docker-ktools][] repository instead.
 
-The images bundle the [ktools][] created by [@nsimplex][]:
+The images bundle the [ktools][] created by [@nsimplex][] and some additional
+tools as well.
 
-- [krane][]: decompile Klei Entertainment's animation format
-- [ktech][]: convert between Klei Entertainment's TEX texture format and PNG
+An [Alpine][] image has been designed mainly for [CI][] purposes. A [Debian][]
+image, unlike an [Alpine][] one, has a more complete development environment.
 
-Furthermore, to encourage following the best practices and improve code quality
-they include the following tools as well:
+| Tools           | Alpine | Debian |
+| --------------- | ------ | ------ |
+| Bash completion | -      | Yes    |
+| [Busted][]      | Yes    | Yes    |
+| [GNU Make][]    | Yes    | Yes    |
+| [GNU Wget][]    | -      | Yes    |
+| [Git][]         | -      | Yes    |
+| [LDoc][]        | Yes    | Yes    |
+| [LuaCov][]      | Yes    | Yes    |
+| [LuaRocks][]    | Yes    | Yes    |
+| [Luacheck][]    | Yes    | Yes    |
+| [OpenSSH][]     | -      | Yes    |
+| [Prettier][]    | Yes    | Yes    |
+| [UnZip][]       | Yes    | Yes    |
+| [Vim][]         | -      | Yes    |
+| [curl][]        | Yes    | Yes    |
+| [krane][]       | Yes    | Yes    |
+| [ktech][]       | Yes    | Yes    |
+| [rsync][]       | Yes    | Yes    |
+| [yarn][]        | Yes    | Yes    |
 
-- [Busted][]
-- [GNU Make][]
-- [LDoc][]
-- [LuaCov][]
-- [Luacheck][]
-- [Prettier][]
-- [curl][]
+## Environment variables
 
-### Debian
-
-Unlike the [Alpine][] image, the main purpose of which is to be as lightweight
-as possible, the [Debian][] image has Bash completion and some additional tools
-(so you could have a more complete development environment):
-
-- [GNU Wget][]
-- [Git][]
-- [OpenSSH][] (Client)
-- [UnZip][]
-- [Vim][]
-- [rsync][]
-- [yarn][]
+| Name                    | Value                  | Description                         |
+| ----------------------- | ---------------------- | ----------------------------------- |
+| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane` | Absolute path to the [krane][] tool |
+| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech` | Absolute path to the [ktech][] tool |
+| `DS_KTOOLS_VERSION`     | `4.4.0`                | [ktools][] version                  |
+| `DS_MODS` or `DST_MODS` | `/mods/`               | Game mods directory                 |
+| `IMAGEMAGICK_VERSION`   | `6.9.11-3`             | [ImageMagick][] version             |
+| `LUAROCKS_VERSION`      | `3.3.1`                | [LuaRocks][] version                |
+| `LUA_VERSION`           | `5.1.5`                | [Lua][] version                     |
 
 ## Usage
 
