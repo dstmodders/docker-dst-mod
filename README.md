@@ -66,9 +66,12 @@ as possible, the [Debian][] image has Bash completion and some additional tools
 
 ## Usage
 
+First of all, pull the latest [Docker][] image and set your mod directory as the
+current one:
+
 ```shell script
-$ cd <your mod directory>
 $ docker pull viktorpopkov/dst-mod
+$ cd <your mod directory>
 ```
 
 ### Interactive Shell
@@ -76,7 +79,8 @@ $ docker pull viktorpopkov/dst-mod
 ```shell script
 $ docker run --rm --interactive --tty \
     --mount src='<your mod directory>',target='/mod/',type=bind \
-    --workdir='/mod/' \
+    --mount src='<game mods directory>',target='/mods/',type=bind \ # optional
+    --workdir='/mod/' \ # optional
     viktorpopkov/dst-mod
 ```
 
@@ -85,7 +89,8 @@ $ docker run --rm --interactive --tty \
 ```shell script
 $ docker run --rm \
     --mount src='<your mod directory>',target='/mod/',type=bind \
-    --workdir='/mod/' \
+    --mount src='<game mods directory>',target='/mods/',type=bind \ # optional
+    --workdir='/mod/' \ # optional
     viktorpopkov/dst-mod \
     luacheck --version
 ```
@@ -94,16 +99,27 @@ $ docker run --rm \
 
 #### Bash
 
+You can optionally set the game mods' directory as the `DST_MODS` environment
+variable and then mount it if needed:
+
+```shell script
+$ export DST_MODS="${HOME}/.steam/steam/steamapps/common/Don't Starve Together/mods/"
+```
+
 ##### Interactive Shell
 
 ```shell script
 $ docker run --rm -itv "$(pwd):/mod/" viktorpopkov/dst-mod
+# or with DST_MODS env
+$ docker run --rm -itv "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
 ```shell script
 $ docker run --rm -v "$(pwd):/mod/" viktorpopkov/dst-mod luacheck --version
+# or with DST_MODS env
+$ docker run --rm -v "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ### Windows
@@ -112,28 +128,39 @@ $ docker run --rm -v "$(pwd):/mod/" viktorpopkov/dst-mod luacheck --version
 
 ##### Interactive Shell
 
-```shell script
-$ docker run --rm -itv "%CD%:/mod/" viktorpopkov/dst-mod
+```cmd
+> docker run --rm -itv "%CD%:/mod/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
-```shell script
-$ docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
+```cmd
+> docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
 ```
 
 #### PowerShell
 
+You can optionally set the game mods' directory as the `DST_MODS` environment
+variable and then mount it if needed:
+
+```powershell
+PS:\> $Env:DST_MODS = "C:\Program Files (x86)\Steam\steamapps\common\Don't Starve Together\mods"
+```
+
 ##### Interactive Shell
 
-```shell script
-$ docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
+```powershell
+PS:\> docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
+# or with DST_MODS env
+PS:\> docker run --rm -itv "${PWD}:/mod/" -v "${Env:DST_MODS}:/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
-```shell script
-$ docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
+```powershell
+PS:\> docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
+# or with DST_MODS env
+PS:\> docker run --rm -v "${PWD}:/mod/" -v "${Env:DST_MODS}:/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ## License
@@ -143,6 +170,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [@nsimplex]: https://github.com/nsimplex
 [alpine]: https://hub.docker.com/_/alpine
 [busted]: https://olivinelabs.com/busted/
+[ci]: https://en.wikipedia.org/wiki/Continuous_integration
 [curl]: https://curl.haxx.se/
 [debian]: https://hub.docker.com/_/debian
 [docker image alpine size]: https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/debian?label=debian%20size
@@ -155,6 +183,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [github workflow publish status]: https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/Publish?label=Publish
 [gnu make]: https://www.gnu.org/software/make/
 [gnu wget]: https://www.gnu.org/software/wget/
+[imagemagick]: https://imagemagick.org/index.php
 [krane]: https://github.com/nsimplex/ktools#krane
 [ktech]: https://github.com/nsimplex/ktools#ktech
 [ktools]: https://github.com/nsimplex/ktools
