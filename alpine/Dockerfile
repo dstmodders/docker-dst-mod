@@ -23,6 +23,7 @@ RUN apk update \
     nodejs=12.17.0-r0 \
     openssl=1.1.1g-r0 \
     readline-dev=8.0.4-r0 \
+    rsync=3.1.3-r3 \
     unzip=6.0-r7 \
     yarn=1.22.4-r0 \
   && apk add --no-cache --virtual .build-deps \
@@ -30,7 +31,6 @@ RUN apk update \
     cmake=3.17.2-r0 \
     g++=9.3.0-r2 \
     git=2.26.2-r0 \
-    wget=1.20.3-r1 \
   && yarn global add prettier@2.0.5
 
 # Download and extract Lua, LuaRocks, ImageMagick and ktools
