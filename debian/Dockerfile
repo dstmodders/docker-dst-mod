@@ -35,7 +35,9 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends nodejs=12.18.2-1nodesource1 \
   && npm install -g yarn@1.22.4 \
   # Yarn packages
-  && yarn global add prettier@2.0.5 \
+  && yarn global add \
+    prettier@2.0.5 \
+    @prettier/plugin-xml@0.8.0 \
   # Clean
   && apt-get clean \
   && rm -Rf /var/lib/apt/lists/*

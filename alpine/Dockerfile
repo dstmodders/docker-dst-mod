@@ -31,7 +31,9 @@ RUN apk update \
     cmake=3.17.2-r0 \
     g++=9.3.0-r2 \
     git=2.26.2-r0 \
-  && yarn global add prettier@2.0.5
+  && yarn global add \
+    prettier@2.0.5 \
+    @prettier/plugin-xml@0.8.0
 
 # Download and extract Lua, LuaRocks, ImageMagick and ktools
 RUN wget -P /tmp/ "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
