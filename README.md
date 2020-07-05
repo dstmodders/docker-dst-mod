@@ -156,7 +156,7 @@ PS:\> $Env:DST_MODS = "C:\Program Files (x86)\Steam\steamapps\common\Don't Starv
 ```powershell
 PS:\> docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
 # or with DST_MODS env
-PS:\> docker run --rm -itv "${PWD}:/mod/" -v "${Env:DST_MODS}:/mods/" viktorpopkov/dst-mod
+PS:\> docker run --rm -itv "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
@@ -164,7 +164,7 @@ PS:\> docker run --rm -itv "${PWD}:/mod/" -v "${Env:DST_MODS}:/mods/" viktorpopk
 ```powershell
 PS:\> docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
 # or with DST_MODS env
-PS:\> docker run --rm -v "${PWD}:/mod/" -v "${Env:DST_MODS}:/mods/" viktorpopkov/dst-mod luacheck --version
+PS:\> docker run --rm -v "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ## License
