@@ -39,21 +39,22 @@ image, unlike an [Alpine][] one, has a more complete development environment.
 | --------------- | ------ | ------ |
 | Bash completion | -      | Yes    |
 | [Busted][]      | Yes    | Yes    |
+| [CLuaCov][]     | Yes    | Yes    |
+| [curl][]        | Yes    | Yes    |
+| [Git][]         | -      | Yes    |
 | [GNU Make][]    | Yes    | Yes    |
 | [GNU Wget][]    | -      | Yes    |
-| [Git][]         | -      | Yes    |
-| [LDoc][]        | Yes    | Yes    |
-| [LuaCov][]      | Yes    | Yes    |
-| [LuaRocks][]    | Yes    | Yes    |
-| [Luacheck][]    | Yes    | Yes    |
-| [OpenSSH][]     | -      | Yes    |
-| [Prettier][]    | Yes    | Yes    |
-| [UnZip][]       | Yes    | Yes    |
-| [Vim][]         | -      | Yes    |
-| [curl][]        | Yes    | Yes    |
 | [krane][]       | Yes    | Yes    |
 | [ktech][]       | Yes    | Yes    |
+| [LDoc][]        | Yes    | Yes    |
+| [Luacheck][]    | Yes    | Yes    |
+| [LuaCov][]      | Yes    | Yes    |
+| [LuaRocks][]    | Yes    | Yes    |
+| [OpenSSH][]     | -      | Yes    |
+| [Prettier][]    | Yes    | Yes    |
 | [rsync][]       | Yes    | Yes    |
+| [UnZip][]       | Yes    | Yes    |
+| [Vim][]         | -      | Yes    |
 | [yarn][]        | Yes    | Yes    |
 
 ## Environment variables
@@ -133,13 +134,13 @@ $ docker run --rm -v "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod
 ##### Interactive Shell
 
 ```cmd
-> docker run --rm -itv "%CD%:/mod/" viktorpopkov/dst-mod
+C:\> docker run --rm -itv "%CD%:/mod/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
 ```cmd
-> docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
+C:\> docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
 ```
 
 #### PowerShell
@@ -148,23 +149,23 @@ You can optionally set the game mods' directory as the `DST_MODS` environment
 variable and then mount it if needed:
 
 ```powershell
-PS:\> $Env:DST_MODS = "C:\Program Files (x86)\Steam\steamapps\common\Don't Starve Together\mods"
+PS C:\> $Env:DST_MODS = "C:\Program Files (x86)\Steam\steamapps\common\Don't Starve Together\mods"
 ```
 
 ##### Interactive Shell
 
 ```powershell
-PS:\> docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
+PS C:\> docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
 # or with DST_MODS env
-PS:\> docker run --rm -itv "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod
+PS C:\> docker run --rm -itv "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
 ```powershell
-PS:\> docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
+PS C:\> docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
 # or with DST_MODS env
-PS:\> docker run --rm -v "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod luacheck --version
+PS C:\> docker run --rm -v "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ## License
@@ -175,6 +176,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [alpine]: https://hub.docker.com/_/alpine
 [busted]: https://olivinelabs.com/busted/
 [ci]: https://en.wikipedia.org/wiki/Continuous_integration
+[cluacov]: https://github.com/mpeterv/cluacov
 [curl]: https://curl.haxx.se/
 [debian]: https://hub.docker.com/_/debian
 [docker image alpine size]: https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/debian?label=debian%20size
