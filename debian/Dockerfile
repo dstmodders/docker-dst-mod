@@ -14,25 +14,25 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install dependencies
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    bash-completion=1:2.8-6 \
-    build-essential=12.6 \
-    ca-certificates=20200601~deb10u1 \
-    cmake=3.13.4-1 \
-    curl=7.64.0-4+deb10u1 \
-    git=1:2.20.1-2+deb10u3 \
-    libpng-dev=1.6.36-6 \
-    libreadline-dev=7.0-5 \
-    libzip-dev=1.5.1-4 \
-    openssh-client=1:7.9p1-10+deb10u2 \
-    pkg-config=0.29-6 \
-    rsync=3.1.3-6 \
-    unzip=6.0-23+deb10u1 \
-    vim=2:8.1.0875-5 \
-    wget=1.20.1-1.1 \
+    bash-completion='1:2.8-6' \
+    build-essential='12.6' \
+    ca-certificates='20200601~deb10u1' \
+    cmake='3.13.4-1' \
+    curl='7.64.0-4+deb10u1' \
+    git='1:2.20.1-2+deb10u3' \
+    libpng-dev='1.6.36-6' \
+    libreadline-dev='7.0-5' \
+    libzip-dev='1.5.1-4' \
+    openssh-client='1:7.9p1-10+deb10u2' \
+    pkg-config='0.29-6' \
+    rsync='3.1.3-6' \
+    unzip='6.0-23+deb10u1' \
+    vim='2:8.1.0875-5' \
+    wget='1.20.1-1.1' \
   # NodeJS and Yarn
   && wget -P /tmp/ https://deb.nodesource.com/setup_12.x \
   && bash /tmp/setup_12.x \
-  && apt-get install -y --no-install-recommends nodejs=12.18.2-1nodesource1 \
+  && apt-get install -y --no-install-recommends nodejs='12.18.2-1nodesource1' \
   && npm install -g yarn@1.22.4 \
   # Yarn packages
   && yarn global add \

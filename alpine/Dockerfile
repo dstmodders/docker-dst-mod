@@ -14,23 +14,23 @@ SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 # Install dependencies and Yarn packages
 RUN apk update \
   && apk add --no-cache \
-    curl=7.69.1-r0 \
-    gcc=9.3.0-r2 \
-    libc-dev=0.7.2-r3 \
-    libpng-dev=1.6.37-r1 \
-    libzip-dev=1.6.1-r1 \
-    make=4.3-r0 \
-    nodejs=12.17.0-r0 \
-    openssl=1.1.1g-r0 \
-    readline-dev=8.0.4-r0 \
-    rsync=3.1.3-r3 \
-    unzip=6.0-r7 \
-    yarn=1.22.4-r0 \
+    curl='7.69.1-r0' \
+    gcc='9.3.0-r2' \
+    libc-dev='0.7.2-r3' \
+    libpng-dev='1.6.37-r1' \
+    libzip-dev='1.6.1-r1' \
+    make='4.3-r0' \
+    nodejs='12.17.0-r0' \
+    openssl='1.1.1g-r0' \
+    readline-dev='8.0.4-r0' \
+    rsync='3.1.3-r3' \
+    unzip='6.0-r7' \
+    yarn='1.22.4-r0' \
   && apk add --no-cache --virtual .build-deps \
-    ca-certificates=20191127-r4 \
-    cmake=3.17.2-r0 \
-    g++=9.3.0-r2 \
-    git=2.26.2-r0 \
+    ca-certificates='20191127-r4' \
+    cmake='3.17.2-r0' \
+    g++='9.3.0-r2' \
+    git='2.26.2-r0' \
   && yarn global add \
     prettier@2.0.5 \
     @prettier/plugin-xml@0.8.0
