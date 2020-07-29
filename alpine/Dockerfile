@@ -20,7 +20,7 @@ RUN apk update \
     libpng-dev='1.6.37-r1' \
     libzip-dev='1.6.1-r1' \
     make='4.3-r0' \
-    nodejs='12.17.0-r0' \
+    nodejs='12.18.3-r0' \
     openssl='1.1.1g-r0' \
     readline-dev='8.0.4-r0' \
     rsync='3.1.3-r3' \
