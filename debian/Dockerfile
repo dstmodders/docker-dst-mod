@@ -32,7 +32,7 @@ RUN apt-get update \
   # NodeJS and Yarn
   && wget -P /tmp/ https://deb.nodesource.com/setup_12.x \
   && bash /tmp/setup_12.x \
-  && apt-get install -y --no-install-recommends nodejs='12.18.2-1nodesource1' \
+  && apt-get install -y --no-install-recommends nodejs='12.18.3-1nodesource1' \
   && npm install -g yarn@1.22.4 \
   # Yarn packages
   && yarn global add \
