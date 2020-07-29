@@ -63,6 +63,7 @@ RUN luarocks install busted \
   && luarocks install ldoc \
   && luarocks install luacheck \
   && luarocks install luacov \
+  && luarocks install cluacov \
   && luarocks install luacov-console
 
 # Build and install ImageMagick
