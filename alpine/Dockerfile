@@ -27,20 +27,24 @@ RUN apk update \
     unzip='6.0-r7' \
     yarn='1.22.4-r0' \
   && apk add --no-cache --virtual .build-deps \
+    bash='5.0.17-r0' \
     ca-certificates='20191127-r4' \
     cmake='3.17.2-r0' \
     g++='9.3.0-r2' \
     git='2.26.2-r0' \
+    perl='5.30.3-r0' \
   && yarn global add \
     prettier@2.0.5 \
     @prettier/plugin-xml@0.8.0
 
-# Download and extract Lua, LuaRocks, ImageMagick and ktools
+# Download and extract Lua, LuaRocks, LCOV, ImageMagick and ktools
 RUN wget -P /tmp/ "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "/tmp/lua-${LUA_VERSION}.tar.gz" -C /tmp/ \
   # LuaRocks
   && wget -P /tmp/ "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && tar zxf "/tmp/luarocks-${LUAROCKS_VERSION}.tar.gz" -C /tmp/ \
+  # LCOV
+  && git clone https://github.com/linux-test-project/lcov.git /tmp/lcov/ \
   # ImageMagick
   && wget -P /tmp/ "https://imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" \
   && tar xf "/tmp/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" -C /tmp/ \
@@ -60,11 +64,16 @@ RUN ./configure \
 # Install LuaRocks rocks
 WORKDIR /root/
 RUN luarocks install busted \
+  && luarocks install cluacov \
   && luarocks install ldoc \
   && luarocks install luacheck \
   && luarocks install luacov \
-  && luarocks install cluacov \
-  && luarocks install luacov-console
+  && luarocks install luacov-console \
+  && luarocks install luacov-reporter-lcov
+
+# Install LCOV
+WORKDIR /tmp/lcov/
+RUN make install
 
 # Build and install ImageMagick
 WORKDIR /tmp/ImageMagick-${IMAGEMAGICK_VERSION}/
