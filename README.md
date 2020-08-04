@@ -26,8 +26,8 @@ engine [Lua][].
 
 ## Images & Tools
 
-> If you only need [ktools][] without other tools, then consider using the
-> [docker-ktools][] repository instead.
+> If you only need [ktools][] without other tools, then consider using
+> [docker-ktools][] instead.
 
 The images bundle the [ktools][] created by [@nsimplex][] and some additional
 tools as well.
@@ -46,6 +46,7 @@ image, unlike an [Alpine][] one, has a more complete development environment.
 | [GNU Wget][]    | -      | Yes    |
 | [krane][]       | Yes    | Yes    |
 | [ktech][]       | Yes    | Yes    |
+| [LCOV][]        | Yes    | Yes    |
 | [LDoc][]        | Yes    | Yes    |
 | [Luacheck][]    | Yes    | Yes    |
 | [LuaCov][]      | Yes    | Yes    |
@@ -157,7 +158,7 @@ PS C:\> $Env:DST_MODS = "C:\Program Files (x86)\Steam\steamapps\common\Don't Sta
 ```powershell
 PS C:\> docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
 # or with DST_MODS env
-PS C:\> docker run --rm -itv "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod
+PS C:\> docker run --rm -itv "${PWD}:/mod/" -v "$($Env:DST_MODS):/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
@@ -165,7 +166,7 @@ PS C:\> docker run --rm -itv "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopk
 ```powershell
 PS C:\> docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
 # or with DST_MODS env
-PS C:\> docker run --rm -v "${PWD}:/mod/" -v "$Env:DST_MODS:/mods/" viktorpopkov/dst-mod luacheck --version
+PS C:\> docker run --rm -v "${PWD}:/mod/" -v "$($Env:DST_MODS):/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ## License
@@ -193,6 +194,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [krane]: https://github.com/nsimplex/ktools#krane
 [ktech]: https://github.com/nsimplex/ktools#ktech
 [ktools]: https://github.com/nsimplex/ktools
+[lcov]: http://ltp.sourceforge.net/coverage/lcov.php
 [ldoc]: https://stevedonovan.github.io/ldoc/
 [lua]: https://www.lua.org/
 [luacheck]: https://github.com/mpeterv/luacheck
