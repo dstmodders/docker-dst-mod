@@ -48,6 +48,8 @@ RUN wget -P /tmp/ "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   # LuaRocks
   && wget -P /tmp/ "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && tar zxf "/tmp/luarocks-${LUAROCKS_VERSION}.tar.gz" -C /tmp/ \
+  # LCOV
+  && git clone https://github.com/linux-test-project/lcov.git /tmp/lcov/ \
   # ImageMagick
   && wget -P /tmp/ "https://imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" \
   && tar xf "/tmp/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" -C /tmp/ \
@@ -67,11 +69,16 @@ RUN ./configure \
 # Install LuaRocks rocks
 WORKDIR /root/
 RUN luarocks install busted \
+  && luarocks install cluacov \
   && luarocks install ldoc \
   && luarocks install luacheck \
   && luarocks install luacov \
-  && luarocks install cluacov \
-  && luarocks install luacov-console
+  && luarocks install luacov-console \
+  && luarocks install luacov-reporter-lcov
+
+# Install LCOV
+WORKDIR /tmp/lcov/
+RUN make install
 
 # Build and install ImageMagick
 WORKDIR /tmp/ImageMagick-${IMAGEMAGICK_VERSION}/
