@@ -113,7 +113,7 @@ RUN cmake \
 WORKDIR /tmp/ds_mod_tools/src/
 RUN ./premake.sh
 WORKDIR /tmp/ds_mod_tools/build/proj/
-RUN make && mv /tmp/ds_mod_tools/build/linux/mod_tools/ /ds-mod-tools/
+RUN mkdir /temp/ && chown 1000:1000 /temp/ && make && mv /tmp/ds_mod_tools/build/linux/mod_tools/ /ds-mod-tools/
 
 # Remove dependencies and temporary files
 RUN apt-get remove -y \
@@ -122,5 +122,9 @@ RUN apt-get remove -y \
     pkg-config \
     premake4 \
   && rm -Rf /tmp/*
+
+# Create user dst-mod to be the default one
+RUN addgroup --gid=1000 dst-mod && adduser --disabled-password --ingroup='dst-mod' --uid=1000 dst-mod
+USER dst-mod
 
 WORKDIR /mod/

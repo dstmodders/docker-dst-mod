@@ -99,4 +99,9 @@ RUN cmake \
 RUN apk del .build-deps \
   && rm -Rf /tmp/*
 
+# Create user dst-mod to be the default one
+RUN addgroup --gid=1000 dst-mod \
+  && adduser --disabled-password --ingroup='dst-mod' --uid=1000 dst-mod
+USER dst-mod
+
 WORKDIR /mod/
