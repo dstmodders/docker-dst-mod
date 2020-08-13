@@ -4,9 +4,9 @@ ENV DS_KTOOLS_KRANE="/usr/local/bin/krane"
 ENV DS_KTOOLS_KTECH="/usr/local/bin/ktech"
 ENV DS_KTOOLS_VERSION="4.4.0"
 ENV DS_MODS="/mods"
-ENV DS_TOOLS_AUTOCOMPILER="/ds-mod-tools/autocompiler"
-ENV DS_TOOLS_PNG="/ds-mod-tools/png"
-ENV DS_TOOLS_SCML="/ds-mod-tools/scml"
+ENV DS_TOOLS_AUTOCOMPILER="/tools/autocompiler"
+ENV DS_TOOLS_PNG="/tools/png"
+ENV DS_TOOLS_SCML="/tools/scml"
 ENV DST_MODS="/mods"
 ENV IMAGEMAGICK_VERSION="6.9.11-3"
 ENV LUA_VERSION="5.1.5"
@@ -113,7 +113,7 @@ RUN cmake \
 WORKDIR /tmp/ds_mod_tools/src/
 RUN ./premake.sh
 WORKDIR /tmp/ds_mod_tools/build/proj/
-RUN mkdir /temp/ && chown 1000:1000 /temp/ && make && mv /tmp/ds_mod_tools/build/linux/mod_tools/ /ds-mod-tools/
+RUN mkdir /temp/ && chown 1000:1000 /temp/ && make && mv /tmp/ds_mod_tools/build/linux/mod_tools/ /tools/
 
 # Remove dependencies and temporary files
 RUN apt-get remove -y \
