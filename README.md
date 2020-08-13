@@ -60,18 +60,18 @@ game engine, the images bundle v5.1.5 instead of the latest one.
 | `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane` | An absolute path to [ktools][] `krane` |
 | `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech` | An absolute path to [ktools][] `ktech` |
 | `DS_KTOOLS_VERSION`     | `4.4.0`                | [ktools][] version                     |
-| `DS_MODS` or `DST_MODS` | `/mods/`               | Game mods directory                    |
+| `DS_MODS` or `DST_MODS` | `/mods`                | Game mods directory                    |
 | `IMAGEMAGICK_VERSION`   | `6.9.11-3`             | [ImageMagick][] version                |
 | `LUA_VERSION`           | `5.1.5`                | [Lua][] version                        |
 | `LUAROCKS_VERSION`      | `3.3.1`                | [LuaRocks][] version                   |
 
 ### Debian
 
-| Name                    | Value                        | Description                                         |
-| ----------------------- | ---------------------------- | --------------------------------------------------- |
-| `DS_TOOLS_AUTOCOMPILER` | `/ds-mod-tools/autocompiler` | An absolute path to [ds_mod_tools][] `autocompiler` |
-| `DS_TOOLS_PNG`          | `/ds-mod-tools/png`          | An absolute path to [ds_mod_tools][] `png`          |
-| `DS_TOOLS_SCML`         | `/ds-mod-tools/scml`         | An absolute path to [ds_mod_tools][] `scml`         |
+| Name                    | Value                 | Description                                         |
+| ----------------------- | --------------------- | --------------------------------------------------- |
+| `DS_TOOLS_AUTOCOMPILER` | `/tools/autocompiler` | An absolute path to [ds_mod_tools][] `autocompiler` |
+| `DS_TOOLS_PNG`          | `/tools/png`          | An absolute path to [ds_mod_tools][] `png`          |
+| `DS_TOOLS_SCML`         | `/tools/scml`         | An absolute path to [ds_mod_tools][] `scml`         |
 
 ## Usage
 
