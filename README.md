@@ -7,12 +7,13 @@
 
 ## Overview
 
-The mod development environment [Docker][] images for the game
-[Don't Starve Together][]. It integrates the corresponding [Lua][] version and
-different tools to improve the existing workflow.
+The mod development environment [Docker] images for [Don't Starve Together] game
+to dive right into the mods' development without bothering with building,
+installing and configuring all the tools yourself. Especially comes in handy
+when working on Linux.
 
 - [Lua](#lua)
-- [Images & Tools](#images--tools)
+- [Tools](#tools)
 - [Environment variables](#environment-variables)
 - [Usage](#usage)
   - [Linux](#linux)
@@ -20,55 +21,57 @@ different tools to improve the existing workflow.
 
 ## Lua
 
-Even though the latest stable [Lua][] version is 5.4 and, the images bundle the
-v5.1.5 to achieving a closer match with the v5.1 interpreter inside the game
-engine [Lua][].
+In order to achieve a closer match with [Lua] interpreter v5.1 bundled in the
+game engine, the images bundle v5.1.5 instead of the latest one.
 
-## Images & Tools
+## Tools
 
-> If you only need [ktools][] without other tools, then consider using
-> [docker-ktools][] instead.
+> If you only need [ktools][] consider checking [docker-ktools][] instead.
 
-The images bundle the [ktools][] created by [@nsimplex][] and some additional
-tools as well.
+| Tools            | Alpine | Debian |
+| ---------------- | ------ | ------ |
+| Bash completion  | -      | Yes    |
+| [Busted][]       | Yes    | Yes    |
+| [CLuaCov][]      | Yes    | Yes    |
+| [curl][]         | Yes    | Yes    |
+| [ds_mod_tools][] | -      | Yes    |
+| [Git][]          | -      | Yes    |
+| [GNU Make][]     | Yes    | Yes    |
+| [GNU Wget][]     | -      | Yes    |
+| [ktools][]       | Yes    | Yes    |
+| [LCOV][]         | Yes    | Yes    |
+| [LDoc][]         | Yes    | Yes    |
+| [Luacheck][]     | Yes    | Yes    |
+| [LuaCov][]       | Yes    | Yes    |
+| [LuaRocks][]     | Yes    | Yes    |
+| [OpenSSH][]      | -      | Yes    |
+| [Prettier][]     | Yes    | Yes    |
+| [rsync][]        | Yes    | Yes    |
+| [UnZip][]        | Yes    | Yes    |
+| [Vim][]          | -      | Yes    |
+| [yarn][]         | Yes    | Yes    |
 
-An [Alpine][] image has been designed mainly for [CI][] purposes. A [Debian][]
-image, unlike an [Alpine][] one, has a more complete development environment.
+## Environment Variables
 
-| Tools           | Alpine | Debian |
-| --------------- | ------ | ------ |
-| Bash completion | -      | Yes    |
-| [Busted][]      | Yes    | Yes    |
-| [CLuaCov][]     | Yes    | Yes    |
-| [curl][]        | Yes    | Yes    |
-| [Git][]         | -      | Yes    |
-| [GNU Make][]    | Yes    | Yes    |
-| [GNU Wget][]    | -      | Yes    |
-| [krane][]       | Yes    | Yes    |
-| [ktech][]       | Yes    | Yes    |
-| [LCOV][]        | Yes    | Yes    |
-| [LDoc][]        | Yes    | Yes    |
-| [Luacheck][]    | Yes    | Yes    |
-| [LuaCov][]      | Yes    | Yes    |
-| [LuaRocks][]    | Yes    | Yes    |
-| [OpenSSH][]     | -      | Yes    |
-| [Prettier][]    | Yes    | Yes    |
-| [rsync][]       | Yes    | Yes    |
-| [UnZip][]       | Yes    | Yes    |
-| [Vim][]         | -      | Yes    |
-| [yarn][]        | Yes    | Yes    |
+### Alpine & Debian
 
-## Environment variables
+| Name                    | Value                  | Description                            |
+| ----------------------- | ---------------------- | -------------------------------------- |
+| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane` | An absolute path to [ktools][] `krane` |
+| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech` | An absolute path to [ktools][] `ktech` |
+| `DS_KTOOLS_VERSION`     | `4.4.0`                | [ktools][] version                     |
+| `DS_MODS` or `DST_MODS` | `/mods/`               | Game mods directory                    |
+| `IMAGEMAGICK_VERSION`   | `6.9.11-3`             | [ImageMagick][] version                |
+| `LUA_VERSION`           | `5.1.5`                | [Lua][] version                        |
+| `LUAROCKS_VERSION`      | `3.3.1`                | [LuaRocks][] version                   |
 
-| Name                    | Value                  | Description                         |
-| ----------------------- | ---------------------- | ----------------------------------- |
-| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane` | Absolute path to the [krane][] tool |
-| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech` | Absolute path to the [ktech][] tool |
-| `DS_KTOOLS_VERSION`     | `4.4.0`                | [ktools][] version                  |
-| `DS_MODS` or `DST_MODS` | `/mods/`               | Game mods directory                 |
-| `IMAGEMAGICK_VERSION`   | `6.9.11-3`             | [ImageMagick][] version             |
-| `LUAROCKS_VERSION`      | `3.3.1`                | [LuaRocks][] version                |
-| `LUA_VERSION`           | `5.1.5`                | [Lua][] version                     |
+### Debian
+
+| Name                    | Value                        | Description                                         |
+| ----------------------- | ---------------------------- | --------------------------------------------------- |
+| `DS_TOOLS_AUTOCOMPILER` | `/ds-mod-tools/autocompiler` | An absolute path to [ds_mod_tools][] `autocompiler` |
+| `DS_TOOLS_PNG`          | `/ds-mod-tools/png`          | An absolute path to [ds_mod_tools][] `png`          |
+| `DS_TOOLS_SCML`         | `/ds-mod-tools/scml`         | An absolute path to [ds_mod_tools][] `scml`         |
 
 ## Usage
 
@@ -185,6 +188,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [docker-ktools]: https://github.com/victorpopkov/docker-ktools
 [docker]: https://www.docker.com/
 [don't starve together]: https://www.klei.com/games/dont-starve-together
+[ds_mod_tools]: https://github.com/kleientertainment/ds_mod_tools
 [git]: https://git-scm.com/
 [github workflow ci status]: https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/CI?label=CI
 [github workflow publish status]: https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/Publish?label=Publish
