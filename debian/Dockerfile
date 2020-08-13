@@ -1,13 +1,16 @@
 FROM debian:buster
 
-ENV DST_MODS="/mods/"
 ENV DS_KTOOLS_KRANE="/usr/local/bin/krane"
 ENV DS_KTOOLS_KTECH="/usr/local/bin/ktech"
 ENV DS_KTOOLS_VERSION="4.4.0"
 ENV DS_MODS="/mods/"
+ENV DS_TOOLS_AUTOCOMPILER="/ds-mod-tools/autocompiler"
+ENV DS_TOOLS_PNG="/ds-mod-tools/png"
+ENV DS_TOOLS_SCML="/ds-mod-tools/scml"
+ENV DST_MODS="/mods/"
 ENV IMAGEMAGICK_VERSION="6.9.11-3"
-ENV LUAROCKS_VERSION="3.3.1"
 ENV LUA_VERSION="5.1.5"
+ENV LUAROCKS_VERSION="3.3.1"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -25,6 +28,8 @@ RUN apt-get update \
     libzip-dev='1.5.1-4' \
     openssh-client='1:7.9p1-10+deb10u2' \
     pkg-config='0.29-6' \
+    premake4='4.3+repack1-2+b1' \
+    python-pip='18.1-5' \
     rsync='3.1.3-6' \
     unzip='6.0-23+deb10u1' \
     vim='2:8.1.0875-5' \
@@ -38,6 +43,8 @@ RUN apt-get update \
   && yarn global add \
     prettier@2.0.5 \
     @prettier/plugin-xml@0.8.0 \
+  # Python packages
+  && pip install pillow=='6.2.2' \
   # Clean
   && apt-get clean \
   && rm -Rf /var/lib/apt/lists/*
@@ -54,7 +61,9 @@ RUN wget -P /tmp/ "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && wget -P /tmp/ "https://imagemagick.org/download/releases/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" \
   && tar xf "/tmp/ImageMagick-${IMAGEMAGICK_VERSION}.tar.xz" -C /tmp/ \
   # ktools
-  && git clone https://github.com/victorpopkov/ktools.git /tmp/ktools/
+  && git clone https://github.com/victorpopkov/ktools.git /tmp/ktools/ \
+  # ds_mod_tools
+  && git clone https://github.com/kleientertainment/ds_mod_tools /tmp/ds_mod_tools/
 
 # Build and install Lua
 RUN make -C "/tmp/lua-${LUA_VERSION}/" linux test \
@@ -100,11 +109,18 @@ RUN cmake \
   && make \
   && make install
 
+# Install ds_mod_tools
+WORKDIR /tmp/ds_mod_tools/src/
+RUN ./premake.sh
+WORKDIR /tmp/ds_mod_tools/build/proj/
+RUN make && mv /tmp/ds_mod_tools/build/linux/mod_tools/ /ds-mod-tools/
+
 # Remove dependencies and temporary files
 RUN apt-get remove -y \
     cmake \
     npm \
     pkg-config \
+    premake4 \
   && rm -Rf /tmp/*
 
 WORKDIR /mod/
