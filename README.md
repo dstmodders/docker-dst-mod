@@ -86,7 +86,7 @@ $ cd <your mod directory>
 ### Interactive Shell
 
 ```shell script
-$ docker run --rm --interactive --tty \
+$ docker run --rm --user='dst-mod' --interactive --tty \
     --mount src='<your mod directory>',target='/mod/',type=bind \
     --mount src='<game mods directory>',target='/mods/',type=bind \ # optional
     --workdir='/mod/' \ # optional
@@ -96,7 +96,7 @@ $ docker run --rm --interactive --tty \
 ### Non-interactive Shell
 
 ```shell script
-$ docker run --rm \
+$ docker run --rm --user='dst-mod' \
     --mount src='<your mod directory>',target='/mod/',type=bind \
     --mount src='<game mods directory>',target='/mods/',type=bind \ # optional
     --workdir='/mod/' \ # optional
@@ -118,17 +118,17 @@ $ export DST_MODS="${HOME}/.steam/steam/steamapps/common/Don't Starve Together/m
 ##### Interactive Shell
 
 ```shell script
-$ docker run --rm -itv "$(pwd):/mod/" viktorpopkov/dst-mod
+$ docker run --rm -u 'dst-mod' -itv "$(pwd):/mod/" viktorpopkov/dst-mod
 # or with DST_MODS env
-$ docker run --rm -itv "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod
+$ docker run --rm -u 'dst-mod' -itv "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
 ```shell script
-$ docker run --rm -v "$(pwd):/mod/" viktorpopkov/dst-mod luacheck --version
+$ docker run --rm -u 'dst-mod' -v "$(pwd):/mod/" viktorpopkov/dst-mod luacheck --version
 # or with DST_MODS env
-$ docker run --rm -v "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod luacheck --version
+$ docker run --rm -u 'dst-mod' -v "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ### Windows
@@ -138,13 +138,13 @@ $ docker run --rm -v "$(pwd):/mod/" -v "${DST_MODS}:/mods/" viktorpopkov/dst-mod
 ##### Interactive Shell
 
 ```cmd
-C:\> docker run --rm -itv "%CD%:/mod/" viktorpopkov/dst-mod
+C:\> docker run --rm -u 'dst-mod' -itv "%CD%:/mod/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
 ```cmd
-C:\> docker run --rm -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
+C:\> docker run --rm -u 'dst-mod' -v "%CD%:/mod/" viktorpopkov/dst-mod luacheck --version
 ```
 
 #### PowerShell
@@ -159,17 +159,17 @@ PS C:\> $Env:DST_MODS = "C:\Program Files (x86)\Steam\steamapps\common\Don't Sta
 ##### Interactive Shell
 
 ```powershell
-PS C:\> docker run --rm -itv "${PWD}:/mod/" viktorpopkov/dst-mod
+PS C:\> docker run --rm -u 'dst-mod' -itv "${PWD}:/mod/" viktorpopkov/dst-mod
 # or with DST_MODS env
-PS C:\> docker run --rm -itv "${PWD}:/mod/" -v "$($Env:DST_MODS):/mods/" viktorpopkov/dst-mod
+PS C:\> docker run --rm -u 'dst-mod' -itv "${PWD}:/mod/" -v "$($Env:DST_MODS):/mods/" viktorpopkov/dst-mod
 ```
 
 ##### Non-interactive Shell
 
 ```powershell
-PS C:\> docker run --rm -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
+PS C:\> docker run --rm -u 'dst-mod' -v "${PWD}:/mod/" viktorpopkov/dst-mod luacheck --version
 # or with DST_MODS env
-PS C:\> docker run --rm -v "${PWD}:/mod/" -v "$($Env:DST_MODS):/mods/" viktorpopkov/dst-mod luacheck --version
+PS C:\> docker run --rm -u 'dst-mod' -v "${PWD}:/mod/" -v "$($Env:DST_MODS):/mods/" viktorpopkov/dst-mod luacheck --version
 ```
 
 ## License
