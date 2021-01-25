@@ -24,8 +24,8 @@ RUN apk update \
     openssl='1.1.1i-r0' \
     readline-dev='8.0.4-r0' \
     rsync='3.1.3-r3' \
-    unzip='6.0-r8' \
     yarn='1.22.4-r0' \
+    zip='3.0-r8' \
   && apk add --no-cache --virtual .build-deps \
     bash='5.0.17-r0' \
     ca-certificates='20191127-r4' \
