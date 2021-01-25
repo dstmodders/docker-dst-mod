@@ -1,4 +1,4 @@
-FROM alpine:3.12.0
+FROM alpine:3.13.0
 
 ENV DS_KTOOLS_KRANE="/usr/local/bin/krane"
 ENV DS_KTOOLS_KTECH="/usr/local/bin/ktech"
