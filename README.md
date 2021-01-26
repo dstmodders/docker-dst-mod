@@ -50,6 +50,7 @@ game engine, the images bundle v5.1.5 instead of the latest one.
 | [UnZip][]        | Yes    | Yes    |
 | [Vim][]          | -      | Yes    |
 | [yarn][]         | Yes    | Yes    |
+| [Zip][]          | Yes    | Yes    |
 
 ## Environment Variables
 
@@ -210,3 +211,4 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [unzip]: http://infozip.sourceforge.net/UnZip.html
 [vim]: https://www.vim.org/
 [yarn]: https://yarnpkg.com/
+[zip]: http://infozip.sourceforge.net/Zip.html
