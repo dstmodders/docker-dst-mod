@@ -31,9 +31,9 @@ RUN apt-get update \
     premake4='4.3+repack1-2+b1' \
     python-pip='18.1-5' \
     rsync='3.1.3-6' \
-    unzip='6.0-23+deb10u1' \
     vim='2:8.1.0875-5' \
     wget='1.20.1-1.1' \
+    zip='3.0-11+b1' \
   # NodeJS and Yarn
   && wget -P /tmp/ https://deb.nodesource.com/setup_12.x \
   && bash /tmp/setup_12.x \
