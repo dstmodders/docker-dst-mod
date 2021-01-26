@@ -35,14 +35,14 @@ RUN apt-get update \
     wget='1.20.1-1.1' \
     zip='3.0-11+b1' \
   # NodeJS and Yarn
-  && wget -P /tmp/ https://deb.nodesource.com/setup_12.x \
-  && bash /tmp/setup_12.x \
-  && apt-get install -y --no-install-recommends nodejs='12.18.3-1nodesource1' \
-  && npm install -g yarn@1.22.4 \
+  && wget -P /tmp/ https://deb.nodesource.com/setup_14.x \
+  && bash /tmp/setup_14.x \
+  && apt-get install -y --no-install-recommends nodejs='14.15.4-1nodesource1' \
+  && npm install -g yarn@1.22.10 \
   # Yarn packages
   && yarn global add \
-    prettier@2.0.5 \
-    @prettier/plugin-xml@0.8.0 \
+    prettier@2.2.1 \
+    @prettier/plugin-xml@0.13.0 \
   # Python packages
   && pip install pillow=='6.2.2' \
   # Clean
