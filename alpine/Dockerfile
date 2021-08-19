@@ -7,7 +7,7 @@ ENV DS_MODS="/mods"
 ENV DST_MODS="/mods"
 ENV IMAGEMAGICK_VERSION="6.9.11-3"
 ENV LUA_VERSION="5.1.5"
-ENV LUAROCKS_VERSION="3.3.1"
+ENV LUAROCKS_VERSION="3.7.0"
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
@@ -63,13 +63,13 @@ RUN ./configure \
 
 # Install LuaRocks rocks
 WORKDIR /root/
-RUN luarocks install busted \
-  && luarocks install cluacov \
-  && luarocks install ldoc \
-  && luarocks install luacheck \
-  && luarocks install luacov \
-  && luarocks install luacov-console \
-  && luarocks install luacov-reporter-lcov
+RUN luarocks install busted '2.0.0-1' \
+  && luarocks install cluacov '0.1.2-1' \
+  && luarocks install ldoc '1.4.6-2' \
+  && luarocks install luacheck '0.24.0-2' \
+  && luarocks install luacov '0.15.0-1' \
+  && luarocks install luacov-console '1.1.0-1' \
+  && luarocks install luacov-reporter-lcov '0.2-0'
 
 # Install LCOV
 WORKDIR /tmp/lcov/
