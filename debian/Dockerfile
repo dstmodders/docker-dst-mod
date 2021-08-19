@@ -42,8 +42,8 @@ RUN apt-get update \
   && npm install -g yarn@1.22.11 \
   # Yarn packages
   && yarn global add \
-    prettier@2.2.1 \
-    @prettier/plugin-xml@0.13.0 \
+    prettier@2.3.2 \
+    @prettier/plugin-xml@1.0.2 \
   # Python packages
   && pip install pillow=='8.3.1' \
   # Clean
