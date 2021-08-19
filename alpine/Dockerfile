@@ -34,8 +34,8 @@ RUN apk update \
     git='2.32.0-r0' \
     perl='5.32.1-r0' \
   && yarn global add \
-    prettier@2.2.1 \
-    @prettier/plugin-xml@0.13.0
+    prettier@2.3.2 \
+    @prettier/plugin-xml@1.0.2
 
 # Download and extract Lua, LuaRocks, LCOV, ImageMagick and ktools
 RUN wget -P /tmp/ "http://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
