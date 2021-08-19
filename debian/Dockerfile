@@ -1,4 +1,4 @@
-FROM debian:buster
+FROM debian:bullseye
 
 ENV DS_KTOOLS_KRANE="/usr/local/bin/krane"
 ENV DS_KTOOLS_KTECH="/usr/local/bin/ktech"
@@ -17,35 +17,35 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install dependencies
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    bash-completion='1:2.8-6' \
-    build-essential='12.6' \
-    ca-certificates='20200601~deb10u1' \
-    cmake='3.13.4-1' \
-    curl='7.64.0-4+deb10u1' \
-    git='1:2.20.1-2+deb10u3' \
-    libpng-dev='1.6.36-6' \
-    libreadline-dev='7.0-5' \
-    libzip-dev='1.5.1-4' \
-    openssh-client='1:7.9p1-10+deb10u2' \
-    pkg-config='0.29-6' \
+    bash-completion='1:2.11-2' \
+    build-essential='12.9' \
+    ca-certificates='20210119' \
+    cmake='3.18.4-2' \
+    curl='7.74.0-1.3+b1' \
+    git='1:2.30.2-1' \
+    libpng-dev='1.6.37-3' \
+    libreadline-dev='8.1-1' \
+    libzip-dev='1.7.3-1' \
+    openssh-client='1:8.4p1-5' \
+    pkg-config='0.29.2-1' \
     premake4='4.3+repack1-2+b1' \
-    python-pip='18.1-5' \
-    rsync='3.1.3-6' \
-    unzip='6.0-23+deb10u1' \
-    vim='2:8.1.0875-5' \
-    wget='1.20.1-1.1' \
-    zip='3.0-11+b1' \
+    python3-pip='20.3.4-4' \
+    rsync='3.2.3-4' \
+    unzip='6.0-26' \
+    vim='2:8.2.2434-3' \
+    wget='1.21-1+b1' \
+    zip='3.0-12' \
   # NodeJS and Yarn
   && wget -P /tmp/ https://deb.nodesource.com/setup_14.x \
   && bash /tmp/setup_14.x \
-  && apt-get install -y --no-install-recommends nodejs='14.15.4-1nodesource1' \
-  && npm install -g yarn@1.22.10 \
+  && apt-get install -y --no-install-recommends nodejs='14.17.5-deb-1nodesource1' \
+  && npm install -g yarn@1.22.11 \
   # Yarn packages
   && yarn global add \
     prettier@2.2.1 \
     @prettier/plugin-xml@0.13.0 \
   # Python packages
-  && pip install pillow=='6.2.2' \
+  && pip install pillow=='8.3.1' \
   # Clean
   && apt-get clean \
   && rm -Rf /var/lib/apt/lists/*
