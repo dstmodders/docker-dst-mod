@@ -64,7 +64,7 @@ game engine, the images bundle v5.1.5 instead of the latest one.
 | `DS_MODS` or `DST_MODS` | `/mods`                | Game mods directory                    |
 | `IMAGEMAGICK_VERSION`   | `6.9.11-3`             | [ImageMagick][] version                |
 | `LUA_VERSION`           | `5.1.5`                | [Lua][] version                        |
-| `LUAROCKS_VERSION`      | `3.3.1`                | [LuaRocks][] version                   |
+| `LUAROCKS_VERSION`      | `3.7.0`                | [LuaRocks][] version                   |
 
 ### Debian
 
