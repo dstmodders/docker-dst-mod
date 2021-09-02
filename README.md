@@ -159,6 +159,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [luacheck]: https://github.com/mpeterv/luacheck
 [luacov]: https://keplerproject.github.io/luacov/
 [luarocks]: https://luarocks.org/
+[nodejs]: https://nodejs.org/
 [openssh]: https://www.openssh.com/
 [prettier]: https://prettier.io/
 [rsync]: https://rsync.samba.org/
