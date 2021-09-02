@@ -35,13 +35,13 @@ Especially comes in handy when working on Linux and/or macOS.
 
 ### Debian
 
-| Name                        | Value                                      | Description                             |
-| --------------------------- | ------------------------------------------ | --------------------------------------- |
-| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/ds-mod-tools/mod_tools/autocompiler` | Path to [ds-mod-tools][] `autocompiler` |
-| `DS_MOD_TOOLS_PNG`          | `/opt/ds-mod-tools/mod_tools/png`          | Path to [ds-mod-tools][] `png`          |
-| `DS_MOD_TOOLS_SCML`         | `/opt/ds-mod-tools/mod_tools/scml`         | Path to [ds-mod-tools][] `scml`         |
-| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                    | [ds-mod-tools][] version                |
-| `DS_MOD_TOOLS`              | `/opt/ds-mod-tools/mod_tools`              | Path to [ds-mod-tools][]                |
+| Name                        | Value                                      | Description              |
+| --------------------------- | ------------------------------------------ | ------------------------ |
+| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/ds-mod-tools/mod_tools/autocompiler` | Path to `autocompiler`   |
+| `DS_MOD_TOOLS_PNG`          | `/opt/ds-mod-tools/mod_tools/png`          | Path to `png`            |
+| `DS_MOD_TOOLS_SCML`         | `/opt/ds-mod-tools/mod_tools/scml`         | Path to `scml`           |
+| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                    | [ds-mod-tools][] version |
+| `DS_MOD_TOOLS`              | `/opt/ds-mod-tools/mod_tools`              | Path to [ds-mod-tools][] |
 
 ## Tools
 
@@ -95,7 +95,10 @@ $ docker run --rm --user='dst-mod' \
 The same, but shorter:
 
 ```shell
-$ docker run --rm -u dst-mod -v '/path/to/your/mod/:/opt/dont_starve/mods/<your mod name>/' viktorpopkov/dst-mod
+$ docker run --rm -u dst-mod \
+    -v '/path/to/your/mod/:/opt/dont_starve/mods/<your mod name>/' \
+    -w '/opt/dont_starve/mods/<your mod name>/' \
+    viktorpopkov/dst-mod
 ```
 
 ### Linux & macOS
