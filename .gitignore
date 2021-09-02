@@ -3,6 +3,3 @@
 
 ### VisualStudioCode ###
 .vscode/
-
-### Project ###
-.github/slack*.json
