@@ -2,7 +2,7 @@
 
 [![Alpine Size](https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/alpine?label=alpine%20size)](https://hub.docker.com/r/viktorpopkov/dst-mod)
 [![Debian Size](https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/debian?label=debian%20size)](https://hub.docker.com/r/viktorpopkov/dst-mod)
-[![CI](https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/CI?label=CI)](https://github.com/victorpopkov/docker-dst-mod/actions?query=workflow%3ACI)
+[![CI](https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/CI?label=ci)](https://github.com/victorpopkov/docker-dst-mod/actions?query=workflow%3ACI)
 
 ## Overview
 
@@ -25,10 +25,10 @@ Especially comes in handy when working on Linux and/or macOS.
 | ----------------------- | ----------------------- | -------------------------- |
 | `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane`  | Path to [ktools][] `krane` |
 | `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech`  | Path to [ktools][] `ktech` |
-| `DS_KTOOLS_VERSION`     | `4.5.0`                 | [ktools][] version         |
+| `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools][] version         |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.0-5`               | [ImageMagick][] version    |
+| `IMAGEMAGICK_VERSION`   | `7.1.0-7`               | [ImageMagick][] version    |
 | `LCOV_VERSION`          | `1.15`                  | [LCOV] version             |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
 | `LUAROCKS_VERSION`      | `3.7.0`                 | [LuaRocks][] version       |
@@ -107,8 +107,8 @@ $ docker run --rm -u dst-mod \
 
 ```shell
 $ docker run --rm -itu dst-mod \
-    -v "$(pwd):/opt/dont_starve/mods/$(basename $(pwd))" \
-    -w "/opt/dont_starve/mods/$(basename $(pwd))" \
+    -v "$(pwd):/opt/dont_starve/mods/$(basename "$(pwd)")" \
+    -w "/opt/dont_starve/mods/$(basename "$(pwd)")" \
     viktorpopkov/dst-mod \
     /bin/bash
 ```
@@ -130,7 +130,7 @@ C:\> docker run --rm -itu dst-mod ^
 ```powershell
 PS C:\> $basename = (Get-Item "${PWD}").Basename; docker run --rm -itu dst-mod `
     -v "${PWD}:/opt/dont_starve/mods/${basename}/" `
-    -w "/opt/dont_starve/mods/${basename})" `
+    -w "/opt/dont_starve/mods/${basename}" `
     viktorpopkov/dst-mod `
     /bin/bash
 ```
