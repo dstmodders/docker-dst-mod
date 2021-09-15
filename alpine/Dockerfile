@@ -1,4 +1,4 @@
-ARG DS_KTOOLS_VERSION="4.5.0"
+ARG DS_KTOOLS_VERSION="4.5.1"
 
 FROM viktorpopkov/ktools:${DS_KTOOLS_VERSION}-alpine
 

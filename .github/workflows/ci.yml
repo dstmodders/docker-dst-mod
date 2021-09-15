@@ -14,7 +14,7 @@ jobs:
       matrix:
         image:
           - ds-mod-tools-version: 1.0.0
-            ktools-version: 4.5.0
+            ktools-version: 4.5.1
             latest: true
             root: ./
     steps:
