@@ -30,7 +30,7 @@ RUN userdel -r klei-tools \
     openssh-client='1:8.4p1-5' \
     pkg-config='0.29.2-1' \
     premake4='4.3+repack1-2+b1' \
-    rsync='3.2.3-4' \
+    rsync='3.2.3-4+deb11u1' \
     unzip='6.0-26' \
     vim='2:8.2.2434-3' \
     wget='1.21-1+b1' \
