@@ -4,6 +4,11 @@
 [![Debian Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/debian?label=debian%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
 [![CI](https://img.shields.io/github/workflow/status/dstmodders/docker-dst-mod/CI?label=ci)](https://github.com/dstmodders/docker-dst-mod/actions?query=workflow%3ACI)
 
+## Supported tags and respective `Dockerfile` links
+
+- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/45ea7656f74f92578ee09c05bb0afa6b1345e290/debian/Dockerfile)
+- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/45ea7656f74f92578ee09c05bb0afa6b1345e290/alpine/Dockerfile)
+
 ## Overview
 
 [Docker][] images for modding environment of Klei Entertainment's game
