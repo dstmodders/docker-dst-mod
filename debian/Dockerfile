@@ -1,6 +1,6 @@
 ARG DS_MOD_TOOLS_VERSION="1.0.0"
 
-FROM viktorpopkov/ds-mod-tools:${DS_MOD_TOOLS_VERSION}
+FROM dstmodders/klei-tools:${DS_MOD_TOOLS_VERSION}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -11,7 +11,7 @@ ENV LUAROCKS_VERSION="3.7.0"
 ENV LUA_VERSION="5.1.5"
 
 WORKDIR /tmp/
-RUN userdel -r ds-mod-tools \
+RUN userdel -r klei-tools \
   && groupadd --gid 1000 dst-mod \
   && useradd \
     --uid 1000 \
