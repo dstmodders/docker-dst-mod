@@ -1,8 +1,8 @@
 # docker-dst-mod
 
-[![Alpine Size](https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/alpine?label=alpine%20size)](https://hub.docker.com/r/viktorpopkov/dst-mod)
-[![Debian Size](https://img.shields.io/docker/image-size/viktorpopkov/dst-mod/debian?label=debian%20size)](https://hub.docker.com/r/viktorpopkov/dst-mod)
-[![CI](https://img.shields.io/github/workflow/status/victorpopkov/docker-dst-mod/CI?label=ci)](https://github.com/victorpopkov/docker-dst-mod/actions?query=workflow%3ACI)
+[![Alpine Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/alpine?label=alpine%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
+[![Debian Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/debian?label=debian%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
+[![CI](https://img.shields.io/github/workflow/status/dstmodders/docker-dst-mod/CI?label=ci)](https://github.com/dstmodders/docker-dst-mod/actions?query=workflow%3ACI)
 
 ## Overview
 
@@ -35,13 +35,13 @@ Especially comes in handy when working on Linux and/or macOS.
 
 ### Debian
 
-| Name                        | Value                                      | Description              |
-| --------------------------- | ------------------------------------------ | ------------------------ |
-| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/ds-mod-tools/mod_tools/autocompiler` | Path to `autocompiler`   |
-| `DS_MOD_TOOLS_PNG`          | `/opt/ds-mod-tools/mod_tools/png`          | Path to `png`            |
-| `DS_MOD_TOOLS_SCML`         | `/opt/ds-mod-tools/mod_tools/scml`         | Path to `scml`           |
-| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                    | [ds-mod-tools][] version |
-| `DS_MOD_TOOLS`              | `/opt/ds-mod-tools/mod_tools`              | Path to [ds-mod-tools][] |
+| Name                        | Value                                    | Description            |
+| --------------------------- | ---------------------------------------- | ---------------------- |
+| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/klei-tools/mod_tools/autocompiler` | Path to `autocompiler` |
+| `DS_MOD_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | Path to `png`          |
+| `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | Path to `scml`         |
+| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
+| `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
 
 ## Tools
 
@@ -53,12 +53,12 @@ Especially comes in handy when working on Linux and/or macOS.
 | Packages             | [curl][]<br>[GNU Make][]<br>[GNU Wget][]<br>[rsync][]<br>[UnZip][]<br>[Zip][]   | [curl][]<br>[Git][]<br>[GNU Make][]<br>[GNU Wget][]<br>[bash-completion][]<br>[OpenSSH][]<br>[rsync][]<br>[UnZip][]<br>[Vim][]<br>[Zip][] |
 | [Lua] + [LuaRocks][] | [Busted][]<br>[CLuaCov][]<br>[LCOV][]<br>[LDoc][]<br>[Luacheck][]<br>[LuaCov][] | [Busted][]<br>[CLuaCov][]<br>[LCOV][]<br>[LDoc][]<br>[Luacheck][]<br>[LuaCov][]                                                           |
 | [NodeJS][]           | [Prettier][]<br>[yarn][]                                                        | [Prettier][]<br>[yarn][]                                                                                                                  |
-| Other                | [ktools][]                                                                      | [ds-mod-tools][]<br>[ktools][]                                                                                                            |
+| Other                | [ktools][]                                                                      | [klei-tools][]<br>[ktools][]                                                                                                              |
 
 ## Usage
 
 ```shell
-$ docker pull viktorpopkov/dst-mod
+$ docker pull dstmodders/dst-mod
 ```
 
 See [tags][] for a list of all available versions.
@@ -69,7 +69,7 @@ See [tags][] for a list of all available versions.
 $ docker run --rm --user='dst-mod' --interactive --tty \
     --mount src='/path/to/your/mod/',target='/opt/dont_starve/mods/<your mod name>/',type=bind \
     --workdir='/opt/dont_starve/mods/<your mod name>/' \
-    viktorpopkov/dst-mod \
+    dstmodders/dst-mod \
     /bin/bash
 ```
 
@@ -79,7 +79,7 @@ The same, but shorter:
 $ docker run --rm -itu dst-mod \
     -v '/path/to/your/mod/:/opt/dont_starve/mods/<your mod name>/' \
     -w '/opt/dont_starve/mods/<your mod name>/' \
-    viktorpopkov/dst-mod \
+    dstmodders/dst-mod \
     /bin/bash
 ```
 
@@ -89,7 +89,7 @@ $ docker run --rm -itu dst-mod \
 $ docker run --rm --user='dst-mod' \
     --mount src='/path/to/your/mod/',target='/opt/dont_starve/mods/<your mod name>/',type=bind \
     --workdir='/opt/dont_starve/mods/<your mod name>/' \
-    viktorpopkov/dst-mod
+    dstmodders/dst-mod
 ```
 
 The same, but shorter:
@@ -98,7 +98,7 @@ The same, but shorter:
 $ docker run --rm -u dst-mod \
     -v '/path/to/your/mod/:/opt/dont_starve/mods/<your mod name>/' \
     -w '/opt/dont_starve/mods/<your mod name>/' \
-    viktorpopkov/dst-mod
+    dstmodders/dst-mod
 ```
 
 ### Linux & macOS
@@ -109,7 +109,7 @@ $ docker run --rm -u dst-mod \
 $ docker run --rm -itu dst-mod \
     -v "$(pwd):/opt/dont_starve/mods/$(basename "$(pwd)")" \
     -w "/opt/dont_starve/mods/$(basename "$(pwd)")" \
-    viktorpopkov/dst-mod \
+    dstmodders/dst-mod \
     /bin/bash
 ```
 
@@ -121,7 +121,7 @@ $ docker run --rm -itu dst-mod \
 C:\> docker run --rm -itu dst-mod ^
     -v "%CD%:/opt/dont_starve/mods/<your mod name>/" ^
     -w "/opt/dont_starve/mods/<your mod name>/" ^
-    viktorpopkov/dst-mod ^
+    dstmodders/dst-mod ^
     /bin/bash
 ```
 
@@ -131,7 +131,7 @@ C:\> docker run --rm -itu dst-mod ^
 PS C:\> $basename = (Get-Item "${PWD}").Basename; docker run --rm -itu dst-mod `
     -v "${PWD}:/opt/dont_starve/mods/${basename}/" `
     -w "/opt/dont_starve/mods/${basename}" `
-    viktorpopkov/dst-mod `
+    dstmodders/dst-mod `
     /bin/bash
 ```
 
@@ -145,14 +145,14 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [curl]: https://curl.haxx.se/
 [docker]: https://www.docker.com/
 [don't starve together]: https://www.klei.com/games/dont-starve-together
-[ds-mod-tools]: https://github.com/victorpopkov/ds-mod-tools
 [git]: https://git-scm.com/
 [gnu make]: https://www.gnu.org/software/make/
 [gnu wget]: https://www.gnu.org/software/wget/
 [imagemagick]: https://imagemagick.org/index.php
-[krane]: https://github.com/victorpopkov/ktools#krane
-[ktech]: https://github.com/victorpopkov/ktools#ktech
-[ktools]: https://github.com/victorpopkov/ktools
+[klei-tools]: https://github.com/dstmodders/klei-tools
+[krane]: https://github.com/dstmodders/ktools#krane
+[ktech]: https://github.com/dstmodders/ktools#ktech
+[ktools]: https://github.com/dstmodders/ktools
 [lcov]: http://ltp.sourceforge.net/coverage/lcov.php
 [ldoc]: https://stevedonovan.github.io/ldoc/
 [lua]: https://www.lua.org/
@@ -163,7 +163,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [openssh]: https://www.openssh.com/
 [prettier]: https://prettier.io/
 [rsync]: https://rsync.samba.org/
-[tags]: https://hub.docker.com/r/viktorpopkov/dst-mod/tags
+[tags]: https://hub.docker.com/r/dstmodders/dst-mod/tags
 [unzip]: http://infozip.sourceforge.net/UnZip.html
 [vim]: https://www.vim.org/
 [yarn]: https://yarnpkg.com/
