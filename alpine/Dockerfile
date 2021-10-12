@@ -1,6 +1,6 @@
 ARG DS_KTOOLS_VERSION="4.5.1"
 
-FROM viktorpopkov/ktools:${DS_KTOOLS_VERSION}-alpine
+FROM dstmodders/ktools:${DS_KTOOLS_VERSION}-alpine
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
