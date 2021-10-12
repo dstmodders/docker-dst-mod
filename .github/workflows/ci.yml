@@ -7,24 +7,34 @@ on:
       - main
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@v2
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          JSON=$(cat ./versions.json)
+          echo "::set-output name=matrix::$(jq -cM . <<< ${JSON})"
+
   build:
+    needs: prepare
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
       matrix:
-        image:
-          - ds-mod-tools-version: 1.0.0
-            ktools-version: 4.5.1
-            latest: true
-            root: ./
+        image: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
       - name: Check out
         uses: actions/checkout@v2
       - name: Set a job-wide environment variables
         run: |
           echo "BRANCH_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
-          echo "DS_KTOOLS_VERSION=${{ matrix.image.ktools-version }}" >> $GITHUB_ENV
-          echo "DS_MOD_TOOLS_VERSION=${{ matrix.image.ds-mod-tools-version }}" >> $GITHUB_ENV
+          echo "DS_KTOOLS_VERSION=${{ matrix.image.ktools }}" >> $GITHUB_ENV
+          echo "DS_KLEI_TOOLS_VERSION=${{ matrix.image.klei-tools }}" >> $GITHUB_ENV
           echo "GITHUB_JOB_NAME=build" >> $GITHUB_ENV
           echo "ROOT=${{ matrix.image.root }}" >> $GITHUB_ENV
       - name: Set up QEMU
@@ -49,7 +59,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
+            ${{ github.repository_owner }}/dst-mod
             ghcr.io/${{ github.repository_owner }}/dst-mod
           labels: |
             maintainer=victor@popkov.me
@@ -63,7 +73,7 @@ jobs:
           platforms: linux/amd64
           pull: true
           push: ${{ !env.ACT && github.ref == 'refs/heads/main' }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:alpine
+          cache-from: type=registry,ref=${{ github.repository_owner }}/dst-mod:alpine
           cache-to: type=inline
           build-args: DS_KTOOLS_VERSION=${{ env.DS_KTOOLS_VERSION }}
           tags: ${{ steps.alpine-meta.outputs.tags }}
@@ -73,7 +83,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod
+            ${{ github.repository_owner }}/dst-mod
             ghcr.io/${{ github.repository_owner }}/dst-mod
           flavor: |
             latest=${{ matrix.image.latest }}
@@ -89,9 +99,9 @@ jobs:
           platforms: linux/amd64
           pull: true
           push: ${{ !env.ACT && github.ref == 'refs/heads/main' }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/dst-mod:debian
+          cache-from: type=registry,ref=${{ github.repository_owner }}/dst-mod:debian
           cache-to: type=inline
-          build-args: DS_MOD_TOOLS_VERSION=${{ env.DS_MOD_TOOLS_VERSION }}
+          build-args: DS_KLEI_TOOLS_VERSION=${{ env.DS_KLEI_TOOLS_VERSION }}
           tags: ${{ steps.debian-meta.outputs.tags }}
           labels: ${{ steps.debian-meta.outputs.labels }}
       - name: Prepare success Slack notification
