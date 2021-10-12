@@ -83,7 +83,7 @@ RUN wget https://deb.nodesource.com/setup_14.x \
   && chmod +x setup_14.x \
   && ./setup_14.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='14.17.6-deb-1nodesource1' \
+    nodejs='14.18.0-deb-1nodesource1' \
   # Yarn + packages
   && npm install -g yarn@1.22.11 \
   && yarn global add \
