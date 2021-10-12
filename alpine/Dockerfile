@@ -16,7 +16,7 @@ RUN deluser --remove-home ktools \
   && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
   && apk add --no-cache \
     ca-certificates='20191127-r5' \
-    curl='7.78.0-r0' \
+    curl='7.79.1-r0' \
     g++='10.3.1_git20210424-r2' \
     make='4.3-r0' \
     nodejs='14.17.6-r0' \
