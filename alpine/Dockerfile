@@ -19,7 +19,7 @@ RUN deluser --remove-home ktools \
     curl='7.79.1-r0' \
     g++='10.3.1_git20210424-r2' \
     make='4.3-r0' \
-    nodejs='14.17.6-r0' \
+    nodejs='14.18.1-r0' \
     openssl='1.1.1l-r0' \
     readline-dev='8.1.0-r0' \
     rsync='3.2.3-r4' \
@@ -57,14 +57,14 @@ RUN deluser --remove-home ktools \
 RUN luarocks install busted '2.0.0-1' \
   && luarocks install cluacov '0.1.2-1' \
   && luarocks install ldoc '1.4.6-2' \
-  && luarocks install luacheck '0.24.0-2' \
+  && luarocks install luacheck '0.25.0-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
   && rm -Rf /root/.cache/
 
 RUN yarn global add \
-  prettier@2.3.2 \
-  @prettier/plugin-xml@1.0.2
+  prettier@2.4.1 \
+  @prettier/plugin-xml@1.1.0
 
 WORKDIR ${DST_MODS}
