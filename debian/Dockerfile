@@ -9,6 +9,7 @@ ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.15"
 ENV LUAROCKS_VERSION="3.7.0"
 ENV LUA_VERSION="5.1.5"
+ENV STYLUA_VERSION="0.11.0"
 
 WORKDIR /tmp/
 RUN userdel -r klei-tools \
@@ -56,6 +57,12 @@ RUN userdel -r klei-tools \
   && cd "./lcov-${LCOV_VERSION}/" \
   && make install \
   && cd /tmp/ \
+  # StyLua
+  && wget "https://github.com/JohnnyMorganz/StyLua/releases/download/v${STYLUA_VERSION}/stylua-${STYLUA_VERSION}-linux.zip" \
+  && unzip "./stylua-${STYLUA_VERSION}-linux.zip" \
+  && chmod +x ./stylua \
+  && mv ./stylua /usr/bin/stylua \
+  && cd /tmp/ \
   # clean \
   && apt-get clean \
   && apt-get autoremove -y \
@@ -71,7 +78,7 @@ RUN userdel -r klei-tools \
 RUN luarocks install busted '2.0.0-1' \
   && luarocks install cluacov '0.1.2-1' \
   && luarocks install ldoc '1.4.6-2' \
-  && luarocks install luacheck '0.24.0-2' \
+  && luarocks install luacheck '0.25.0-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
@@ -79,16 +86,17 @@ RUN luarocks install busted '2.0.0-1' \
     /root/.cache/ \
     /root/.wget-hsts
 
-RUN wget https://deb.nodesource.com/setup_14.x \
-  && chmod +x setup_14.x \
-  && ./setup_14.x \
+RUN wget https://deb.nodesource.com/setup_16.x \
+  && chmod +x setup_16.x \
+  && ./setup_16.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='14.18.0-deb-1nodesource1' \
+    nodejs='16.13.0-deb-1nodesource1' \
+  && npm install -g npm@8.1.3 \
   # Yarn + packages
-  && npm install -g yarn@1.22.11 \
+  && npm install -g yarn@1.22.17 \
   && yarn global add \
-    prettier@2.3.2 \
-    @prettier/plugin-xml@1.0.2 \
+    prettier@2.4.1 \
+    @prettier/plugin-xml@1.1.0 \
   # clean
   && apt-get clean \
   && apt-get autoremove -y \
