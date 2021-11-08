@@ -140,7 +140,6 @@ jobs:
       - name: Install Prettier
         run: yarn global add prettier
       - name: Lint
-        continue-on-error: true
         id: lint
         run: |
           export_env() {
