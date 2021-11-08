@@ -10,7 +10,6 @@
 - [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/45ea7656f74f92578ee09c05bb0afa6b1345e290/alpine/Dockerfile)
 
 ## Overview
-
 [Docker][] images for modding environment of Klei Entertainment's game
 [Don't Starve Together][] to dive right into the mods' development without
 bothering with building, installing and configuring all the tools yourself.
@@ -34,7 +33,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
 | `IMAGEMAGICK_VERSION`   | `7.1.0-7`               | [ImageMagick][] version    |
-| `LCOV_VERSION`          | `1.15`                  | [LCOV] version             |
+| `LCOV_VERSION`          | `1.15`                  | [LCOV][] version           |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
 | `LUAROCKS_VERSION`      | `3.7.0`                 | [LuaRocks][] version       |
 
@@ -47,6 +46,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | Path to `scml`         |
 | `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
 | `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
+| `STYLUA_VERSION`            | `0.11.0`                                 | [StyLua][] version     |
 
 ## Tools
 
@@ -58,7 +58,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | Packages             | [curl][]<br>[GNU Make][]<br>[GNU Wget][]<br>[rsync][]<br>[UnZip][]<br>[Zip][]   | [curl][]<br>[Git][]<br>[GNU Make][]<br>[GNU Wget][]<br>[bash-completion][]<br>[OpenSSH][]<br>[rsync][]<br>[UnZip][]<br>[Vim][]<br>[Zip][] |
 | [Lua] + [LuaRocks][] | [Busted][]<br>[CLuaCov][]<br>[LCOV][]<br>[LDoc][]<br>[Luacheck][]<br>[LuaCov][] | [Busted][]<br>[CLuaCov][]<br>[LCOV][]<br>[LDoc][]<br>[Luacheck][]<br>[LuaCov][]                                                           |
 | [NodeJS][]           | [Prettier][]<br>[yarn][]                                                        | [Prettier][]<br>[yarn][]                                                                                                                  |
-| Other                | [ktools][]                                                                      | [klei-tools][]<br>[ktools][]                                                                                                              |
+| Other                | [ktools][]                                                                      | [klei-tools][]<br>[ktools][]<br>[StyLua][]                                                                                                |
 
 ## Usage
 
@@ -168,6 +168,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [openssh]: https://www.openssh.com/
 [prettier]: https://prettier.io/
 [rsync]: https://rsync.samba.org/
+[stylua]: https://github.com/JohnnyMorganz/StyLua
 [tags]: https://hub.docker.com/r/dstmodders/dst-mod/tags
 [unzip]: http://infozip.sourceforge.net/UnZip.html
 [vim]: https://www.vim.org/
