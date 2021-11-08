@@ -10,6 +10,7 @@
 - [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/45ea7656f74f92578ee09c05bb0afa6b1345e290/alpine/Dockerfile)
 
 ## Overview
+
 [Docker][] images for modding environment of Klei Entertainment's game
 [Don't Starve Together][] to dive right into the mods' development without
 bothering with building, installing and configuring all the tools yourself.
