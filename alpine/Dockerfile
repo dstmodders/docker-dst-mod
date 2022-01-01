@@ -7,7 +7,7 @@ SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 ENV DS_MODS="/opt/dont_starve/mods/"
 ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.15"
-ENV LUAROCKS_VERSION="3.7.0"
+ENV LUAROCKS_VERSION="3.8.0"
 ENV LUA_VERSION="5.1.5"
 
 WORKDIR /tmp/
@@ -15,20 +15,20 @@ RUN deluser --remove-home ktools \
   && addgroup -g 1000 dst-mod \
   && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
   && apk add --no-cache \
-    ca-certificates='20191127-r5' \
-    curl='7.79.1-r0' \
-    g++='10.3.1_git20210424-r2' \
+    ca-certificates='20191127-r7' \
+    curl='7.80.0-r0' \
+    g++='10.3.1_git20211027-r0' \
     make='4.3-r0' \
-    nodejs='14.18.1-r0' \
-    openssl='1.1.1l-r0' \
-    readline-dev='8.1.0-r0' \
-    rsync='3.2.3-r4' \
-    yarn='1.22.10-r0' \
+    nodejs='16.13.1-r0' \
+    openssl='1.1.1l-r8' \
+    readline-dev='8.1.1-r0' \
+    rsync='3.2.3-r5' \
+    yarn='1.22.17-r0' \
     zip='3.0-r9' \
   && apk add --no-cache --virtual .build-deps \
-    bash='5.1.4-r0' \
-    git='2.32.0-r0' \
-    perl='5.32.1-r0' \
+    bash='5.1.8-r0' \
+    git='2.34.1-r0' \
+    perl='5.34.0-r1' \
   # Lua
   && wget "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "./lua-${LUA_VERSION}.tar.gz" \
@@ -64,7 +64,7 @@ RUN luarocks install busted '2.0.0-1' \
   && rm -Rf /root/.cache/
 
 RUN yarn global add \
-  prettier@2.4.1 \
-  @prettier/plugin-xml@1.1.0
+  prettier@2.5.1 \
+  @prettier/plugin-xml@1.2.0
 
 WORKDIR ${DST_MODS}
