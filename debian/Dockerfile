@@ -7,9 +7,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DS_MODS="/opt/dont_starve/mods/"
 ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.15"
-ENV LUAROCKS_VERSION="3.7.0"
+ENV LUAROCKS_VERSION="3.8.0"
 ENV LUA_VERSION="5.1.5"
-ENV STYLUA_VERSION="0.11.0"
+ENV STYLUA_VERSION="0.11.3"
 
 WORKDIR /tmp/
 RUN userdel -r klei-tools \
@@ -25,7 +25,7 @@ RUN userdel -r klei-tools \
     bash-completion='1:2.11-2' \
     build-essential='12.9' \
     ca-certificates='20210119' \
-    curl='7.74.0-1.3+b1' \
+    curl='7.74.0-1.3+deb11u1' \
     git='1:2.30.2-1' \
     libreadline-dev='8.1-1' \
     openssh-client='1:8.4p1-5' \
@@ -33,8 +33,8 @@ RUN userdel -r klei-tools \
     premake4='4.3+repack1-2+b1' \
     rsync='3.2.3-4+deb11u1' \
     unzip='6.0-26' \
-    vim='2:8.2.2434-3' \
-    wget='1.21-1+b1' \
+    vim='2:8.2.2434-3+deb11u1' \
+    wget='1.21-1+deb11u1' \
     zip='3.0-12' \
   # Lua
   && wget "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
@@ -90,13 +90,13 @@ RUN wget https://deb.nodesource.com/setup_16.x \
   && chmod +x setup_16.x \
   && ./setup_16.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='16.13.0-deb-1nodesource1' \
-  && npm install -g npm@8.1.3 \
+    nodejs='16.13.1-deb-1nodesource1' \
+  && npm install -g npm@8.3.0 \
   # Yarn + packages
   && npm install -g yarn@1.22.17 \
   && yarn global add \
-    prettier@2.4.1 \
-    @prettier/plugin-xml@1.1.0 \
+    prettier@2.5.1 \
+    @prettier/plugin-xml@1.2.0 \
   # clean
   && apt-get clean \
   && apt-get autoremove -y \
