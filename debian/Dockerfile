@@ -9,7 +9,7 @@ ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.15"
 ENV LUAROCKS_VERSION="3.8.0"
 ENV LUA_VERSION="5.1.5"
-ENV STYLUA_VERSION="0.11.3"
+ENV STYLUA_VERSION="0.12.2"
 
 WORKDIR /tmp/
 RUN userdel -r klei-tools \
@@ -90,8 +90,8 @@ RUN wget https://deb.nodesource.com/setup_16.x \
   && chmod +x setup_16.x \
   && ./setup_16.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='16.13.1-deb-1nodesource1' \
-  && npm install -g npm@8.3.0 \
+    nodejs='16.14.0-deb-1nodesource1' \
+  && npm install -g npm@8.5.0 \
   # Yarn + packages
   && npm install -g yarn@1.22.17 \
   && yarn global add \
