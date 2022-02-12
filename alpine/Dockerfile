@@ -15,11 +15,11 @@ RUN deluser --remove-home ktools \
   && addgroup -g 1000 dst-mod \
   && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
   && apk add --no-cache \
-    ca-certificates='20191127-r7' \
+    ca-certificates='20211220-r0' \
     curl='7.80.0-r0' \
     g++='10.3.1_git20211027-r0' \
     make='4.3-r0' \
-    nodejs='16.13.1-r0' \
+    nodejs='16.14.0-r0' \
     openssl='1.1.1l-r8' \
     readline-dev='8.1.1-r0' \
     rsync='3.2.3-r5' \
