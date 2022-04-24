@@ -7,11 +7,12 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DS_MODS="/opt/dont_starve/mods/"
 ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.15"
-ENV LUAROCKS_VERSION="3.8.0"
+ENV LUAROCKS_VERSION="3.9.0"
 ENV LUA_VERSION="5.1.5"
-ENV STYLUA_VERSION="0.12.2"
+ENV STYLUA_VERSION="0.13.1"
 
 WORKDIR /tmp/
+# hadolint ignore=DL3003
 RUN userdel -r klei-tools \
   && groupadd --gid 1000 dst-mod \
   && useradd \
@@ -37,14 +38,14 @@ RUN userdel -r klei-tools \
     wget='1.21-1+deb11u1' \
     zip='3.0-12' \
   # Lua
-  && wget "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
+  && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "./lua-${LUA_VERSION}.tar.gz" \
   && cd "/tmp/lua-${LUA_VERSION}/" \
   && make linux test \
   && make install \
   && cd /tmp/ \
   # LuaRocks
-  && wget "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
+  && wget -q "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && tar zxf "/tmp/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && cd "/tmp/luarocks-${LUAROCKS_VERSION}/" \
   && ./configure \
@@ -52,14 +53,14 @@ RUN userdel -r klei-tools \
   && make install \
   && cd /tmp/ \
   # LCOV \
-  && wget "https://github.com/linux-test-project/lcov/archive/refs/tags/v${LCOV_VERSION}.zip" \
+  && wget -q "https://github.com/linux-test-project/lcov/archive/refs/tags/v${LCOV_VERSION}.zip" \
   && unzip "./v${LCOV_VERSION}.zip" \
   && cd "./lcov-${LCOV_VERSION}/" \
   && make install \
   && cd /tmp/ \
   # StyLua
-  && wget "https://github.com/JohnnyMorganz/StyLua/releases/download/v${STYLUA_VERSION}/stylua-${STYLUA_VERSION}-linux.zip" \
-  && unzip "./stylua-${STYLUA_VERSION}-linux.zip" \
+  && wget -q "https://github.com/JohnnyMorganz/StyLua/releases/download/v${STYLUA_VERSION}/stylua-linux.zip" \
+  && unzip "./stylua-linux.zip" \
   && chmod +x ./stylua \
   && mv ./stylua /usr/bin/stylua \
   && cd /tmp/ \
@@ -75,10 +76,11 @@ RUN userdel -r klei-tools \
     /var/log/apt/ \
     /var/log/dpkg.log
 
+# hadolint ignore=DL3059
 RUN luarocks install busted '2.0.0-1' \
   && luarocks install cluacov '0.1.2-1' \
   && luarocks install ldoc '1.4.6-2' \
-  && luarocks install luacheck '0.25.0-1' \
+  && luarocks install luacheck '0.26.1-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
@@ -86,17 +88,18 @@ RUN luarocks install busted '2.0.0-1' \
     /root/.cache/ \
     /root/.wget-hsts
 
-RUN wget https://deb.nodesource.com/setup_16.x \
+# hadolint ignore=DL3059
+RUN wget -q https://deb.nodesource.com/setup_16.x \
   && chmod +x setup_16.x \
   && ./setup_16.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='16.14.0-deb-1nodesource1' \
-  && npm install -g npm@8.5.0 \
+    nodejs='16.14.2-deb-1nodesource1' \
+  && npm install -g npm@8.7.0 \
   # Yarn + packages
-  && npm install -g yarn@1.22.17 \
+  && npm install -g yarn@1.22.18 \
   && yarn global add \
-    prettier@2.5.1 \
-    @prettier/plugin-xml@1.2.0 \
+    prettier@2.6.2 \
+    @prettier/plugin-xml@2.1.0 \
   # clean
   && apt-get clean \
   && apt-get autoremove -y \
