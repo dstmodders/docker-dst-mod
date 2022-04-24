@@ -11,6 +11,7 @@ ENV LUAROCKS_VERSION="3.8.0"
 ENV LUA_VERSION="5.1.5"
 
 WORKDIR /tmp/
+# hadolint ignore=DL3003
 RUN deluser --remove-home ktools \
   && addgroup -g 1000 dst-mod \
   && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
@@ -19,25 +20,25 @@ RUN deluser --remove-home ktools \
     curl='7.80.0-r0' \
     g++='10.3.1_git20211027-r0' \
     make='4.3-r0' \
-    nodejs='16.14.0-r0' \
-    openssl='1.1.1l-r8' \
+    nodejs='16.14.2-r0' \
+    openssl='1.1.1n-r0' \
     readline-dev='8.1.1-r0' \
     rsync='3.2.3-r5' \
     yarn='1.22.17-r0' \
     zip='3.0-r9' \
   && apk add --no-cache --virtual .build-deps \
-    bash='5.1.8-r0' \
-    git='2.34.1-r0' \
+    bash='5.1.16-r0' \
+    git='2.34.2-r0' \
     perl='5.34.0-r1' \
   # Lua
-  && wget "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
+  && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "./lua-${LUA_VERSION}.tar.gz" \
   && cd "/tmp/lua-${LUA_VERSION}/" \
   && make linux test \
   && make install \
   && cd /tmp/ \
   # LuaRocks
-  && wget "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
+  && wget -q "https://luarocks.org/releases/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && tar zxf "/tmp/luarocks-${LUAROCKS_VERSION}.tar.gz" \
   && cd "/tmp/luarocks-${LUAROCKS_VERSION}/" \
   && ./configure \
@@ -45,7 +46,7 @@ RUN deluser --remove-home ktools \
   && make install \
   && cd /tmp/ \
   # LCOV \
-  && wget "https://github.com/linux-test-project/lcov/archive/refs/tags/v${LCOV_VERSION}.zip" \
+  && wget -q "https://github.com/linux-test-project/lcov/archive/refs/tags/v${LCOV_VERSION}.zip" \
   && unzip "./v${LCOV_VERSION}.zip" \
   && cd "./lcov-${LCOV_VERSION}/" \
   && make install \
@@ -54,17 +55,19 @@ RUN deluser --remove-home ktools \
   && apk del .build-deps \
   && rm -Rf /tmp/*
 
+# hadolint ignore=DL3059
 RUN luarocks install busted '2.0.0-1' \
   && luarocks install cluacov '0.1.2-1' \
   && luarocks install ldoc '1.4.6-2' \
-  && luarocks install luacheck '0.25.0-1' \
+  && luarocks install luacheck '0.26.1-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
   && rm -Rf /root/.cache/
 
+# hadolint ignore=DL3059
 RUN yarn global add \
-  prettier@2.5.1 \
-  @prettier/plugin-xml@1.2.0
+  prettier@2.6.2 \
+  @prettier/plugin-xml@2.1.0
 
 WORKDIR ${DST_MODS}
