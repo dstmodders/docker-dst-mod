@@ -2,12 +2,13 @@
 
 [![Alpine Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/alpine?label=alpine%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
 [![Debian Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/debian?label=debian%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
-[![CI](https://img.shields.io/github/workflow/status/dstmodders/docker-dst-mod/CI?label=ci)](https://github.com/dstmodders/docker-dst-mod/actions?query=workflow%3ACI)
+[![CI](https://img.shields.io/github/workflow/status/dstmodders/docker-dst-mod/CI?label=ci)](https://github.com/dstmodders/docker-dst-mod/actions/workflows/ci.yml)
+[![Build](https://img.shields.io/github/workflow/status/dstmodders/docker-dst-mod/Build?label=build)](https://github.com/dstmodders/docker-dst-mod/actions/workflows/build.yml)
 
 ## Supported tags and respective `Dockerfile` links
 
-- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/fcdd42b3f47044227f647e85892690459a95752f/debian/Dockerfile)
-- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/fcdd42b3f47044227f647e85892690459a95752f/alpine/Dockerfile)
+- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/15b9c0215b9023401b6ac75467e8cef4ae05dc55/debian/Dockerfile)
+- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/15b9c0215b9023401b6ac75467e8cef4ae05dc55/alpine/Dockerfile)
 
 ## Overview
 
@@ -33,10 +34,15 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools][] version         |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.0-23`              | [ImageMagick][] version    |
+| `IMAGEMAGICK_VERSION`   | `7.1.0-30`              | [ImageMagick][] version    |
 | `LCOV_VERSION`          | `1.15`                  | [LCOV][] version           |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
-| `LUAROCKS_VERSION`      | `3.8.0`                 | [LuaRocks][] version       |
+
+### Alpine
+
+| Name               | Value   | Description          |
+| ------------------ | ------- | -------------------- |
+| `LUAROCKS_VERSION` | `3.8.0` | [LuaRocks][] version |
 
 ### Debian
 
@@ -47,7 +53,8 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | Path to `scml`         |
 | `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
 | `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
-| `STYLUA_VERSION`            | `0.12.2`                                 | [StyLua][] version     |
+| `LUAROCKS_VERSION`          | `3.9.0`                                  | [LuaRocks][] version   |
+| `STYLUA_VERSION`            | `0.13.1`                                 | [StyLua][] version     |
 
 ## Tools
 
