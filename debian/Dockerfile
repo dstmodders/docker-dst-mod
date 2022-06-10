@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DS_MODS="/opt/dont_starve/mods/"
 ENV DST_MODS="${DS_MODS}"
-ENV LCOV_VERSION="1.15"
+ENV LCOV_VERSION="1.16"
 ENV LUAROCKS_VERSION="3.9.0"
 ENV LUA_VERSION="5.1.5"
 ENV STYLUA_VERSION="0.13.1"
@@ -93,13 +93,13 @@ RUN wget -q https://deb.nodesource.com/setup_16.x \
   && chmod +x setup_16.x \
   && ./setup_16.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='16.14.2-deb-1nodesource1' \
-  && npm install -g npm@8.7.0 \
+    nodejs='16.15.1-deb-1nodesource1' \
+  && npm install -g npm@8.12.1 \
   # Yarn + packages
-  && npm install -g yarn@1.22.18 \
+  && npm install -g yarn@1.22.19 \
   && yarn global add \
-    prettier@2.6.2 \
-    @prettier/plugin-xml@2.1.0 \
+    prettier@2.7.0 \
+    @prettier/plugin-xml@2.2.0 \
   # clean
   && apt-get clean \
   && apt-get autoremove -y \
