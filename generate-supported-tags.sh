@@ -6,8 +6,6 @@ DISTS=('debian' 'alpine')
 URL='https://github.com/dstmodders/docker-dst-mod'
 VERSIONS=()
 
-cd "${BASE_DIR}" || exit 1
-
 mapfile -t VERSIONS < <(jq -r 'keys[]' ./versions.json)
 IFS=$'\n' VERSIONS=($(sort -rV <<< "${VERSIONS[*]}")); unset IFS
 
@@ -40,6 +38,8 @@ function print_url() {
   local url="[$tags](${URL}/blob/${commit}/${dist}/Dockerfile)"
   echo "- ${url}"
 }
+
+cd "${BASE_DIR}" || exit 1
 
 printf "## Supported tags and respective \`Dockerfile\` links\n\n"
 
