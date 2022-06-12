@@ -34,8 +34,8 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools][] version         |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.0-30`              | [ImageMagick][] version    |
-| `LCOV_VERSION`          | `1.15`                  | [LCOV][] version           |
+| `IMAGEMAGICK_VERSION`   | `7.1.0-37`              | [ImageMagick][] version    |
+| `LCOV_VERSION`          | `1.16`                  | [LCOV][] version           |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
 
 ### Alpine
