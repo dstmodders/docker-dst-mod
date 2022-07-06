@@ -61,7 +61,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
-      - name: Docker meta for an Alpine image
+      - name: Prepare Docker meta for an Alpine image
         id: alpine-meta
         uses: docker/metadata-action@v4
         with:
@@ -85,7 +85,7 @@ jobs:
           build-args: DS_KTOOLS_VERSION=${{ env.DS_KTOOLS_VERSION }}
           tags: ${{ steps.alpine-meta.outputs.tags }}
           labels: ${{ steps.alpine-meta.outputs.labels }}
-      - name: Docker meta for a Debian image
+      - name: Prepare Docker meta for a Debian image
         id: debian-meta
         uses: docker/metadata-action@v4
         with:
