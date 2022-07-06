@@ -17,11 +17,11 @@ RUN deluser --remove-home ktools \
   && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
   && apk add --no-cache \
     ca-certificates='20211220-r0' \
-    curl='7.83.1-r1' \
+    curl='7.83.1-r2' \
     g++='11.2.1_git20220219-r2' \
     make='4.3-r0' \
     nodejs='16.15.0-r1' \
-    openssl='1.1.1o-r0' \
+    openssl='1.1.1q-r0' \
     readline-dev='8.1.2-r0' \
     rsync='3.2.4-r0' \
     yarn='1.22.19-r0' \
@@ -67,7 +67,7 @@ RUN luarocks install busted '2.0.0-1' \
 
 # hadolint ignore=DL3059
 RUN yarn global add \
-  prettier@2.7.0 \
+  prettier@2.7.1 \
   @prettier/plugin-xml@2.2.0
 
 WORKDIR ${DST_MODS}
