@@ -7,8 +7,8 @@
 
 ## Supported tags and respective `Dockerfile` links
 
-- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/d0567e6fc0bda40c6ce1c220a8d065e52ea06a6a/debian/Dockerfile)
-- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/d0567e6fc0bda40c6ce1c220a8d065e52ea06a6a/alpine/Dockerfile)
+- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/03cf4dfa30962304591b47b53f1f90105b2fc293/debian/Dockerfile)
+- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/03cf4dfa30962304591b47b53f1f90105b2fc293/alpine/Dockerfile)
 
 ## Overview
 
@@ -34,7 +34,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools][] version         |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.0-37`              | [ImageMagick][] version    |
+| `IMAGEMAGICK_VERSION`   | `7.1.0-40`              | [ImageMagick][] version    |
 | `LCOV_VERSION`          | `1.16`                  | [LCOV][] version           |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
 
@@ -53,7 +53,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | Path to `scml`         |
 | `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
 | `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
-| `LUAROCKS_VERSION`          | `3.9.0`                                  | [LuaRocks][] version   |
+| `LUAROCKS_VERSION`          | `3.9.1`                                  | [LuaRocks][] version   |
 | `STYLUA_VERSION`            | `0.13.1`                                 | [StyLua][] version     |
 
 ## Tools
