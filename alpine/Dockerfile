@@ -20,15 +20,15 @@ RUN deluser --remove-home ktools \
     curl='7.83.1-r2' \
     g++='11.2.1_git20220219-r2' \
     make='4.3-r0' \
-    nodejs='16.15.0-r1' \
+    nodejs='16.16.0-r0' \
     openssl='1.1.1q-r0' \
     readline-dev='8.1.2-r0' \
-    rsync='3.2.4-r0' \
+    rsync='3.2.4-r1' \
     yarn='1.22.19-r0' \
     zip='3.0-r9' \
   && apk add --no-cache --virtual .build-deps \
     bash='5.1.16-r2' \
-    git='2.36.1-r0' \
+    git='2.36.2-r0' \
     perl='5.34.1-r0' \
   # Lua
   && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
