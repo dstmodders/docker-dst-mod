@@ -34,7 +34,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools][] version         |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.0-40`              | [ImageMagick][] version    |
+| `IMAGEMAGICK_VERSION`   | `7.1.0-43`              | [ImageMagick][] version    |
 | `LCOV_VERSION`          | `1.16`                  | [LCOV][] version           |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
 
@@ -54,7 +54,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
 | `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
 | `LUAROCKS_VERSION`          | `3.9.1`                                  | [LuaRocks][] version   |
-| `STYLUA_VERSION`            | `0.13.1`                                 | [StyLua][] version     |
+| `STYLUA_VERSION`            | `0.14.0`                                 | [StyLua][] version     |
 
 ## Tools
 
