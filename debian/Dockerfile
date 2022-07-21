@@ -9,7 +9,7 @@ ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.16"
 ENV LUAROCKS_VERSION="3.9.1"
 ENV LUA_VERSION="5.1.5"
-ENV STYLUA_VERSION="0.13.1"
+ENV STYLUA_VERSION="0.14.0"
 
 WORKDIR /tmp/
 # hadolint ignore=DL3003
@@ -29,7 +29,7 @@ RUN userdel -r klei-tools \
     curl='7.74.0-1.3+deb11u1' \
     git='1:2.30.2-1' \
     libreadline-dev='8.1-1' \
-    openssh-client='1:8.4p1-5' \
+    openssh-client='1:8.4p1-5+deb11u1' \
     pkg-config='0.29.2-1' \
     premake4='4.3+repack1-2+b1' \
     rsync='3.2.3-4+deb11u1' \
@@ -93,8 +93,8 @@ RUN wget -q https://deb.nodesource.com/setup_16.x \
   && chmod +x setup_16.x \
   && ./setup_16.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='16.15.1-deb-1nodesource1' \
-  && npm install --location=global npm@8.13.2 \
+    nodejs='16.16.0-deb-1nodesource1' \
+  && npm install --location=global npm@8.15.0 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.19 \
   && yarn global add \
