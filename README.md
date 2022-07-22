@@ -7,8 +7,8 @@
 
 ## Supported tags and respective `Dockerfile` links
 
-- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/e79ad37a31fc429d42e641864c3ecf590e03ba3b/debian/Dockerfile)
-- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/e79ad37a31fc429d42e641864c3ecf590e03ba3b/alpine/Dockerfile)
+- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/77bdf06f718ffc2cb31e3b0e48165c05b1e3efd8/debian/Dockerfile)
+- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/77bdf06f718ffc2cb31e3b0e48165c05b1e3efd8/alpine/Dockerfile)
 
 ## Overview
 
@@ -54,7 +54,7 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
 | `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
 | `LUAROCKS_VERSION`          | `3.9.1`                                  | [LuaRocks][] version   |
-| `STYLUA_VERSION`            | `0.14.0`                                 | [StyLua][] version     |
+| `STYLUA_VERSION`            | `0.14.1`                                 | [StyLua][] version     |
 
 ## Tools
 
