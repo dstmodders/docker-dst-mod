@@ -16,19 +16,19 @@ RUN deluser --remove-home ktools \
   && addgroup -g 1000 dst-mod \
   && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
   && apk add --no-cache \
-    ca-certificates='20211220-r0' \
-    curl='7.83.1-r2' \
+    ca-certificates='20220614-r0' \
+    curl='7.83.1-r4' \
     g++='11.2.1_git20220219-r2' \
     make='4.3-r0' \
-    nodejs='16.16.0-r0' \
-    openssl='1.1.1q-r0' \
+    nodejs='16.17.1-r0' \
+    openssl='1.1.1s-r0' \
     readline-dev='8.1.2-r0' \
-    rsync='3.2.4-r1' \
+    rsync='3.2.7-r0' \
     yarn='1.22.19-r0' \
     zip='3.0-r9' \
   && apk add --no-cache --virtual .build-deps \
     bash='5.1.16-r2' \
-    git='2.36.2-r0' \
+    git='2.36.3-r0' \
     perl='5.34.1-r0' \
   # Lua
   && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
@@ -56,7 +56,7 @@ RUN deluser --remove-home ktools \
   && rm -Rf /tmp/*
 
 # hadolint ignore=DL3059
-RUN luarocks install busted '2.0.0-1' \
+RUN luarocks install busted '2.1.1-1' \
   && luarocks install cluacov '0.1.2-1' \
   && luarocks install ldoc '1.4.6-2' \
   && luarocks install luacheck '0.26.1-1' \
