@@ -7,9 +7,9 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 ENV DS_MODS="/opt/dont_starve/mods/"
 ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.16"
-ENV LUAROCKS_VERSION="3.9.1"
+ENV LUAROCKS_VERSION="3.9.2"
 ENV LUA_VERSION="5.1.5"
-ENV STYLUA_VERSION="0.15.2"
+ENV STYLUA_VERSION="0.15.3"
 
 WORKDIR /tmp/
 # hadolint ignore=DL3003
@@ -89,16 +89,16 @@ RUN luarocks install busted '2.1.1-1' \
     /root/.wget-hsts
 
 # hadolint ignore=DL3059
-RUN wget -q https://deb.nodesource.com/setup_16.x \
-  && chmod +x setup_16.x \
-  && ./setup_16.x \
+RUN wget -q https://deb.nodesource.com/setup_18.x \
+  && chmod +x setup_18.x \
+  && ./setup_18.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='16.18.1-deb-1nodesource1' \
-  && npm install --location=global npm@9.1.1 \
+    nodejs='18.12.1-deb-1nodesource1' \
+  && npm install --location=global npm@9.2.0 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.19 \
   && yarn global add \
-    prettier@2.7.1 \
+    prettier@2.8.1 \
     @prettier/plugin-xml@2.2.0 \
   # clean
   && apt-get clean \
