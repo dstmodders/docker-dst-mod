@@ -67,11 +67,11 @@ RUN userdel -r klei-tools \
   # clean \
   && apt-get clean \
   && apt-get autoremove -y \
-  && rm -Rf /var/lib/apt/lists/* \
   && rm -Rf \
     /root/.cache/ \
     /root/.wget-hsts \
     /tmp/* \
+    /var/lib/apt/lists/* \
     /var/log/alternatives.log \
     /var/log/apt/ \
     /var/log/dpkg.log
@@ -103,10 +103,10 @@ RUN wget -q https://deb.nodesource.com/setup_18.x \
   # clean
   && apt-get clean \
   && apt-get autoremove -y \
-  && rm -Rf /var/lib/apt/lists/* \
   && rm -Rf \
     /root/.wget-hsts \
     /tmp/* \
+    /var/lib/apt/lists/* \
     /var/log/alternatives.log \
     /var/log/apt/ \
     /var/log/dpkg.log
