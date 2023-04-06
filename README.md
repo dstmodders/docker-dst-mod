@@ -1,9 +1,9 @@
 # docker-dst-mod
 
-[![Alpine Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/alpine?label=alpine%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
-[![Debian Size](https://img.shields.io/docker/image-size/dstmodders/dst-mod/debian?label=debian%20size)](https://hub.docker.com/r/dstmodders/dst-mod)
-[![CI](https://img.shields.io/github/actions/workflow/status/dstmodders/docker-dst-mod/ci.yml?branch=main&label=ci)](https://github.com/dstmodders/docker-dst-mod/actions/workflows/ci.yml)
-[![Build](https://img.shields.io/github/actions/workflow/status/dstmodders/docker-dst-mod/build.yml?branch=main&label=build)](https://github.com/dstmodders/docker-dst-mod/actions/workflows/build.yml)
+[![Alpine Size]](https://hub.docker.com/r/dstmodders/dst-mod)
+[![Debian Size]](https://hub.docker.com/r/dstmodders/dst-mod)
+[![CI]](https://github.com/dstmodders/docker-dst-mod/actions/workflows/ci.yml)
+[![Build]](https://github.com/dstmodders/docker-dst-mod/actions/workflows/build.yml)
 
 ## Supported tags and respective `Dockerfile` links
 
@@ -12,10 +12,10 @@
 
 ## Overview
 
-[Docker][] images for modding environment of Klei Entertainment's game
-[Don't Starve Together][] to dive right into the mods' development without
-bothering with building, installing and configuring all the tools yourself.
-Especially comes in handy when working on Linux and/or macOS.
+[Docker] images for modding environment of Klei Entertainment's game [Don't
+Starve Together] to dive right into the mods' development without bothering with
+building, installing and configuring all the tools yourself. Especially comes in
+handy when working on Linux and/or macOS.
 
 - [Environment variables](#environment-variables)
 - [Tools](#tools)
@@ -29,20 +29,20 @@ Especially comes in handy when working on Linux and/or macOS.
 
 | Name                    | Value                   | Description                |
 | ----------------------- | ----------------------- | -------------------------- |
-| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane`  | Path to [ktools][] `krane` |
-| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech`  | Path to [ktools][] `ktech` |
-| `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools][] version         |
+| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane`  | Path to [ktools] `krane`   |
+| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech`  | Path to [ktools] `ktech`   |
+| `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools] version           |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
 | `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.0-55`              | [ImageMagick][] version    |
-| `LCOV_VERSION`          | `1.16`                  | [LCOV][] version           |
-| `LUA_VERSION`           | `5.1.5`                 | [Lua][] version            |
+| `IMAGEMAGICK_VERSION`   | `7.1.0-55`              | [ImageMagick] version      |
+| `LCOV_VERSION`          | `1.16`                  | [LCOV] version             |
+| `LUA_VERSION`           | `5.1.5`                 | [Lua] version              |
 
 ### Alpine
 
-| Name               | Value   | Description          |
-| ------------------ | ------- | -------------------- |
-| `LUAROCKS_VERSION` | `3.8.0` | [LuaRocks][] version |
+| Name               | Value   | Description        |
+| ------------------ | ------- | ------------------ |
+| `LUAROCKS_VERSION` | `3.8.0` | [LuaRocks] version |
 
 ### Debian
 
@@ -51,22 +51,22 @@ Especially comes in handy when working on Linux and/or macOS.
 | `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/klei-tools/mod_tools/autocompiler` | Path to `autocompiler` |
 | `DS_MOD_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | Path to `png`          |
 | `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | Path to `scml`         |
-| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools][] version |
-| `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools][] |
-| `LUAROCKS_VERSION`          | `3.9.2`                                  | [LuaRocks][] version   |
-| `STYLUA_VERSION`            | `0.15.3`                                 | [StyLua][] version     |
+| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools] version   |
+| `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools]   |
+| `LUAROCKS_VERSION`          | `3.9.2`                                  | [LuaRocks] version     |
+| `STYLUA_VERSION`            | `0.15.3`                                 | [StyLua] version       |
 
 ## Tools
 
 > Since the game engine bundles [Lua] interpreter v5.1, the images bundle v5.1.5
 > instead of the latest one.
 
-|                      | Alpine                                                                          | Debian                                                                                                                                    |
-| -------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Packages             | [curl][]<br>[GNU Make][]<br>[GNU Wget][]<br>[rsync][]<br>[UnZip][]<br>[Zip][]   | [curl][]<br>[Git][]<br>[GNU Make][]<br>[GNU Wget][]<br>[bash-completion][]<br>[OpenSSH][]<br>[rsync][]<br>[UnZip][]<br>[Vim][]<br>[Zip][] |
-| [Lua] + [LuaRocks][] | [Busted][]<br>[CLuaCov][]<br>[LCOV][]<br>[LDoc][]<br>[Luacheck][]<br>[LuaCov][] | [Busted][]<br>[CLuaCov][]<br>[LCOV][]<br>[LDoc][]<br>[Luacheck][]<br>[LuaCov][]                                                           |
-| [NodeJS][]           | [Prettier][]<br>[yarn][]                                                        | [Prettier][]<br>[yarn][]                                                                                                                  |
-| Other                | [ktools][]                                                                      | [klei-tools][]<br>[ktools][]<br>[StyLua][]                                                                                                |
+|                    | Alpine                                                              | Debian                                                                                                                |
+| ------------------ | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| Packages           | [curl]<br>[GNU Make]<br>[GNU Wget]<br>[rsync]<br>[UnZip]<br>[Zip]   | [curl]<br>[Git]<br>[GNU Make]<br>[GNU Wget]<br>[bash-completion]<br>[OpenSSH]<br>[rsync]<br>[UnZip]<br>[Vim]<br>[Zip] |
+| [Lua] + [LuaRocks] | [Busted]<br>[CLuaCov]<br>[LCOV]<br>[LDoc]<br>[Luacheck]<br>[LuaCov] | [Busted]<br>[CLuaCov]<br>[LCOV]<br>[LDoc]<br>[Luacheck]<br>[LuaCov]                                                   |
+| [NodeJS]           | [Prettier]<br>[yarn]                                                | [Prettier]<br>[yarn]                                                                                                  |
+| Other              | [ktools]                                                            | [klei-tools]<br>[ktools]<br>[StyLua]                                                                                  |
 
 ## Usage
 
@@ -74,7 +74,7 @@ Especially comes in handy when working on Linux and/or macOS.
 $ docker pull dstmodders/dst-mod
 ```
 
-See [tags][] for a list of all available versions.
+See [tags] for a list of all available versions.
 
 ### Interactive
 
@@ -152,10 +152,14 @@ PS C:\> $basename = (Get-Item "${PWD}").Basename; docker run --rm -itu dst-mod `
 
 Released under the [MIT License](https://opensource.org/licenses/MIT).
 
+[alpine size]: https://img.shields.io/docker/image-size/dstmodders/dst-mod/alpine?label=alpine%20size&logo=docker
 [bash-completion]: https://github.com/scop/bash-completion
+[build]: https://img.shields.io/github/actions/workflow/status/dstmodders/docker-dst-mod/build.yml?branch=main&label=build&logo=github
 [busted]: https://olivinelabs.com/busted/
+[ci]: https://img.shields.io/github/actions/workflow/status/dstmodders/docker-dst-mod/ci.yml?branch=main&label=ci&logo=github
 [cluacov]: https://github.com/mpeterv/cluacov
 [curl]: https://curl.haxx.se/
+[debian size]: https://img.shields.io/docker/image-size/dstmodders/dst-mod/debian?label=debian%20size&logo=docker
 [docker]: https://www.docker.com/
 [don't starve together]: https://www.klei.com/games/dont-starve-together
 [git]: https://git-scm.com/
