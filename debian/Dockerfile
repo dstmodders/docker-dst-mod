@@ -9,7 +9,7 @@ ENV DST_MODS="${DS_MODS}"
 ENV LCOV_VERSION="1.16"
 ENV LUAROCKS_VERSION="3.9.2"
 ENV LUA_VERSION="5.1.5"
-ENV STYLUA_VERSION="0.15.3"
+ENV STYLUA_VERSION="0.17.1"
 
 WORKDIR /tmp/
 # hadolint ignore=DL3003
@@ -26,7 +26,7 @@ RUN userdel -r klei-tools \
     bash-completion='1:2.11-2' \
     build-essential='12.9' \
     ca-certificates='20210119' \
-    curl='7.74.0-1.3+deb11u3' \
+    curl='7.74.0-1.3+deb11u7' \
     git='1:2.30.2-1' \
     libreadline-dev='8.1-1' \
     openssh-client='1:8.4p1-5+deb11u1' \
@@ -52,7 +52,7 @@ RUN userdel -r klei-tools \
   && make \
   && make install \
   && cd /tmp/ \
-  # LCOV \
+  # LCOV
   && wget -q "https://github.com/linux-test-project/lcov/archive/refs/tags/v${LCOV_VERSION}.zip" \
   && unzip "./v${LCOV_VERSION}.zip" \
   && cd "./lcov-${LCOV_VERSION}/" \
@@ -77,10 +77,10 @@ RUN userdel -r klei-tools \
     /var/log/dpkg.log
 
 # hadolint ignore=DL3059
-RUN luarocks install busted '2.1.1-1' \
+RUN luarocks install busted '2.1.2-3' \
   && luarocks install cluacov '0.1.2-1' \
   && luarocks install ldoc '1.4.6-2' \
-  && luarocks install luacheck '0.26.1-1' \
+  && luarocks install luacheck '1.1.0-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
@@ -93,12 +93,12 @@ RUN wget -q https://deb.nodesource.com/setup_18.x \
   && chmod +x setup_18.x \
   && ./setup_18.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='18.12.1-deb-1nodesource1' \
-  && npm install --location=global npm@9.2.0 \
+    nodejs='18.15.0-deb-1nodesource1' \
+  && npm install --location=global npm@9.6.4 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.19 \
   && yarn global add \
-    prettier@2.8.1 \
+    prettier@2.8.7 \
     @prettier/plugin-xml@2.2.0 \
   # clean
   && apt-get clean \
