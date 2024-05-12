@@ -17,106 +17,27 @@ Starve Together] to dive right into the mods' development without bothering with
 building, installing and configuring all the tools yourself. Especially comes in
 handy when working on Linux and/or macOS.
 
-- [Environment variables](#environment-variables)
-- [Tools](#tools)
 - [Usage](#usage)
-  - [Linux & macOS](#linux--macos)
-  - [Windows](#windows)
-
-## Environment variables
-
-### Alpine & Debian
-
-| Name                    | Value                   | Description                |
-| ----------------------- | ----------------------- | -------------------------- |
-| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane`  | Path to [ktools] `krane`   |
-| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech`  | Path to [ktools] `ktech`   |
-| `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools] version           |
-| `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Path to the mods directory |
-| `DS` or `DST`           | `/opt/dont_starve`      | Path to the game directory |
-| `IMAGEMAGICK_VERSION`   | `7.1.1-6`               | [ImageMagick] version      |
-| `LCOV_VERSION`          | `1.16`                  | [LCOV] version             |
-| `LUA_VERSION`           | `5.1.5`                 | [Lua] version              |
-
-### Alpine
-
-| Name               | Value   | Description        |
-| ------------------ | ------- | ------------------ |
-| `LUAROCKS_VERSION` | `3.8.0` | [LuaRocks] version |
-
-### Debian
-
-| Name                        | Value                                    | Description            |
-| --------------------------- | ---------------------------------------- | ---------------------- |
-| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/klei-tools/mod_tools/autocompiler` | Path to `autocompiler` |
-| `DS_MOD_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | Path to `png`          |
-| `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | Path to `scml`         |
-| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools] version   |
-| `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | Path to [klei-tools]   |
-| `LUAROCKS_VERSION`          | `3.9.2`                                  | [LuaRocks] version     |
-| `STYLUA_VERSION`            | `0.17.1`                                 | [StyLua] version       |
-
-## Tools
-
-> Since the game engine bundles [Lua] interpreter v5.1, the images bundle v5.1.5
-> instead of the latest one.
-
-|                    | Alpine                                                              | Debian                                                                                                                |
-| ------------------ | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| Packages           | [curl]<br>[GNU Make]<br>[GNU Wget]<br>[rsync]<br>[UnZip]<br>[Zip]   | [curl]<br>[Git]<br>[GNU Make]<br>[GNU Wget]<br>[bash-completion]<br>[OpenSSH]<br>[rsync]<br>[UnZip]<br>[Vim]<br>[Zip] |
-| [Lua] + [LuaRocks] | [Busted]<br>[CLuaCov]<br>[LCOV]<br>[LDoc]<br>[Luacheck]<br>[LuaCov] | [Busted]<br>[CLuaCov]<br>[LCOV]<br>[LDoc]<br>[Luacheck]<br>[LuaCov]                                                   |
-| [NodeJS]           | [Prettier]<br>[yarn]                                                | [Prettier]<br>[yarn]                                                                                                  |
-| Other              | [ktools]                                                            | [klei-tools]<br>[ktools]<br>[StyLua]                                                                                  |
+- [Supported tools](#supported-tools)
+- [Supported environment variables](#supported-environment-variables)
+- [Supported build arguments](#supported-build-arguments)
+- [Supported architectures](#supported-architectures)
+- [Build](#build)
 
 ## Usage
 
 ```shell
-$ docker pull dstmodders/dst-mod
+$ docker pull dstmodders/dst-mod:latest
+# or
+$ docker pull ghcr.io/dstmodders/dst-mod:latest
 ```
 
 See [tags] for a list of all available versions.
 
-### Interactive
+In the examples below, the current working directory will be mounted to the
+container as your mod directory.
 
-```shell
-$ docker run --rm --user='dst-mod' --interactive --tty \
-    --mount src='/path/to/your/mod/',target='/opt/dont_starve/mods/<your mod name>/',type=bind \
-    --workdir='/opt/dont_starve/mods/<your mod name>/' \
-    dstmodders/dst-mod \
-    /bin/bash
-```
-
-The same, but shorter:
-
-```shell
-$ docker run --rm -itu dst-mod \
-    -v '/path/to/your/mod/:/opt/dont_starve/mods/<your mod name>/' \
-    -w '/opt/dont_starve/mods/<your mod name>/' \
-    dstmodders/dst-mod \
-    /bin/bash
-```
-
-### Non-interactive
-
-```shell
-$ docker run --rm --user='dst-mod' \
-    --mount src='/path/to/your/mod/',target='/opt/dont_starve/mods/<your mod name>/',type=bind \
-    --workdir='/opt/dont_starve/mods/<your mod name>/' \
-    dstmodders/dst-mod
-```
-
-The same, but shorter:
-
-```shell
-$ docker run --rm -u dst-mod \
-    -v '/path/to/your/mod/:/opt/dont_starve/mods/<your mod name>/' \
-    -w '/opt/dont_starve/mods/<your mod name>/' \
-    dstmodders/dst-mod
-```
-
-### Linux & macOS
-
-#### Shell/Bash
+#### Shell/Bash (Linux & macOS)
 
 ```shell
 $ docker run --rm -itu dst-mod \
@@ -126,26 +47,100 @@ $ docker run --rm -itu dst-mod \
     /bin/bash
 ```
 
-### Windows
-
-#### CMD
+#### CMD (Windows)
 
 ```cmd
-C:\> docker run --rm -itu dst-mod ^
-    -v "%CD%:/opt/dont_starve/mods/<your mod name>/" ^
-    -w "/opt/dont_starve/mods/<your mod name>/" ^
+> for %I in (.) do docker run --rm -itu dst-mod ^
+    -v "%CD%:/opt/dont_starve/mods/%~nxI" ^
+    -w "/opt/dont_starve/mods/%~nxI" ^
     dstmodders/dst-mod ^
     /bin/bash
 ```
 
-#### PowerShell
+#### PowerShell (Windows)
 
 ```powershell
-PS C:\> $basename = (Get-Item "${PWD}").Basename; docker run --rm -itu dst-mod `
-    -v "${PWD}:/opt/dont_starve/mods/${basename}/" `
-    -w "/opt/dont_starve/mods/${basename}" `
+PS:\> docker run --rm -itu dst-mod `
+    -v "${PWD}:/opt/dont_starve/mods/$((Get-Item "${PWD}").Basename)" `
+    -w "/opt/dont_starve/mods/$((Get-Item "${PWD}").Basename)" `
     dstmodders/dst-mod `
     /bin/bash
+```
+
+## Supported tools
+
+> [!NOTE]
+> Since the game engine bundles [Lua] interpreter v5.1, the images bundle v5.1.5
+> instead of the latest one.
+
+|                    | Alpine                                                                        | Debian                                                                                                                                  |
+| ------------------ | ----------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| Packages           | [curl]<br />[GNU Make]<br />[GNU Wget]<br />[rsync]<br />[UnZip]<br />[Zip]   | [curl]<br />[Git]<br />[GNU Make]<br />[GNU Wget]<br />[bash-completion]<br />[OpenSSH]<br />[rsync]<br />[UnZip]<br />[Vim]<br />[Zip] |
+| [Lua] + [LuaRocks] | [Busted]<br />[CLuaCov]<br />[LCOV]<br />[LDoc]<br />[Luacheck]<br />[LuaCov] | [Busted]<br />[CLuaCov]<br />[LCOV]<br />[LDoc]<br />[Luacheck]<br />[LuaCov]                                                           |
+| [NodeJS]           | [Prettier]<br />[yarn]                                                        | [Prettier]<br />[yarn]                                                                                                                  |
+| Other              | [ktools]                                                                      | [klei-tools]<br />[ktools]<br />[StyLua]                                                                                                |
+
+## Supported environment variables
+
+### General
+
+| Name                    | Value                   | Description           |
+| ----------------------- | ----------------------- | --------------------- |
+| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane`  | [ktools/krane] path   |
+| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech`  | [ktools/ktech] path   |
+| `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools] version      |
+| `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Mods directory path   |
+| `DS` or `DST`           | `/opt/dont_starve`      | Game directory path   |
+| `IMAGEMAGICK_VERSION`   | `7.1.1-6`               | [ImageMagick] version |
+| `LCOV_VERSION`          | `1.16`                  | [LCOV] version        |
+| `LUA_VERSION`           | `5.1.5`                 | [Lua] version         |
+
+### Alpine
+
+| Name               | Value   | Description        |
+| ------------------ | ------- | ------------------ |
+| `LUAROCKS_VERSION` | `3.8.0` | [LuaRocks] version |
+
+### Debian
+
+| Name                        | Value                                    | Description                    |
+| --------------------------- | ---------------------------------------- | ------------------------------ |
+| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/klei-tools/mod_tools/autocompiler` | [klei-tools/autocompiler] path |
+| `DS_MOD_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | [klei-tools/png] path          |
+| `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | [klei-tools/scml] path         |
+| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools] version           |
+| `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | [klei-tools] path              |
+| `LUAROCKS_VERSION`          | `3.9.2`                                  | [LuaRocks] version             |
+| `STYLUA_VERSION`            | `0.17.1`                                 | [StyLua] version               |
+
+## Supported build arguments
+
+| Name                    | Image    | Default | Description               |
+| ----------------------- | -------- | ------- | ------------------------- |
+| `DS_KLEI_TOOLS_VERSION` | `debian` | `1.0.0` | Sets [klei-tools] version |
+| `DS_KTOOLS_VERSION`     | `alpine` | `4.5.1` | Sets [ktools] version     |
+
+## Supported architectures
+
+| Image    | Architecture(s) |
+| -------- | --------------- |
+| `alpine` | `linux/amd64`   |
+| `debian` | `linux/amd64`   |
+
+## Build
+
+To build images locally:
+
+```shell
+$ docker build --tag='dstmodders/dst-mod:alpine' ./alpine/
+$ docker build --tag='dstmodders/dst-mod:debian' ./debian/
+```
+
+Respectively, to build multi-platform images using [buildx]:
+
+```shell
+$ docker buildx build --platform='linux/amd64' --tag='dstmodders/dst-mod:alpine' ./alpine/
+$ docker buildx build --platform='linux/amd64' --tag='dstmodders/dst-mod:debian' ./debian/
 ```
 
 ## License
@@ -161,14 +156,16 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [curl]: https://curl.haxx.se/
 [debian size]: https://img.shields.io/docker/image-size/dstmodders/dst-mod/debian?label=debian%20size&logo=docker
 [docker]: https://www.docker.com/
-[don't starve together]: https://www.klei.com/games/dont-starve-together
 [git]: https://git-scm.com/
 [gnu make]: https://www.gnu.org/software/make/
 [gnu wget]: https://www.gnu.org/software/wget/
 [imagemagick]: https://imagemagick.org/index.php
+[klei-tools/autocompiler]: https://github.com/dstmodders/klei-tools?tab=readme-ov-file#autocompiler
+[klei-tools/png]: https://github.com/dstmodders/klei-tools?tab=readme-ov-file#png
+[klei-tools/scml]: https://github.com/dstmodders/klei-tools?tab=readme-ov-file#scml
 [klei-tools]: https://github.com/dstmodders/klei-tools
-[krane]: https://github.com/dstmodders/ktools#krane
-[ktech]: https://github.com/dstmodders/ktools#ktech
+[ktools/krane]: https://github.com/dstmodders/ktools?tab=readme-ov-file#krane
+[ktools/ktech]: https://github.com/dstmodders/ktools?tab=readme-ov-file#ktech
 [ktools]: https://github.com/dstmodders/ktools
 [lcov]: http://ltp.sourceforge.net/coverage/lcov.php
 [ldoc]: https://stevedonovan.github.io/ldoc/
