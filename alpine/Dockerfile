@@ -66,8 +66,8 @@ RUN luarocks install busted '2.2.0-1' \
 
 # hadolint ignore=DL3059
 RUN yarn global add \
-  prettier@2.8.7 \
-  @prettier/plugin-xml@2.2.0
+  prettier@3.2.5 \
+  @prettier/plugin-xml@3.4.1
 
 USER dst-mod
 WORKDIR ${DST_MODS}
