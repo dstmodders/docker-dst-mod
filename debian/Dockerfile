@@ -14,14 +14,7 @@ ENV STYLUA_VERSION="0.17.1"
 USER root
 WORKDIR /tmp/
 # hadolint ignore=DL3003
-RUN userdel -r klei-tools \
-  && groupadd --gid 1000 dst-mod \
-  && useradd \
-    --uid 1000 \
-    --gid dst-mod \
-    --shell /bin/bash \
-    --create-home \
-    dst-mod \
+RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
     bash-completion='1:2.11-2' \

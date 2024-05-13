@@ -13,9 +13,7 @@ ENV LUA_VERSION="5.1.5"
 USER root
 WORKDIR /tmp/
 # hadolint ignore=DL3003
-RUN deluser --remove-home ktools \
-  && addgroup -g 1000 dst-mod \
-  && adduser -u 1000 -G dst-mod -s /bin/sh -D dst-mod \
+RUN sed -i 's/ktools/dst-mod/g' /etc/passwd /etc/group \
   && apk add --no-cache \
     ca-certificates='20220614-r4' \
     curl='7.88.1-r1' \
