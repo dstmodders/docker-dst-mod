@@ -92,7 +92,7 @@ PS:\> docker run --rm -it `
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Mods directory path   |
 | `DS` or `DST`           | `/opt/dont_starve`      | Game directory path   |
 | `IMAGEMAGICK_VERSION`   | `7.1.1-6`               | [ImageMagick] version |
-| `LCOV_VERSION`          | `1.16`                  | [LCOV] version        |
+| `LCOV_VERSION`          | `2.1`                   | [LCOV] version        |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua] version         |
 
 ### Alpine
