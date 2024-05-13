@@ -10,6 +10,7 @@ ENV LCOV_VERSION="1.16"
 ENV LUAROCKS_VERSION="3.8.0"
 ENV LUA_VERSION="5.1.5"
 
+USER root
 WORKDIR /tmp/
 # hadolint ignore=DL3003
 RUN deluser --remove-home ktools \
@@ -70,4 +71,5 @@ RUN yarn global add \
   prettier@2.8.7 \
   @prettier/plugin-xml@2.2.0
 
+USER dst-mod
 WORKDIR ${DST_MODS}

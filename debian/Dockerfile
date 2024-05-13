@@ -11,6 +11,7 @@ ENV LUAROCKS_VERSION="3.9.2"
 ENV LUA_VERSION="5.1.5"
 ENV STYLUA_VERSION="0.17.1"
 
+USER root
 WORKDIR /tmp/
 # hadolint ignore=DL3003
 RUN userdel -r klei-tools \
@@ -111,4 +112,5 @@ RUN wget -q https://deb.nodesource.com/setup_18.x \
     /var/log/apt/ \
     /var/log/dpkg.log
 
+USER dst-mod
 WORKDIR ${DST_MODS}

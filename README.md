@@ -40,7 +40,7 @@ container as your mod directory.
 #### Shell/Bash (Linux & macOS)
 
 ```shell
-$ docker run --rm -itu dst-mod \
+$ docker run --rm -it \
     -v "$(pwd):/opt/dont_starve/mods/$(basename "$(pwd)")" \
     -w "/opt/dont_starve/mods/$(basename "$(pwd)")" \
     dstmodders/dst-mod \
@@ -50,7 +50,7 @@ $ docker run --rm -itu dst-mod \
 #### CMD (Windows)
 
 ```cmd
-> for %I in (.) do docker run --rm -itu dst-mod ^
+> for %I in (.) do docker run --rm -it ^
     -v "%CD%:/opt/dont_starve/mods/%~nxI" ^
     -w "/opt/dont_starve/mods/%~nxI" ^
     dstmodders/dst-mod ^
@@ -60,7 +60,7 @@ $ docker run --rm -itu dst-mod \
 #### PowerShell (Windows)
 
 ```powershell
-PS:\> docker run --rm -itu dst-mod `
+PS:\> docker run --rm -it `
     -v "${PWD}:/opt/dont_starve/mods/$((Get-Item "${PWD}").Basename)" `
     -w "/opt/dont_starve/mods/$((Get-Item "${PWD}").Basename)" `
     dstmodders/dst-mod `
