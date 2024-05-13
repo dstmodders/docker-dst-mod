@@ -15,20 +15,20 @@ WORKDIR /tmp/
 # hadolint ignore=DL3003
 RUN sed -i 's/ktools/dst-mod/g' /etc/passwd /etc/group \
   && apk add --no-cache \
-    ca-certificates='20220614-r4' \
-    curl='7.88.1-r1' \
-    g++='12.2.1_git20220924-r4' \
-    make='4.3-r1' \
-    nodejs='18.14.2-r0' \
-    openssl='3.0.8-r3' \
-    readline-dev='8.2.0-r0' \
-    rsync='3.2.7-r0' \
+    ca-certificates='20240226-r0' \
+    curl='8.5.0-r0' \
+    g++='13.2.1_git20231014-r0' \
+    make='4.4.1-r2' \
+    nodejs='20.12.1-r0' \
+    openssl='3.1.4-r6' \
+    readline-dev='8.2.1-r2' \
+    rsync='3.2.7-r4' \
     yarn='1.22.19-r0' \
-    zip='3.0-r10' \
+    zip='3.0-r12' \
   && apk add --no-cache --virtual .build-deps \
-    bash='5.2.15-r0' \
-    git='2.38.4-r1' \
-    perl='5.36.0-r0' \
+    bash='5.2.21-r0' \
+    git='2.43.0-r0' \
+    perl='5.38.2-r0' \
   # Lua
   && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "./lua-${LUA_VERSION}.tar.gz" \
