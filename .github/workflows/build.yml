@@ -48,8 +48,8 @@ jobs:
           fields: |
             {STATUS}
             {REF}
-            klei-tools version: ${{ matrix.image.klei-tools }}
-            ktools version: ${{ matrix.image.ktools }}
+            klei-tools version: ${{ matrix.image.klei_tools_version }}
+            ktools version: ${{ matrix.image.ktools_version }}
           status: in-progress
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -82,7 +82,7 @@ jobs:
       - name: Build an Alpine image
         uses: docker/build-push-action@v3
         with:
-          build-args: DS_KTOOLS_VERSION=${{ matrix.image.ktools }}
+          build-args: DS_KTOOLS_VERSION=${{ matrix.image.ktools_version }}
           cache-from: type=registry,ref=${{ github.repository_owner }}/dst-mod:alpine
           cache-to: type=inline
           context: .
@@ -108,7 +108,7 @@ jobs:
       - name: Build a Debian image
         uses: docker/build-push-action@v4
         with:
-          build-args: DS_KLEI_TOOLS_VERSION=${{ matrix.image.klei-tools }}
+          build-args: DS_KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
           cache-from: type=registry,ref=${{ github.repository_owner }}/dst-mod:debian
           cache-to: type=inline
           context: .
@@ -125,7 +125,7 @@ jobs:
           fields: |
             {STATUS}
             {REF}
-            klei-tools version: ${{ matrix.image.klei-tools }}
-            ktools version: ${{ matrix.image.ktools }}
+            klei-tools version: ${{ matrix.image.klei_tools_version }}
+            ktools version: ${{ matrix.image.ktools_version }}
           status: ${{ job.status }}
           timestamp: ${{ steps.slack.outputs.slack-timestamp }}

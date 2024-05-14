@@ -1,7 +1,7 @@
 [
   {
-    "klei-tools": "1.0.0",
-    "ktools": "4.5.1",
+    "klei_tools_version": "1.0.0",
+    "ktools_version": "4.5.1",
     "latest": true,
     "root": "./"
   }
