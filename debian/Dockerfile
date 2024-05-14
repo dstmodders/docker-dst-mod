@@ -17,20 +17,20 @@ WORKDIR /tmp/
 RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
   && apt-get update \
   && apt-get install -y --no-install-recommends \
-    bash-completion='1:2.11-2' \
+    bash-completion='1:2.11-6' \
     build-essential='12.9' \
-    ca-certificates='20210119' \
-    curl='7.74.0-1.3+deb11u7' \
-    git='1:2.30.2-1' \
-    libreadline-dev='8.1-1' \
-    openssh-client='1:8.4p1-5+deb11u1' \
-    pkg-config='0.29.2-1' \
+    ca-certificates='20230311' \
+    curl='7.88.1-10+deb12u5' \
+    git='1:2.39.2-1.1' \
+    libreadline-dev='8.2-1.3' \
+    openssh-client='1:9.2p1-2+deb12u2' \
+    pkg-config='1.8.1-1' \
     premake4='4.3+repack1-2+b1' \
-    rsync='3.2.3-4+deb11u1' \
-    unzip='6.0-26+deb11u1' \
-    vim='2:8.2.2434-3+deb11u1' \
-    wget='1.21-1+deb11u1' \
-    zip='3.0-12' \
+    rsync='3.2.7-1' \
+    unzip='6.0-28' \
+    vim='2:9.0.1378-2' \
+    wget='1.21.3-1+b2' \
+    zip='3.0-13' \
   # Lua
   && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "./lua-${LUA_VERSION}.tar.gz" \
