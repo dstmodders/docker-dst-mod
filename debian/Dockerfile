@@ -90,7 +90,7 @@ RUN wget -q https://deb.nodesource.com/setup_20.x \
     nodejs='20.13.1-1nodesource1' \
   && npm install --location=global npm@10.5.2 \
   # Yarn + packages
-  && npm install --location=global yarn@1.22.19 \
+  && npm install --location=global yarn@1.22.22 \
   && yarn global add \
     prettier@2.8.7 \
     @prettier/plugin-xml@2.2.0 \
