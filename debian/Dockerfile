@@ -83,12 +83,12 @@ RUN luarocks install busted '2.1.2-3' \
     /root/.wget-hsts
 
 # hadolint ignore=DL3059
-RUN wget -q https://deb.nodesource.com/setup_18.x \
-  && chmod +x setup_18.x \
-  && ./setup_18.x \
+RUN wget -q https://deb.nodesource.com/setup_20.x \
+  && chmod +x setup_20.x \
+  && ./setup_20.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='18.15.0-deb-1nodesource1' \
-  && npm install --location=global npm@9.6.4 \
+    nodejs='20.13.1-1nodesource1' \
+  && npm install --location=global npm@10.5.2 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.19 \
   && yarn global add \
