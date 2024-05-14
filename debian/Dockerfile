@@ -71,10 +71,10 @@ RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
     /var/log/dpkg.log
 
 # hadolint ignore=DL3059
-RUN luarocks install busted '2.1.2-3' \
+RUN luarocks install busted '2.2.0-1' \
   && luarocks install cluacov '0.1.2-1' \
-  && luarocks install ldoc '1.4.6-2' \
-  && luarocks install luacheck '1.1.0-1' \
+  && luarocks install ldoc '1.5.0-1' \
+  && luarocks install luacheck '1.1.2-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
