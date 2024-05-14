@@ -6,7 +6,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 ENV DS_MODS="/opt/dont_starve/mods/"
 ENV DST_MODS="${DS_MODS}"
-ENV LCOV_VERSION="1.16"
+ENV LCOV_VERSION="2.1"
 ENV LUAROCKS_VERSION="3.9.2"
 ENV LUA_VERSION="5.1.5"
 ENV STYLUA_VERSION="0.17.1"
