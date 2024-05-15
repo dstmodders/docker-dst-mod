@@ -22,7 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         id: node
         with:
-          node-version: 16
+          node-version: 20.13.1
       - name: Send Slack notification
         uses: codedsolar/slack-action@v1
         if: ${{ github.event_name != 'pull_request' }}
@@ -34,6 +34,8 @@ jobs:
             Node.js: ${{ steps.node.outputs.node-version }}
             Prettier issues: Checking...
           status: in-progress
+      - name: Enable corepack
+        run: corepack enable
       - name: Install Prettier
         run: yarn global add prettier
       - name: Lint
