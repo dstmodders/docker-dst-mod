@@ -86,12 +86,12 @@ PS:\> docker run --rm -it `
 
 | Name                    | Value                   | Description           |
 | ----------------------- | ----------------------- | --------------------- |
-| `DS_KTOOLS_KRANE`       | `/usr/local/bin/krane`  | [ktools/krane] path   |
-| `DS_KTOOLS_KTECH`       | `/usr/local/bin/ktech`  | [ktools/ktech] path   |
-| `DS_KTOOLS_VERSION`     | `4.5.1`                 | [ktools] version      |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Mods directory path   |
 | `DS` or `DST`           | `/opt/dont_starve`      | Game directory path   |
-| `IMAGEMAGICK_VERSION`   | `7.1.1-6`               | [ImageMagick] version |
+| `IMAGEMAGICK_VERSION`   | `7.1.1-32`              | [ImageMagick] version |
+| `KTOOLS_KRANE`          | `/usr/local/bin/krane`  | [ktools/krane] path   |
+| `KTOOLS_KTECH`          | `/usr/local/bin/ktech`  | [ktools/ktech] path   |
+| `KTOOLS_VERSION`        | `4.5.1`                 | [ktools] version      |
 | `LCOV_VERSION`          | `2.1`                   | [LCOV] version        |
 | `LUA_VERSION`           | `5.1.5`                 | [Lua] version         |
 
@@ -103,15 +103,14 @@ PS:\> docker run --rm -it `
 
 ### Debian
 
-| Name                        | Value                                    | Description                    |
-| --------------------------- | ---------------------------------------- | ------------------------------ |
-| `DS_MOD_TOOLS_AUTOCOMPILER` | `/opt/klei-tools/mod_tools/autocompiler` | [klei-tools/autocompiler] path |
-| `DS_MOD_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | [klei-tools/png] path          |
-| `DS_MOD_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | [klei-tools/scml] path         |
-| `DS_MOD_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools] version           |
-| `DS_MOD_TOOLS`              | `/opt/klei-tools/mod_tools`              | [klei-tools] path              |
-| `LUAROCKS_VERSION`          | `3.9.2`                                  | [LuaRocks] version             |
-| `STYLUA_VERSION`            | `0.17.1`                                 | [StyLua] version               |
+| Name                      | Value                                    | Description                    |
+| ------------------------- | ---------------------------------------- | ------------------------------ |
+| `KLEI_TOOLS_AUTOCOMPILER` | `/opt/klei-tools/mod_tools/autocompiler` | [klei-tools/autocompiler] path |
+| `KLEI_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | [klei-tools/png] path          |
+| `KLEI_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | [klei-tools/scml] path         |
+| `KLEI_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools] version           |
+| `LUAROCKS_VERSION`        | `3.11.0`                                 | [LuaRocks] version             |
+| `STYLUA_VERSION`          | `0.20.0`                                 | [StyLua] version               |
 
 ## Supported build arguments
 
