@@ -114,10 +114,10 @@ PS:\> docker run --rm -it `
 
 ## Supported build arguments
 
-| Name                    | Image    | Default | Description               |
-| ----------------------- | -------- | ------- | ------------------------- |
-| `DS_KLEI_TOOLS_VERSION` | `debian` | `1.0.0` | Sets [klei-tools] version |
-| `DS_KTOOLS_VERSION`     | `alpine` | `4.5.1` | Sets [ktools] version     |
+| Name                 | Image    | Default | Description               |
+| -------------------- | -------- | ------- | ------------------------- |
+| `KLEI_TOOLS_VERSION` | `debian` | `1.0.0` | Sets [klei-tools] version |
+| `KTOOLS_VERSION`     | `alpine` | `4.5.1` | Sets [ktools] version     |
 
 ## Supported architectures
 

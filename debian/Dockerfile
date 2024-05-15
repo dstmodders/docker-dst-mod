@@ -1,6 +1,6 @@
-ARG DS_KLEI_TOOLS_VERSION="1.0.0"
+ARG KLEI_TOOLS_VERSION="1.0.0"
 
-FROM dstmodders/klei-tools:${DS_KLEI_TOOLS_VERSION}
+FROM dstmodders/klei-tools:${KLEI_TOOLS_VERSION}
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
