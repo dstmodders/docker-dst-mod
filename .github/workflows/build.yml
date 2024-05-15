@@ -8,6 +8,7 @@ on:
     paths:
       - 'alpine/**'
       - 'debian/**'
+      - .github/workflows/build.yml
       - versions.json
   workflow_dispatch:
 
