@@ -1,7 +1,7 @@
 ## Supported tags and respective `Dockerfile` links
 
-- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/b037f5cc591d41b332b54ca43d92c6d1c929973d/debian/Dockerfile)
-- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/b037f5cc591d41b332b54ca43d92c6d1c929973d/alpine/Dockerfile)
+- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/01a5ebf40b37937f85da52cb0921544e432bee82/debian/Dockerfile)
+- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/01a5ebf40b37937f85da52cb0921544e432bee82/alpine/Dockerfile)
 
 ## Overview
 
@@ -145,6 +145,7 @@ Released under the [MIT License](https://opensource.org/licenses/MIT).
 [cluacov]: https://github.com/mpeterv/cluacov
 [curl]: https://curl.haxx.se/
 [docker]: https://www.docker.com/
+[don't starve together]: https://www.klei.com/games/dont-starve-together
 [git]: https://git-scm.com/
 [gnu make]: https://www.gnu.org/software/make/
 [gnu wget]: https://www.gnu.org/software/wget/
