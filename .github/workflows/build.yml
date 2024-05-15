@@ -49,6 +49,7 @@ jobs:
           fields: |
             {STATUS}
             {REF}
+            ImageMagick version: ${{ matrix.image.imagemagick_version }}
             klei-tools version: ${{ matrix.image.klei_tools_version }}
             ktools version: ${{ matrix.image.ktools_version }}
           status: in-progress
@@ -81,7 +82,9 @@ jobs:
       - name: Build an Alpine image
         uses: docker/build-push-action@v5
         with:
-          build-args: KTOOLS_VERSION=${{ matrix.image.ktools_version }}
+          build-args: |
+            IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
+            KTOOLS_VERSION=${{ matrix.image.ktools_version }}
           cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:alpine
           cache-to: type=inline
           context: .
@@ -121,6 +124,7 @@ jobs:
           fields: |
             {STATUS}
             {REF}
+            ImageMagick version: ${{ matrix.image.imagemagick_version }}
             klei-tools version: ${{ matrix.image.klei_tools_version }}
             ktools version: ${{ matrix.image.ktools_version }}
           status: ${{ job.status }}

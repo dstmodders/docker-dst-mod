@@ -1,6 +1,7 @@
+ARG IMAGEMAGICK_VERSION="7.1.1-32"
 ARG KTOOLS_VERSION="4.5.1"
 
-FROM dstmodders/ktools:${KTOOLS_VERSION}-alpine
+FROM dstmodders/ktools:${KTOOLS_VERSION}-imagemagick-${IMAGEMAGICK_VERSION}-alpine
 
 SHELL ["/bin/ash", "-eo", "pipefail", "-c"]
 
