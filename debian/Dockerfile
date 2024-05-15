@@ -1,6 +1,7 @@
 ARG KLEI_TOOLS_VERSION="1.0.0"
+ARG KTOOLS_VERSION="4.5.1"
 
-FROM dstmodders/klei-tools:${KLEI_TOOLS_VERSION}
+FROM dstmodders/klei-tools:${KLEI_TOOLS_VERSION}-ktools-${KTOOLS_VERSION}-debian
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 

@@ -107,7 +107,9 @@ jobs:
       - name: Build a Debian image
         uses: docker/build-push-action@v5
         with:
-          build-args: KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
+          build-args: |
+            KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
+            KTOOLS_VERSION=${{ matrix.image.ktools_version }}
           cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:debian
           cache-to: type=inline
           context: .
