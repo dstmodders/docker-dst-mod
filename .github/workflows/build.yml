@@ -41,6 +41,19 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v4
+      - name: Set general outputs
+        id: general
+        run: |
+          dockerfiles_version='${{ hashFiles('**/Dockerfile') }}'
+          dockerfiles_version_short="$(echo "$dockerfiles_version" | cut -c 1-7)"
+
+          echo "Dockerfiles version: $dockerfiles_version"
+          echo "Dockerfiles version (short): $dockerfiles_version_short"
+
+          {
+            echo "dockerfiles-version=$dockerfiles_version"
+            echo "dockerfiles-version-short=$dockerfiles_version_short"
+          } >> "$GITHUB_OUTPUT"
       - name: Send Slack notification
         uses: codedsolar/slack-action@v1
         if: ${{ github.event_name != 'pull_request' }}
@@ -79,14 +92,22 @@ jobs:
             ghcr.io/${{ env.DOCKERHUB_REPOSITORY }}
           labels: maintainer=victor@popkov.me
           tags: type=raw,value=alpine
+      - name: Cache Docker layers (Alpine)
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-alpine-cache
+          key: ${{ format('alpine-{0}', steps.general.outputs.dockerfiles-version-short) }}
+          restore-keys: |
+            alpine-${{ steps.general.outputs.dockerfiles-version-short }}
+            alpine-
       - name: Build an Alpine image
         uses: docker/build-push-action@v5
         with:
           build-args: |
             IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
             KTOOLS_VERSION=${{ matrix.image.ktools_version }}
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:alpine
-          cache-to: type=inline
+          cache-from: type=local,src=/tmp/.buildx-alpine-cache
+          cache-to: type=local,dest=/tmp/.buildx-alpine-cache-new,mode=max
           context: .
           file: ${{ matrix.image.root }}/alpine/Dockerfile
           labels: ${{ steps.alpine-meta.outputs.labels }}
@@ -104,14 +125,22 @@ jobs:
             ghcr.io/${{ env.DOCKERHUB_REPOSITORY }}
           labels: maintainer=victor@popkov.me
           tags: type=raw,value=debian
+      - name: Cache Docker layers (Debian)
+        uses: actions/cache@v4
+        with:
+          path: /tmp/.buildx-debian-cache
+          key: ${{ format('debian-{0}', steps.general.outputs.dockerfiles-version-short) }}
+          restore-keys: |
+            debian-${{ steps.general.outputs.dockerfiles-version-short }}
+            debian-
       - name: Build a Debian image
         uses: docker/build-push-action@v5
         with:
           build-args: |
             KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
             KTOOLS_VERSION=${{ matrix.image.ktools_version }}
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:debian
-          cache-to: type=inline
+          cache-from: type=local,src=/tmp/.buildx-debian-cache
+          cache-to: type=local,dest=/tmp/.buildx-debian-cache-new,mode=max
           context: .
           file: ${{ matrix.image.root }}/debian/Dockerfile
           labels: ${{ steps.debian-meta.outputs.labels }}
@@ -119,6 +148,11 @@ jobs:
           pull: true
           push: ${{ !env.ACT && github.ref == 'refs/heads/main' }}
           tags: ${{ steps.debian-meta.outputs.tags }}
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-alpine-cache /tmp/.buildx-debian-cache
+          mv /tmp/.buildx-alpine-cache-new /tmp/.buildx-alpine-cache
+          mv /tmp/.buildx-debian-cache-new /tmp/.buildx-debian-cache
       - name: Update Slack notification
         uses: codedsolar/slack-action@v1
         if: ${{ github.event_name != 'pull_request' && always() }}
