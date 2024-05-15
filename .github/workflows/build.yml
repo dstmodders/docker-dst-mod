@@ -109,7 +109,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-alpine-cache
           cache-to: type=local,dest=/tmp/.buildx-alpine-cache-new,mode=max
           context: .
-          file: ${{ matrix.image.root }}/alpine/Dockerfile
+          file: ./alpine/Dockerfile
           labels: ${{ steps.alpine-meta.outputs.labels }}
           platforms: linux/amd64
           pull: true
@@ -142,7 +142,7 @@ jobs:
           cache-from: type=local,src=/tmp/.buildx-debian-cache
           cache-to: type=local,dest=/tmp/.buildx-debian-cache-new,mode=max
           context: .
-          file: ${{ matrix.image.root }}/debian/Dockerfile
+          file: ./debian/Dockerfile
           labels: ${{ steps.debian-meta.outputs.labels }}
           platforms: linux/amd64
           pull: true
