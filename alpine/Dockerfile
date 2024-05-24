@@ -21,14 +21,14 @@ RUN sed -i 's/ktools/dst-mod/g' /etc/passwd /etc/group \
     g++='13.2.1_git20231014-r0' \
     make='4.4.1-r2' \
     nodejs='20.12.1-r0' \
-    openssl='3.1.4-r6' \
+    openssl='3.1.5-r0' \
     readline-dev='8.2.1-r2' \
     rsync='3.2.7-r4' \
     yarn='1.22.19-r0' \
     zip='3.0-r12' \
   && apk add --no-cache --virtual .build-deps \
     bash='5.2.21-r0' \
-    git='2.43.0-r0' \
+    git='2.43.4-r0' \
     perl='5.38.2-r0' \
   # Lua
   && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
