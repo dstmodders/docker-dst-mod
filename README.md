@@ -109,7 +109,7 @@ PS:\> docker run --rm -it `
 | `KLEI_TOOLS_PNG`          | `/opt/klei-tools/mod_tools/png`          | [klei-tools/png] path          |
 | `KLEI_TOOLS_SCML`         | `/opt/klei-tools/mod_tools/scml`         | [klei-tools/scml] path         |
 | `KLEI_TOOLS_VERSION`      | `1.0.0`                                  | [klei-tools] version           |
-| `LUAROCKS_VERSION`        | `3.11.0`                                 | [LuaRocks] version             |
+| `LUAROCKS_VERSION`        | `3.11.1`                                 | [LuaRocks] version             |
 | `STYLUA_VERSION`          | `0.20.0`                                 | [StyLua] version               |
 
 ## Supported build arguments
