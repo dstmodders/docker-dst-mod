@@ -1,7 +1,7 @@
 ## Supported tags and respective `Dockerfile` links
 
-- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/9007f58530c8119f50653270319efaa097b8c935/debian/Dockerfile)
-- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/9007f58530c8119f50653270319efaa097b8c935/alpine/Dockerfile)
+- [`debian`, `latest`](https://github.com/dstmodders/docker-dst-mod/blob/06aa524278d71a076be6dd6be8753f59e31b33b7/debian/Dockerfile)
+- [`alpine`](https://github.com/dstmodders/docker-dst-mod/blob/06aa524278d71a076be6dd6be8753f59e31b33b7/alpine/Dockerfile)
 
 ## Overview
 
