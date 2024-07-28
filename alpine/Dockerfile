@@ -17,11 +17,11 @@ WORKDIR /tmp/
 RUN sed -i 's/ktools/dst-mod/g' /etc/passwd /etc/group \
   && apk add --no-cache \
     ca-certificates='20240226-r0' \
-    curl='8.5.0-r0' \
+    curl='8.9.0-r0' \
     g++='13.2.1_git20231014-r0' \
     make='4.4.1-r2' \
-    nodejs='20.12.1-r0' \
-    openssl='3.1.5-r0' \
+    nodejs='20.15.1-r0' \
+    openssl='3.1.6-r2' \
     readline-dev='8.2.1-r2' \
     rsync='3.2.7-r4' \
     yarn='1.22.19-r0' \
@@ -57,9 +57,9 @@ RUN sed -i 's/ktools/dst-mod/g' /etc/passwd /etc/group \
 
 # hadolint ignore=DL3059
 RUN luarocks install busted '2.2.0-1' \
-  && luarocks install cluacov '0.1.2-1' \
+  && luarocks install cluacov '0.1.3-1' \
   && luarocks install ldoc '1.5.0-1' \
-  && luarocks install luacheck '1.1.2-1' \
+  && luarocks install luacheck '1.2.0-1' \
   && luarocks install luacov '0.15.0-1' \
   && luarocks install luacov-console '1.1.0-1' \
   && luarocks install luacov-reporter-lcov '0.2-0' \
@@ -67,7 +67,7 @@ RUN luarocks install busted '2.2.0-1' \
 
 # hadolint ignore=DL3059
 RUN yarn global add \
-  prettier@3.2.5 \
+  prettier@3.3.3 \
   @prettier/plugin-xml@3.4.1
 
 USER dst-mod
