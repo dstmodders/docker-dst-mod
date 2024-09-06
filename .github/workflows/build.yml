@@ -102,7 +102,7 @@ jobs:
             alpine-${{ steps.general.outputs.dockerfiles-version-short }}
             alpine-
       - name: Build an Alpine image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           build-args: |
             IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
@@ -135,7 +135,7 @@ jobs:
             debian-${{ steps.general.outputs.dockerfiles-version-short }}
             debian-
       - name: Build a Debian image
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           build-args: |
             KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
