@@ -21,7 +21,7 @@ RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
     bash-completion='1:2.11-6' \
     build-essential='12.9' \
     ca-certificates='20230311' \
-    curl='7.88.1-10+deb12u6' \
+    curl='7.88.1-10+deb12u7' \
     git='1:2.39.2-1.1' \
     libreadline-dev='8.2-1.3' \
     openssh-client='1:9.2p1-2+deb12u3' \
@@ -73,7 +73,7 @@ RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
 
 # hadolint ignore=DL3059
 RUN luarocks install busted '2.2.0-1' \
-  && luarocks install cluacov '0.1.3-1' \
+  && luarocks install cluacov '0.1.4-1' \
   && luarocks install ldoc '1.5.0-1' \
   && luarocks install luacheck '1.2.0-1' \
   && luarocks install luacov '0.15.0-1' \
@@ -88,8 +88,8 @@ RUN wget -q https://deb.nodesource.com/setup_20.x \
   && chmod +x setup_20.x \
   && ./setup_20.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='20.16.0-1nodesource1' \
-  && npm install --location=global npm@10.8.2 \
+    nodejs='20.17.0-1nodesource1' \
+  && npm install --location=global npm@10.8.3 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.22 \
   && yarn global add \
