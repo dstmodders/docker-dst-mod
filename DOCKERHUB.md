@@ -81,7 +81,7 @@ PS:\> docker run --rm -it `
 | ----------------------- | ----------------------- | --------------------- |
 | `DS_MODS` or `DST_MODS` | `/opt/dont_starve/mods` | Mods directory path   |
 | `DS` or `DST`           | `/opt/dont_starve`      | Game directory path   |
-| `IMAGEMAGICK_VERSION`   | `7.1.1-37`              | [ImageMagick] version |
+| `IMAGEMAGICK_VERSION`   | `7.1.1-38`              | [ImageMagick] version |
 | `KTOOLS_KRANE`          | `/usr/local/bin/krane`  | [ktools/krane] path   |
 | `KTOOLS_KTECH`          | `/usr/local/bin/ktech`  | [ktools/ktech] path   |
 | `KTOOLS_VERSION`        | `4.5.1`                 | [ktools] version      |
@@ -109,7 +109,7 @@ PS:\> docker run --rm -it `
 
 | Name                  | Image                  | Default    | Description                |
 | --------------------- | ---------------------- | ---------- | -------------------------- |
-| `IMAGEMAGICK_VERSION` | `alpine`               | `7.1.1-37` | Sets [ImageMagick] version |
+| `IMAGEMAGICK_VERSION` | `alpine`               | `7.1.1-38` | Sets [ImageMagick] version |
 | `KLEI_TOOLS_VERSION`  | `debian`               | `1.0.0`    | Sets [klei-tools] version  |
 | `KTOOLS_VERSION`      | `alpine`<br />`debian` | `4.5.1`    | Sets [ktools] version      |
 
