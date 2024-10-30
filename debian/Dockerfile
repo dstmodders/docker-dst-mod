@@ -22,7 +22,7 @@ RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
     build-essential='12.9' \
     ca-certificates='20230311' \
     curl='7.88.1-10+deb12u7' \
-    git='1:2.39.2-1.1' \
+    git='1:2.39.5-0+deb12u1' \
     libreadline-dev='8.2-1.3' \
     openssh-client='1:9.2p1-2+deb12u3' \
     pkg-config='1.8.1-1' \
@@ -88,7 +88,7 @@ RUN wget -q https://deb.nodesource.com/setup_20.x \
   && chmod +x setup_20.x \
   && ./setup_20.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='20.17.0-1nodesource1' \
+    nodejs='20.18.0-1nodesource1' \
   && npm install --location=global npm@10.8.3 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.22 \
