@@ -29,17 +29,19 @@ readonly VERSIONS_KEYS
 
 # define flags
 FLAG_COMMIT=0
+FLAG_DRY_RUN=0
 
 usage() {
   cat <<EOF
-Generate supported tags.
+Bump supported tags.
 
 Usage:
   $PROGRAM [flags]
 
 Flags:
-  -c, --commit   commit changes
-  -h, --help     help for $PROGRAM
+  -c, --commit    commit changes
+  -d, --dry-run   only check and don't apply or commit any changes
+  -h, --help      help for $PROGRAM
 EOF
 }
 
@@ -122,6 +124,9 @@ while [ $# -gt 0 ]; do
     -c|--commit)
       FLAG_COMMIT=1
       ;;
+    -d|--dry-run)
+      FLAG_DRY_RUN=1
+      ;;
     -h|--help)
       usage
       exit 0
@@ -138,23 +143,31 @@ done
 
 # define extra constants
 readonly FLAG_COMMIT
+readonly FLAG_DRY_RUN
 
 printf "%s\n\n" "$HEADING_FOR_TAGS"
 
-if [ "$FLAG_COMMIT" -eq 1 ]; then
+if [ "$FLAG_DRY_RUN" -eq 1 ]; then
+  print_tags
+  exit 0
+else
   tags="$(print_tags)"
   echo "$tags"
+
   echo '---'
+  printf 'Replacing...'
   replace "$HEADING_FOR_TAGS"$'\n'$'\n'"$tags"$'\n'
-  printf 'Committing...'
-  git add ./DOCKERHUB.md ./README.md
-  if [ -n "$(git diff --cached --name-only)" ]; then
-    printf '\n'
-    echo '---'
-    git commit -m "$COMMIT_MESSAGE"
-  else
-    printf ' Skipped\n'
+  printf ' Done\n'
+
+  if [ "$FLAG_COMMIT" -eq 1 ]; then
+    printf 'Committing...'
+    git add ./DOCKERHUB.md ./README.md
+    if [ -n "$(git diff --cached --name-only)" ]; then
+      printf '\n'
+      echo '---'
+      git commit -m "$COMMIT_MESSAGE"
+    else
+      printf ' Skipped\n'
+    fi
   fi
-else
-  print_tags
 fi
