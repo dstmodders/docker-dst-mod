@@ -20,18 +20,18 @@ RUN sed -i 's/klei-tools/dst-mod/g' /etc/passwd /etc/group \
   && apt-get install -y --no-install-recommends \
     bash-completion='1:2.11-6' \
     build-essential='12.9' \
-    ca-certificates='20230311' \
-    curl='7.88.1-10+deb12u7' \
-    git='1:2.39.5-0+deb12u1' \
+    ca-certificates='20250419~deb12u2' \
+    curl='7.88.1-10+deb12u15' \
+    git='1:2.39.5-0+deb12u3' \
     libreadline-dev='8.2-1.3' \
-    openssh-client='1:9.2p1-2+deb12u3' \
+    openssh-client='1:9.2p1-2+deb12u10' \
     pkg-config='1.8.1-1' \
     premake4='4.3+repack1-2+b1' \
-    rsync='3.2.7-1' \
-    unzip='6.0-28' \
-    vim='2:9.0.1378-2' \
-    wget='1.21.3-1+b2' \
-    zip='3.0-13' \
+    rsync='3.5.0+ds1-0+deb12u1' \
+    unzip='6.0-28+deb12u1' \
+    vim='2:9.0.1378-2+deb12u2' \
+    wget='1.21.3-1+deb12u1' \
+    zip='3.0-13+deb12u1' \
   # Lua
   && wget -q "https://www.lua.org/ftp/lua-${LUA_VERSION}.tar.gz" \
   && tar zxf "./lua-${LUA_VERSION}.tar.gz" \
@@ -88,7 +88,7 @@ RUN wget -q https://deb.nodesource.com/setup_20.x \
   && chmod +x setup_20.x \
   && ./setup_20.x \
   && apt-get install -y --no-install-recommends \
-    nodejs='20.18.0-1nodesource1' \
+    nodejs='20.20.2-1nodesource1' \
   && npm install --location=global npm@10.8.3 \
   # Yarn + packages
   && npm install --location=global yarn@1.22.22 \
