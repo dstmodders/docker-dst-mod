@@ -33,7 +33,8 @@ VERSIONS_KEYS=()
 
 mapfile -t VERSIONS_KEYS < <(jq -r 'keys[]' <<< "${JSON}")
 # shellcheck disable=SC2207
-IFS=$'\n' VERSIONS_KEYS=($(sort -rV <<< "${VERSIONS_KEYS[*]}")); unset IFS
+IFS=$'\n' VERSIONS_KEYS=($(sort -rV <<< "${VERSIONS_KEYS[*]}"))
+unset IFS
 
 readonly BASE_DIR
 readonly COMMIT_ID
