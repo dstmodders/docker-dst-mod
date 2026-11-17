@@ -7,11 +7,12 @@
 #
 # Examples:
 #   bump-packages.sh
-#   bump-packages.sh -d
+#   bump-packages.sh -l
 #
 # Flags:
 #   -c, --commit    Commit changes
 #   -d, --dry-run   Only check and don't apply or commit any changes
+#   -l, --list      Only list packages and their current versions
 #   -h, --help      Show this help message
 #
 # Environment Variables:
@@ -45,6 +46,7 @@ NO_COLOR="${NO_COLOR:-0}"
 # define flags
 FLAG_COMMIT=0
 FLAG_DRY_RUN=0
+FLAG_LIST=0
 
 get_packages_from_dockerfile() {
   local dockerfile="$1"
@@ -209,12 +211,18 @@ update_alpine_dockerfile() {
   while IFS= read -r line; do
     package_name="$(printf '%s\n' "${line}" | cut -d '=' -f 1)"
     current_version="$(printf '%s\n' "${line}" | cut -d '=' -f 2)"
-    latest_version="$(get_latest_apk_package_version "${package_name}")"
 
-    update_package_in_dockerfile "${dockerfile}" "${package_name}" "${current_version}" "${latest_version}"
+    if [ "${FLAG_LIST}" -eq 0 ]; then
+      latest_version="$(get_latest_apk_package_version "${package_name}")"
+      update_package_in_dockerfile "${dockerfile}" "${package_name}" "${current_version}" "${latest_version}"
 
-    if [ "${FLAG_DRY_RUN}" -eq 0 ] && [ "${FLAG_COMMIT}" -eq 1 ] && [ "${current_version}" != "${latest_version}" ]; then
-      commit_list+=("- Bump ${package_name} from ${current_version} to ${latest_version}")
+      if [ "${FLAG_DRY_RUN}" -eq 0 ] && [ "${FLAG_COMMIT}" -eq 1 ] && [ "${current_version}" != "${latest_version}" ]; then
+        commit_list+=("- Bump ${package_name} from ${current_version} to ${latest_version}")
+      fi
+    else
+      printf '%s ' "${package_name}"
+      print_bold_color 7 "${current_version}"
+      printf '\n'
     fi
   done <<< "$(get_packages_from_dockerfile "${dockerfile}")"
 
@@ -234,16 +242,22 @@ update_debian_dockerfile() {
     package_name="$(printf '%s\n' "${line}" | cut -d '=' -f 1)"
     current_version="$(printf '%s\n' "${line}" | cut -d '=' -f 2)"
 
-    if [ "${package_name}" = 'nodejs' ]; then
-      latest_version="$(get_latest_debian_nodejs_version)"
+    if [ "${FLAG_LIST}" -eq 0 ]; then
+      if [ "${package_name}" = 'nodejs' ]; then
+        latest_version="$(get_latest_debian_nodejs_version)"
+      else
+        latest_version="$(get_latest_apt_package_version "${package_name}")"
+      fi
+
+      update_package_in_dockerfile "${dockerfile}" "${package_name}" "${current_version}" "${latest_version}"
+
+      if [ "${FLAG_DRY_RUN}" -eq 0 ] && [ "${FLAG_COMMIT}" -eq 1 ] && [ "${current_version}" != "${latest_version}" ]; then
+        commit_list+=("- Bump ${package_name} from ${current_version} to ${latest_version}")
+      fi
     else
-      latest_version="$(get_latest_apt_package_version "${package_name}")"
-    fi
-
-    update_package_in_dockerfile "${dockerfile}" "${package_name}" "${current_version}" "${latest_version}"
-
-    if [ "${FLAG_DRY_RUN}" -eq 0 ] && [ "${FLAG_COMMIT}" -eq 1 ] && [ "${current_version}" != "${latest_version}" ]; then
-      commit_list+=("- Bump ${package_name} from ${current_version} to ${latest_version}")
+      printf '%s ' "${package_name}"
+      print_bold_color 7 "${current_version}"
+      printf '\n'
     fi
   done <<< "$(get_packages_from_dockerfile "${dockerfile}")"
 
@@ -269,6 +283,9 @@ while [ $# -gt 0 ]; do
       usage
       exit 0
       ;;
+    -l | --list)
+      FLAG_LIST=1
+      ;;
     -*)
       die 'unrecognized flag'
       ;;
@@ -281,24 +298,27 @@ done
 
 readonly FLAG_COMMIT
 readonly FLAG_DRY_RUN
+readonly FLAG_LIST
 
 trap interrupt SIGINT
 
-if ! is_installed docker; then
-  die 'Docker CLI is not installed'
-fi
+if [ "${FLAG_LIST}" -eq 0 ]; then
+  if ! is_installed docker; then
+    die 'Docker CLI is not installed'
+  fi
 
-if ! docker info > /dev/null 2>&1; then
-  die 'Docker daemon is not running'
-fi
+  if ! docker info > /dev/null 2>&1; then
+    die 'Docker daemon is not running'
+  fi
 
-print_step_dotted 'Pulling Docker images'
-printf '\n'
-print_separator
-docker pull "${DOCKER_ALPINE_IMAGE}"
-print_separator
-docker pull "${DOCKER_DEBIAN_IMAGE}"
-print_separator
+  print_step_dotted 'Pulling Docker images'
+  printf '\n'
+  print_separator
+  docker pull "${DOCKER_ALPINE_IMAGE}"
+  print_separator
+  docker pull "${DOCKER_DEBIAN_IMAGE}"
+  print_separator
+fi
 
 print_step_dotted 'Checking Alpine packages'
 printf '\n'
@@ -310,6 +330,10 @@ print_step_dotted 'Checking Debian packages'
 printf '\n'
 print_separator
 update_debian_dockerfile './debian/Dockerfile' 'Bump packages in debian image'
+
+if [ "${FLAG_LIST}" -eq 1 ]; then
+  complete 3 'List completed'
+fi
 
 if [ "${FLAG_DRY_RUN}" -eq 1 ]; then
   complete 3 'Dry-run completed'
