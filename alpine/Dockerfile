@@ -11,6 +11,7 @@ ENV LCOV_VERSION="2.1"
 ENV LUAROCKS_VERSION="3.8.0"
 ENV LUA_VERSION="5.1.5"
 
+# hadolint ignore=DL3066
 USER root
 WORKDIR /tmp/
 # hadolint ignore=DL3003
@@ -70,5 +71,5 @@ RUN yarn global add \
   prettier@3.3.3 \
   @prettier/plugin-xml@3.4.1
 
-USER dst-mod
+USER 1000:1000
 WORKDIR ${DST_MODS}

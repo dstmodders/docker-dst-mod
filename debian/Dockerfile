@@ -12,6 +12,7 @@ ENV LUAROCKS_VERSION="3.11.1"
 ENV LUA_VERSION="5.1.5"
 ENV STYLUA_VERSION="0.20.0"
 
+# hadolint ignore=DL3066
 USER root
 WORKDIR /tmp/
 # hadolint ignore=DL3003
@@ -106,5 +107,5 @@ RUN wget -q https://deb.nodesource.com/setup_20.x \
     /var/log/apt/ \
     /var/log/dpkg.log
 
-USER dst-mod
+USER 1000:1000
 WORKDIR ${DST_MODS}

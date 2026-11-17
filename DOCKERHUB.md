@@ -34,10 +34,10 @@ container as your mod directory.
 
 ```shell
 $ docker run --rm -it \
-    -v "$(pwd):/opt/dont_starve/mods/$(basename "$(pwd)")" \
-    -w "/opt/dont_starve/mods/$(basename "$(pwd)")" \
-    dstmodders/dst-mod \
-    /bin/bash
+  -v "$(pwd):/opt/dont_starve/mods/$(basename "$(pwd)")" \
+  -w "/opt/dont_starve/mods/$(basename "$(pwd)")" \
+  dstmodders/dst-mod \
+  /bin/bash
 ```
 
 #### CMD (Windows)
