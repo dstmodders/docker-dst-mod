@@ -1,4 +1,24 @@
 #!/usr/bin/env bash
+#
+# Bump supported tags.
+#
+# Usage:
+#   bump-supported-tags.sh [flags]
+#
+# Examples:
+#   bump-supported-tags.sh
+#   bump-supported-tags.sh -d
+#
+# Flags:
+#   -c, --commit    Commit changes
+#   -d, --dry-run   Only check and don't apply or commit any changes
+#   -h, --help      Show this help message
+#
+# Environment Variables:
+#   NO_COLOR        Set to 1 to disable terminal colors
+#                   (see no-color.org, default "0")
+#
+set -euo pipefail
 
 # define constants
 BASE_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -7,12 +27,11 @@ COMMIT_MESSAGE='Change tags in DOCKERHUB.md and README.md'
 DISTS=('debian' 'alpine')
 HEADING_FOR_OVERVIEW='## Overview'
 HEADING_FOR_TAGS="## Supported tags and respective \`Dockerfile\` links"
-JSON="$(cat ./versions.json)"
-PROGRAM="$(basename "$0")"
+JSON="$(cat "${BASE_DIR}/../versions.json")"
 REPOSITORY='https://github.com/dstmodders/docker-dst-mod'
 VERSIONS_KEYS=()
 
-mapfile -t VERSIONS_KEYS < <(jq -r 'keys[]' <<< "$JSON")
+mapfile -t VERSIONS_KEYS < <(jq -r 'keys[]' <<< "${JSON}")
 # shellcheck disable=SC2207
 IFS=$'\n' VERSIONS_KEYS=($(sort -rV <<< "${VERSIONS_KEYS[*]}")); unset IFS
 
@@ -23,81 +42,44 @@ readonly DISTS
 readonly HEADING_FOR_OVERVIEW
 readonly HEADING_FOR_TAGS
 readonly JSON
-readonly PROGRAM
 readonly REPOSITORY
 readonly VERSIONS_KEYS
+
+# shellcheck disable=SC1091
+source "${BASE_DIR}/common.sh"
+
+# define defaults for environment variables
+NO_COLOR="${NO_COLOR:-0}"
 
 # define flags
 FLAG_COMMIT=0
 FLAG_DRY_RUN=0
 
-usage() {
-  cat <<EOF
-Bump supported tags.
-
-Usage:
-  $PROGRAM [flags]
-
-Flags:
-  -c, --commit    commit changes
-  -d, --dry-run   only check and don't apply or commit any changes
-  -h, --help      help for $PROGRAM
-EOF
-}
-
-print_bold() {
-  local value="$1"
-  local output="${2:-1}"
-
-  if [ "$DISABLE_COLORS" = '1' ] || ! [ -t 1 ]; then
-    printf '%s' "$value" >&"$output"
-  else
-    printf "$(tput bold)%s$(tput sgr0)" "$value" >&"$output"
-  fi
-}
-
-print_bold_color() {
-  local color="$1"
-  local value="$2"
-  local output="${3:-1}"
-
-  if [ "$DISABLE_COLORS" = '1' ] || ! [ -t 1 ]; then
-    printf '%s' "$value" >&"$output"
-  else
-    printf "$(tput bold)$(tput setaf "$color")%s$(tput sgr0)" "$value" >&"$output"
-  fi
-}
-
-print_error() {
-  print_bold_color 1 "error: $1" 2
-  echo '' >&2
-}
-
 print_url() {
   local tags="$1"
   local commit="$2"
   local directory="$3"
-  local url="[$tags]($REPOSITORY/blob/$commit/$directory/Dockerfile)"
-  echo "- $url"
+  local url="[${tags}](${REPOSITORY}/blob/${commit}/${directory}/Dockerfile)"
+  printf -- '- %s\n' "${url}"
 }
 
 print_tags() {
   for key in "${VERSIONS_KEYS[@]}"; do
     for dist in "${DISTS[@]}"; do
-      latest="$(jq -r ".[$key] | .latest" <<< "$JSON")"
+      latest="$(jq -r ".[${key}] | .latest" <<< "${JSON}")"
 
-      tag_dist="$dist"
+      tag_dist="${dist}"
 
-      tags="\`$tag_dist\`"
-      case "$dist" in
+      tags="\`${tag_dist}\`"
+      case "${dist}" in
         debian)
-          if [ "$latest" == 'true' ]; then
-            tags="$tags, \`latest\`"
+          if [ "${latest}" = 'true' ]; then
+            tags="${tags}, \`latest\`"
           fi
-        ;;
+          ;;
       esac
 
-      print_url "$tags" "$COMMIT_ID" "$dist"
+      print_url "${tags}" "${COMMIT_ID}" "${dist}"
     done
   done
 }
@@ -105,69 +87,76 @@ print_tags() {
 replace() {
   local content="$1"
   for file in ./DOCKERHUB.md ./README.md; do
-    sed -i "/$HEADING_FOR_TAGS/,/$HEADING_FOR_OVERVIEW/ {
-      /$HEADING_FOR_TAGS/!{
-        /$HEADING_FOR_OVERVIEW/!d
+    sed -i "/${HEADING_FOR_TAGS}/,/${HEADING_FOR_OVERVIEW}/ {
+      /${HEADING_FOR_TAGS}/!{
+        /${HEADING_FOR_OVERVIEW}/!d
       }
-      /$HEADING_FOR_TAGS/!b
+      /${HEADING_FOR_TAGS}/!b
       r /dev/stdin
       d
-    }" "$file" <<< "$content"
+    }" "${file}" <<< "${content}"
   done
 }
 
-cd "$BASE_DIR/.." || exit 1
+cd "${BASE_DIR}/.." || exit 1
 
 while [ $# -gt 0 ]; do
   key="$1"
-  case "$key" in
-    -c|--commit)
+  case "${key}" in
+    -c | --commit)
       FLAG_COMMIT=1
       ;;
-    -d|--dry-run)
+    -d | --dry-run)
       FLAG_DRY_RUN=1
       ;;
-    -h|--help)
+    -h | --help)
       usage
       exit 0
       ;;
     -*)
-      print_error 'unrecognized flag'
-      exit 1
+      die 'unrecognized flag'
       ;;
     *)
+      die 'unexpected argument'
       ;;
   esac
   shift 1
 done
 
-# define extra constants
 readonly FLAG_COMMIT
 readonly FLAG_DRY_RUN
 
-printf "%s\n\n" "$HEADING_FOR_TAGS"
+trap interrupt SIGINT
 
-if [ "$FLAG_DRY_RUN" -eq 1 ]; then
+print_step_dotted 'Generating tags'
+printf '\n'
+print_separator
+
+printf '%s\n\n' "${HEADING_FOR_TAGS}"
+
+if [ "${FLAG_DRY_RUN}" -eq 1 ]; then
   print_tags
-  exit 0
-else
-  tags="$(print_tags)"
-  echo "$tags"
+  complete 3 'Dry-run completed'
+fi
 
-  echo '---'
-  printf 'Replacing...'
-  replace "$HEADING_FOR_TAGS"$'\n'$'\n'"$tags"$'\n'
-  printf ' Done\n'
+tags="$(print_tags)"
+printf '%s\n' "${tags}"
 
-  if [ "$FLAG_COMMIT" -eq 1 ]; then
-    printf 'Committing...'
-    git add ./DOCKERHUB.md ./README.md
-    if [ -n "$(git diff --cached --name-only)" ]; then
-      printf '\n'
-      echo '---'
-      git commit -m "$COMMIT_MESSAGE"
-    else
-      printf ' Skipped\n'
-    fi
+print_separator
+print_step_dotted 'Replacing'
+replace "${HEADING_FOR_TAGS}"$'\n'$'\n'"${tags}"$'\n'
+print_step_success
+
+if [ "${FLAG_COMMIT}" -eq 1 ]; then
+  print_step_dotted 'Committing'
+  git add ./DOCKERHUB.md ./README.md
+  if [ -n "$(git diff --cached --name-only)" ]; then
+    printf '\n'
+    print_separator
+    git commit -m "${COMMIT_MESSAGE}"
+  else
+    print_step_skipped
   fi
 fi
+
+complete 2 'Bump completed'
