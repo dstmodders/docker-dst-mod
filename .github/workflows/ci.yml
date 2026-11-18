@@ -28,14 +28,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         id: node
         with:
           node-version: 20.18.0
       - name: Send Slack notification
-        uses: codedsolar/slack-action@v1
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
         if: ${{ github.event_name != 'pull_request' }}
         id: slack
         with:
@@ -48,7 +48,7 @@ jobs:
             ShellCheck issues: Checking...
           status: in-progress
       - name: Set up pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         with:
           version: 12.18.0
       - name: Install dependencies
@@ -59,13 +59,13 @@ jobs:
         id: prettier
         run: echo "issues=$(pnpm exec prettier --list-different . | wc -l)" >> "$GITHUB_OUTPUT"
       - name: Lint using Hadolint (Alpine)
-        uses: hadolint/hadolint-action@v3.5.0
+        uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         id: hadolint-alpine
         with:
           dockerfile: ./alpine/Dockerfile
           no-fail: true
       - name: Lint using Hadolint (Debian)
-        uses: hadolint/hadolint-action@v3.5.0
+        uses: hadolint/hadolint-action@06be81baf89a55ffd0e24b8f04a4185738dd3387 # v3.5.0
         id: hadolint-debian
         with:
           dockerfile: ./debian/Dockerfile
@@ -106,7 +106,7 @@ jobs:
           fi
           exit "$exit_code"
       - name: Update Slack notification
-        uses: codedsolar/slack-action@v1
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
         if: ${{ github.event_name != 'pull_request' && always() }}
         with:
           fields: |
