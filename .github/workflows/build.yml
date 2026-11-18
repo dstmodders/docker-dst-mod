@@ -25,7 +25,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set matrix
         id: set-matrix
         run: |
@@ -41,7 +41,7 @@ jobs:
         image: ${{ fromJSON(needs.prepare.outputs.matrix) }}
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set general outputs
         id: general
         run: |
@@ -68,24 +68,24 @@ jobs:
             ktools version: ${{ matrix.image.ktools_version }}
           status: in-progress
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
       - name: Login to Docker Hub
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Login to GHCR
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         if: ${{ github.event_name != 'pull_request' }}
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GHCR_TOKEN }}
       - name: Prepare Docker meta for an Alpine image
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         id: alpine-meta
         with:
           images: |
@@ -94,7 +94,7 @@ jobs:
           labels: maintainer=victor@popkov.me
           tags: type=raw,value=alpine
       - name: Cache Docker layers (Alpine)
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /tmp/.buildx-alpine-cache
           key: ${{ format('alpine-{0}', steps.general.outputs.dockerfiles-version-short) }}
@@ -102,7 +102,7 @@ jobs:
             alpine-${{ steps.general.outputs.dockerfiles-version-short }}
             alpine-
       - name: Build an Alpine image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           build-args: |
             IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
@@ -117,7 +117,7 @@ jobs:
           push: ${{ !env.ACT && github.ref == 'refs/heads/main' }}
           tags: ${{ steps.alpine-meta.outputs.tags }}
       - name: Prepare Docker meta for a Debian image
-        uses: docker/metadata-action@v5
+        uses: docker/metadata-action@v6
         id: debian-meta
         with:
           flavor: latest=${{ matrix.image.latest }}
@@ -127,7 +127,7 @@ jobs:
           labels: maintainer=victor@popkov.me
           tags: type=raw,value=debian
       - name: Cache Docker layers (Debian)
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /tmp/.buildx-debian-cache
           key: ${{ format('debian-{0}', steps.general.outputs.dockerfiles-version-short) }}
@@ -135,7 +135,7 @@ jobs:
             debian-${{ steps.general.outputs.dockerfiles-version-short }}
             debian-
       - name: Build a Debian image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           build-args: |
             KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}

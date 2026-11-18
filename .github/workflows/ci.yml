@@ -28,9 +28,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         id: node
         with:
           node-version: 20.18.0
@@ -48,7 +48,7 @@ jobs:
             ShellCheck issues: Checking...
           status: in-progress
       - name: Set up pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
         with:
           version: 12.18.0
       - name: Install dependencies
@@ -59,13 +59,13 @@ jobs:
         id: prettier
         run: echo "issues=$(pnpm exec prettier --list-different . | wc -l)" >> "$GITHUB_OUTPUT"
       - name: Lint using Hadolint (Alpine)
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         id: hadolint-alpine
         with:
           dockerfile: ./alpine/Dockerfile
           no-fail: true
       - name: Lint using Hadolint (Debian)
-        uses: hadolint/hadolint-action@v3.1.0
+        uses: hadolint/hadolint-action@v3.5.0
         id: hadolint-debian
         with:
           dockerfile: ./debian/Dockerfile
