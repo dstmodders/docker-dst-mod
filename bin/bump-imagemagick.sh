@@ -7,6 +7,7 @@
 #
 # Examples:
 #   bump-imagemagick.sh
+#   bump-imagemagick.sh -d 7.1.1-39
 #   bump-imagemagick.sh 7.1.1-39
 #
 # Arguments:
@@ -14,6 +15,7 @@
 #
 # Flags:
 #   -c, --commit    Commit changes
+#   -d, --dry-run   Only check and don't apply or commit any changes
 #   -h, --help      Show this help message
 #
 # Environment Variables:
@@ -41,6 +43,7 @@ NO_COLOR="${NO_COLOR:-0}"
 
 # define flags
 FLAG_COMMIT=0
+FLAG_DRY_RUN=0
 
 summary() {
   local old_version="$1"
@@ -91,6 +94,9 @@ while [ $# -gt 0 ]; do
     -c | --commit)
       FLAG_COMMIT=1
       ;;
+    -d | --dry-run)
+      FLAG_DRY_RUN=1
+      ;;
     -h | --help)
       usage
       exit 0
@@ -106,6 +112,7 @@ while [ $# -gt 0 ]; do
 done
 
 readonly FLAG_COMMIT
+readonly FLAG_DRY_RUN
 
 trap interrupt SIGINT
 
@@ -123,6 +130,10 @@ if [ -z "${new_version}" ]; then
 fi
 
 summary "${old_version}" "${new_version}"
+if [ "${FLAG_DRY_RUN}" -eq 1 ]; then
+  complete 3 'Dry-run completed'
+fi
+
 print_separator
 replace "${old_version}" "${new_version}"
 
