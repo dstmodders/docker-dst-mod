@@ -24,6 +24,47 @@ env:
   SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
 jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      build-fields-pending: ${{ steps.set-matrix.outputs.build-fields-pending }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set matrix
+        id: set-matrix
+        run: |
+          json="$(cat ./versions.json)"
+          matrix="$(jq -cM . <<< "$json")"
+          {
+            echo "matrix=${matrix}"
+            echo "build-fields-pending<<EOF"
+            jq -r '.[] | "IM \(.imagemagick_version) / ktools \(.ktools_version) / klei-tools \(.klei_tools_version): Pending..."' <<< "$matrix"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      docker: ${{ steps.filter.outputs.docker }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Check for docker-related changes
+        uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4.0.3
+        id: filter
+        with:
+          filters: |
+            docker:
+              - 'alpine/**'
+              - 'debian/**'
+              - '.github/workflows/ci.yml'
+              - 'versions.json'
+
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -120,3 +161,130 @@ jobs:
             ShellCheck issues: ${{ steps.shellcheck.outputs.issues || 'Skipped' }}
           status: ${{ job.status }}
           timestamp: ${{ steps.slack.outputs.slack-timestamp }}
+
+  build-notify:
+    needs: [changes, prepare]
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name != 'pull_request' && (github.event_name == 'workflow_dispatch' || needs.changes.outputs.docker == 'true') }}
+    outputs:
+      slack-timestamp: ${{ steps.slack.outputs.slack-timestamp }}
+    steps:
+      - name: Send Slack notification
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
+        id: slack
+        with:
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / build> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          fields: |
+            {STATUS}
+            {REF}
+            ${{ needs.prepare.outputs.build-fields-pending }}
+          status: in-progress
+
+  build:
+    needs: [changes, prepare, build-notify]
+    runs-on: ubuntu-latest
+    if: ${{ always() && needs.prepare.result == 'success' && needs.changes.result == 'success' && (github.event_name == 'workflow_dispatch' || needs.changes.outputs.docker == 'true') }}
+    strategy:
+      fail-fast: false
+      matrix:
+        image: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Build an Alpine image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          build-args: |
+            IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
+            KTOOLS_VERSION=${{ matrix.image.ktools_version }}
+          context: .
+          file: ./alpine/Dockerfile
+          labels: maintainer=victor@popkov.me
+          load: true
+          platforms: linux/amd64
+          pull: true
+          push: false
+          tags: |
+            alpine-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}
+      - name: Build a Debian image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          build-args: |
+            KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
+            KTOOLS_VERSION=${{ matrix.image.ktools_version }}
+          context: .
+          file: ./debian/Dockerfile
+          labels: maintainer=victor@popkov.me
+          load: true
+          platforms: linux/amd64
+          pull: true
+          push: false
+          tags: |
+            debian-${{ matrix.image.klei_tools_version }}-ktools-${{ matrix.image.ktools_version }}
+      - name: Update Slack notification
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
+        if: ${{ always() && needs.build-notify.outputs.slack-timestamp != '' }}
+        continue-on-error: true
+        with:
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / build> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          fields-mode: merge
+          ignore-failures: true
+          preserve-color: true
+          fields: |
+            IM ${{ matrix.image.imagemagick_version }} / ktools ${{ matrix.image.ktools_version }} / klei-tools ${{ matrix.image.klei_tools_version }}: ${{ job.status == 'success' && 'Success' || job.status == 'cancelled' && 'Cancelled' || job.status == 'skipped' && 'Skipped' || 'Failure' }}
+          timestamp: ${{ needs.build-notify.outputs.slack-timestamp }}
+      - name: Save Slack field outcome
+        if: ${{ always() }}
+        run: |
+          case "${{ job.status }}" in
+            success) value=Success ;;
+            cancelled) value=Cancelled ;;
+            skipped) value=Skipped ;;
+            *) value=Failure ;;
+          esac
+          mkdir -p .slack-field
+          printf 'IM %s / ktools %s / klei-tools %s: %s\n' \
+            '${{ matrix.image.imagemagick_version }}' \
+            '${{ matrix.image.ktools_version }}' \
+            '${{ matrix.image.klei_tools_version }}' \
+            "$value" > .slack-field/field.txt
+      - name: Upload Slack field outcome
+        if: ${{ always() && needs.build-notify.outputs.slack-timestamp != '' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: slack-field-ci-build-${{ matrix.image.imagemagick_version }}-klei-${{ matrix.image.klei_tools_version }}-ktools-${{ matrix.image.ktools_version }}
+          path: .slack-field/field.txt
+          if-no-files-found: error
+          retention-days: 1
+
+  build-finalize:
+    needs: [build-notify, build]
+    runs-on: ubuntu-latest
+    if: ${{ always() && needs.build-notify.result == 'success' }}
+    steps:
+      - name: Download Slack field outcomes
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: slack-field-ci-build-*
+          path: slack-fields
+      - name: Assemble Slack fields
+        id: fields
+        run: |
+          {
+            echo 'fields<<EOF'
+            find slack-fields -type f -name field.txt | sort | while read -r f; do cat "$f"; done
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+      - name: Finalize Slack notification
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
+        with:
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / build> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          color: ${{ needs.build.result == 'success' && '#24a943' || needs.build.result == 'cancelled' && '#1f242b' || '#cc1f2d' }}
+          fields: |
+            {STATUS}
+            {REF}
+            ${{ steps.fields.outputs.fields }}
+          status: ${{ needs.build.result == 'success' && 'success' || needs.build.result == 'cancelled' && 'cancelled' || 'failure' }}
+          timestamp: ${{ needs.build-notify.outputs.slack-timestamp }}
