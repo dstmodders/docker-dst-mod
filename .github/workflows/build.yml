@@ -39,7 +39,7 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
-  image-notify:
+  build-image-notify:
     needs: prepare
     runs-on: ubuntu-latest
     if: ${{ github.event_name != 'pull_request' }}
@@ -50,15 +50,15 @@ jobs:
         uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
         id: slack
         with:
-          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / image> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / build-image> job in {GITHUB_REF} by {GITHUB_ACTOR}
           fields: |
             {STATUS}
             {REF}
             ${{ needs.prepare.outputs.image-fields-pending }}
           status: in-progress
 
-  image:
-    needs: [prepare, image-notify]
+  build-image:
+    needs: [prepare, build-image-notify]
     runs-on: ubuntu-latest
     if: ${{ always() && needs.prepare.result == 'success' }}
     strategy:
@@ -68,118 +68,64 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Set general outputs
-        id: general
-        run: |
-          dockerfiles_version='${{ hashFiles('**/Dockerfile') }}'
-          dockerfiles_version_short="$(echo "$dockerfiles_version" | cut -c 1-7)"
-
-          echo "Dockerfiles version: $dockerfiles_version"
-          echo "Dockerfiles version (short): $dockerfiles_version_short"
-
-          {
-            echo "dockerfiles-version=$dockerfiles_version"
-            echo "dockerfiles-version-short=$dockerfiles_version_short"
-          } >> "$GITHUB_OUTPUT"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
-      - name: Login to Docker Hub
+      - name: Login to private registry
         uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-        if: ${{ github.event_name != 'pull_request' }}
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Login to GHCR
-        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
-        if: ${{ github.event_name != 'pull_request' }}
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_TOKEN }}
-      - name: Prepare Docker meta for an Alpine image
-        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
-        id: alpine-meta
-        with:
-          images: |
-            ${{ env.DOCKERHUB_REPOSITORY }}
-            ghcr.io/${{ env.DOCKERHUB_REPOSITORY }}
-          labels: maintainer=victor@popkov.me
-          tags: type=raw,value=alpine
-      - name: Cache Docker layers (Alpine)
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: /tmp/.buildx-alpine-cache
-          key: ${{ format('alpine-{0}', steps.general.outputs.dockerfiles-version-short) }}
-          restore-keys: |
-            alpine-${{ steps.general.outputs.dockerfiles-version-short }}
-            alpine-
+          registry: ${{ secrets.PRIVATE_REGISTRY_HOST }}
+          username: ${{ secrets.PRIVATE_REGISTRY_USERNAME }}
+          password: ${{ secrets.PRIVATE_REGISTRY_PASSWORD }}
       - name: Build an Alpine image
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           build-args: |
             IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
             KTOOLS_VERSION=${{ matrix.image.ktools_version }}
-          cache-from: type=local,src=/tmp/.buildx-alpine-cache
-          cache-to: type=local,dest=/tmp/.buildx-alpine-cache-new,mode=max
+          cache-from: type=registry,ref=${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:cache-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-alpine
+          cache-to: type=registry,ref=${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:cache-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-alpine,mode=max
           context: .
           file: ./alpine/Dockerfile
-          labels: ${{ steps.alpine-meta.outputs.labels }}
-          platforms: linux/amd64
-          pull: true
-          push: ${{ !env.ACT && github.ref == 'refs/heads/main' }}
-          tags: ${{ steps.alpine-meta.outputs.tags }}
-      - name: Prepare Docker meta for a Debian image
-        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
-        id: debian-meta
-        with:
-          flavor: latest=${{ matrix.image.latest }}
-          images: |
-            ${{ env.DOCKERHUB_REPOSITORY }}
-            ghcr.io/${{ env.DOCKERHUB_REPOSITORY }}
           labels: maintainer=victor@popkov.me
-          tags: type=raw,value=debian
-      - name: Cache Docker layers (Debian)
-        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
-        with:
-          path: /tmp/.buildx-debian-cache
-          key: ${{ format('debian-{0}', steps.general.outputs.dockerfiles-version-short) }}
-          restore-keys: |
-            debian-${{ steps.general.outputs.dockerfiles-version-short }}
-            debian-
+          platforms: linux/amd64
+          provenance: false
+          pull: true
+          push: true
+          sbom: false
+          tags: |
+            ${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-alpine
       - name: Build a Debian image
         uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
         with:
           build-args: |
             KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
             KTOOLS_VERSION=${{ matrix.image.ktools_version }}
-          cache-from: type=local,src=/tmp/.buildx-debian-cache
-          cache-to: type=local,dest=/tmp/.buildx-debian-cache-new,mode=max
+          cache-from: type=registry,ref=${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:cache-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-debian
+          cache-to: type=registry,ref=${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:cache-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-debian,mode=max
           context: .
           file: ./debian/Dockerfile
-          labels: ${{ steps.debian-meta.outputs.labels }}
+          labels: maintainer=victor@popkov.me
           platforms: linux/amd64
+          provenance: false
           pull: true
-          push: ${{ !env.ACT && github.ref == 'refs/heads/main' }}
-          tags: ${{ steps.debian-meta.outputs.tags }}
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-alpine-cache /tmp/.buildx-debian-cache
-          mv /tmp/.buildx-alpine-cache-new /tmp/.buildx-alpine-cache
-          mv /tmp/.buildx-debian-cache-new /tmp/.buildx-debian-cache
+          push: true
+          sbom: false
+          tags: |
+            ${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-debian
       - name: Update Slack notification
         uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
-        if: ${{ always() && needs.image-notify.outputs.slack-timestamp != '' }}
+        if: ${{ always() && needs.build-image-notify.outputs.slack-timestamp != '' }}
         continue-on-error: true
         with:
-          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / image> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / build-image> job in {GITHUB_REF} by {GITHUB_ACTOR}
           fields-mode: merge
           ignore-failures: true
           preserve-color: true
           fields: |
             IM ${{ matrix.image.imagemagick_version }} / ktools ${{ matrix.image.ktools_version }} / klei-tools ${{ matrix.image.klei_tools_version }}: ${{ job.status == 'success' && 'Success' || job.status == 'cancelled' && 'Cancelled' || job.status == 'skipped' && 'Skipped' || 'Failure' }}
-          timestamp: ${{ needs.image-notify.outputs.slack-timestamp }}
+          timestamp: ${{ needs.build-image-notify.outputs.slack-timestamp }}
       - name: Save Slack field outcome
         if: ${{ always() }}
         run: |
@@ -196,18 +142,18 @@ jobs:
             '${{ matrix.image.klei_tools_version }}' \
             "$value" > .slack-field/field.txt
       - name: Upload Slack field outcome
-        if: ${{ always() && needs.image-notify.outputs.slack-timestamp != '' }}
+        if: ${{ always() && needs.build-image-notify.outputs.slack-timestamp != '' }}
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: slack-field-build-image-${{ matrix.image.imagemagick_version }}-klei-${{ matrix.image.klei_tools_version }}-ktools-${{ matrix.image.ktools_version }}
+          name: slack-field-build-image-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}
           path: .slack-field/field.txt
           if-no-files-found: error
           retention-days: 1
 
-  image-finalize:
-    needs: [image-notify, image]
+  build-image-finalize:
+    needs: [build-image-notify, build-image]
     runs-on: ubuntu-latest
-    if: ${{ always() && needs.image-notify.result == 'success' }}
+    if: ${{ always() && needs.build-image-notify.result == 'success' }}
     steps:
       - name: Download Slack field outcomes
         uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
@@ -225,11 +171,179 @@ jobs:
       - name: Finalize Slack notification
         uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
         with:
-          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / image> job in {GITHUB_REF} by {GITHUB_ACTOR}
-          color: ${{ needs.image.result == 'success' && '#24a943' || needs.image.result == 'cancelled' && '#1f242b' || '#cc1f2d' }}
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / build-image> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          color: ${{ needs.build-image.result == 'success' && '#24a943' || needs.build-image.result == 'cancelled' && '#1f242b' || '#cc1f2d' }}
           fields: |
             {STATUS}
             {REF}
             ${{ steps.fields.outputs.fields }}
-          status: ${{ needs.image.result == 'success' && 'success' || needs.image.result == 'cancelled' && 'cancelled' || 'failure' }}
-          timestamp: ${{ needs.image-notify.outputs.slack-timestamp }}
+          status: ${{ needs.build-image.result == 'success' && 'success' || needs.build-image.result == 'cancelled' && 'cancelled' || 'failure' }}
+          timestamp: ${{ needs.build-image-notify.outputs.slack-timestamp }}
+
+  push-image-notify:
+    needs: [prepare, build-image]
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' && github.event_name != 'pull_request' }}
+    outputs:
+      slack-timestamp: ${{ steps.slack.outputs.slack-timestamp }}
+    steps:
+      - name: Send Slack notification
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
+        id: slack
+        with:
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / push-image> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          fields: |
+            {STATUS}
+            {REF}
+            ${{ needs.prepare.outputs.image-fields-pending }}
+          status: in-progress
+
+  push-image:
+    needs: [prepare, build-image, push-image-notify]
+    runs-on: ubuntu-latest
+    if: ${{ always() && github.ref == 'refs/heads/main' && needs.build-image.result == 'success' }}
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        image: ${{ fromJSON(needs.prepare.outputs.matrix) }}
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Login to private registry
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ${{ secrets.PRIVATE_REGISTRY_HOST }}
+          username: ${{ secrets.PRIVATE_REGISTRY_USERNAME }}
+          password: ${{ secrets.PRIVATE_REGISTRY_PASSWORD }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to GHCR
+        uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Prepare Docker meta for an Alpine image
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        id: alpine-meta
+        with:
+          images: |
+            ${{ env.DOCKERHUB_REPOSITORY }}
+            ghcr.io/${{ env.DOCKERHUB_REPOSITORY }}
+          labels: maintainer=victor@popkov.me
+          tags: type=raw,value=alpine
+      - name: Build an Alpine image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          build-args: |
+            IMAGEMAGICK_VERSION=${{ matrix.image.imagemagick_version }}
+            KTOOLS_VERSION=${{ matrix.image.ktools_version }}
+          cache-from: type=registry,ref=${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:cache-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-alpine
+          context: .
+          file: ./alpine/Dockerfile
+          labels: ${{ steps.alpine-meta.outputs.labels }}
+          platforms: linux/amd64
+          provenance: false
+          pull: true
+          push: ${{ !env.ACT }}
+          sbom: false
+          tags: ${{ steps.alpine-meta.outputs.tags }}
+      - name: Prepare Docker meta for a Debian image
+        uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        id: debian-meta
+        with:
+          flavor: latest=${{ matrix.image.latest }}
+          images: |
+            ${{ env.DOCKERHUB_REPOSITORY }}
+            ghcr.io/${{ env.DOCKERHUB_REPOSITORY }}
+          labels: maintainer=victor@popkov.me
+          tags: type=raw,value=debian
+      - name: Build a Debian image
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          build-args: |
+            KLEI_TOOLS_VERSION=${{ matrix.image.klei_tools_version }}
+            KTOOLS_VERSION=${{ matrix.image.ktools_version }}
+          cache-from: type=registry,ref=${{ secrets.PRIVATE_REGISTRY_HOST }}/dst-mod:cache-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}-debian
+          context: .
+          file: ./debian/Dockerfile
+          labels: ${{ steps.debian-meta.outputs.labels }}
+          platforms: linux/amd64
+          provenance: false
+          pull: true
+          push: ${{ !env.ACT }}
+          sbom: false
+          tags: ${{ steps.debian-meta.outputs.tags }}
+      - name: Update Slack notification
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
+        if: ${{ always() && needs.push-image-notify.outputs.slack-timestamp != '' }}
+        continue-on-error: true
+        with:
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / push-image> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          fields-mode: merge
+          ignore-failures: true
+          preserve-color: true
+          fields: |
+            IM ${{ matrix.image.imagemagick_version }} / ktools ${{ matrix.image.ktools_version }} / klei-tools ${{ matrix.image.klei_tools_version }}: ${{ job.status == 'success' && 'Success' || job.status == 'cancelled' && 'Cancelled' || job.status == 'skipped' && 'Skipped' || 'Failure' }}
+          timestamp: ${{ needs.push-image-notify.outputs.slack-timestamp }}
+      - name: Save Slack field outcome
+        if: ${{ always() }}
+        run: |
+          case "${{ job.status }}" in
+            success) value=Success ;;
+            cancelled) value=Cancelled ;;
+            skipped) value=Skipped ;;
+            *) value=Failure ;;
+          esac
+          mkdir -p .slack-field
+          printf 'IM %s / ktools %s / klei-tools %s: %s\n' \
+            '${{ matrix.image.imagemagick_version }}' \
+            '${{ matrix.image.ktools_version }}' \
+            '${{ matrix.image.klei_tools_version }}' \
+            "$value" > .slack-field/field.txt
+      - name: Upload Slack field outcome
+        if: ${{ always() && needs.push-image-notify.outputs.slack-timestamp != '' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: slack-field-push-image-${{ matrix.image.imagemagick_version }}-ktools-${{ matrix.image.ktools_version }}-klei-tools-${{ matrix.image.klei_tools_version }}
+          path: .slack-field/field.txt
+          if-no-files-found: error
+          retention-days: 1
+
+  push-image-finalize:
+    needs: [push-image-notify, push-image]
+    runs-on: ubuntu-latest
+    if: ${{ always() && needs.push-image-notify.result == 'success' }}
+    steps:
+      - name: Download Slack field outcomes
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          pattern: slack-field-push-image-*
+          path: slack-fields
+      - name: Assemble Slack fields
+        id: fields
+        run: |
+          {
+            echo 'fields<<EOF'
+            find slack-fields -type f -name field.txt | sort | while read -r f; do cat "$f"; done
+            echo 'EOF'
+          } >> "$GITHUB_OUTPUT"
+      - name: Finalize Slack notification
+        uses: codedsolar/slack-action@7747edbf087b4facb2726870a34a1f174314b5ae # v1.5.0
+        with:
+          text: GitHub Actions <${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}|${{ github.workflow }} / push-image> job in {GITHUB_REF} by {GITHUB_ACTOR}
+          color: ${{ needs.push-image.result == 'success' && '#24a943' || needs.push-image.result == 'cancelled' && '#1f242b' || '#cc1f2d' }}
+          fields: |
+            {STATUS}
+            {REF}
+            ${{ steps.fields.outputs.fields }}
+          status: ${{ needs.push-image.result == 'success' && 'success' || needs.push-image.result == 'cancelled' && 'cancelled' || 'failure' }}
+          timestamp: ${{ needs.push-image-notify.outputs.slack-timestamp }}
