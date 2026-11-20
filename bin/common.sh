@@ -20,7 +20,7 @@ usage() {
         print buf
       }
     }
-  ' "$0"
+  ' "${BASE_DIR}/$(basename "$0")"
 }
 
 _print_style() {
