@@ -114,6 +114,8 @@ done
 readonly FLAG_COMMIT
 readonly FLAG_DRY_RUN
 
+require_cmds jq
+
 trap interrupt SIGINT
 
 old_version="$(jq -r '.[0].imagemagick_version' <<< "${JSON}")"

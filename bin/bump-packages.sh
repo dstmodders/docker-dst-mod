@@ -318,9 +318,7 @@ readonly FLAG_SLEEP_SECONDS
 trap interrupt SIGINT
 
 if [ "${FLAG_LIST}" -eq 0 ]; then
-  if ! is_installed docker; then
-    die 'Docker CLI is not installed'
-  fi
+  require_cmds docker
 
   if ! docker info > /dev/null 2>&1; then
     die 'Docker daemon is not running'

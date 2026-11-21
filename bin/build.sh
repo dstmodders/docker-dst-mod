@@ -151,9 +151,7 @@ done
 readonly ARG_BUILD_SET
 readonly FLAG_PROGRESS
 
-if ! is_installed docker; then
-  die 'Docker CLI is not installed'
-fi
+require_cmds docker
 
 if ! docker info > /dev/null 2>&1; then
   die 'Docker daemon is not running'
