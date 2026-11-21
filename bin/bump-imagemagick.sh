@@ -116,6 +116,9 @@ while [ $# -gt 0 ]; do
       die 'unrecognized flag'
       ;;
     *)
+      if [ -n "${new_version}" ]; then
+        die 'unexpected argument'
+      fi
       new_version="${key}"
       ;;
   esac
