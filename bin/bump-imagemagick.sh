@@ -72,15 +72,26 @@ summary() {
 }
 
 replace() {
+  local escaped_old
+  local escaped_new
+
   local old_version="$1"
   local new_version="$2"
 
+  # Escape BRE metacharacters so version dots match literally in sed
+  escape_for_sed() {
+    printf '%s\n' "$1" | sed -e 's/[][\\.*^$/]/\\&/g'
+  }
+
+  escaped_old="$(escape_for_sed "${old_version}")"
+  escaped_new="$(escape_for_sed "${new_version}")"
+
   print_step_dotted 'Replacing'
-  sed -i "${DOCKERHUB_START_LINE},\$s/\`${old_version}\`/\`${new_version}\`/g" ./DOCKERHUB.md
-  sed -i "${README_START_LINE},\$s/\`${old_version}\`/\`${new_version}\`/g" ./README.md
-  sed -i "s/\"${old_version}\"/\"${new_version}\"/" ./versions.json
-  sed -i "s/^ARG IMAGEMAGICK_VERSION=\"${old_version}\"$/ARG IMAGEMAGICK_VERSION=\"${new_version}\"/" ./alpine/Dockerfile
-  sed -i "s/^ARG IMAGEMAGICK_VERSION=\"${old_version}\"$/ARG IMAGEMAGICK_VERSION=\"${new_version}\"/" ./debian/Dockerfile
+  sed -i "${DOCKERHUB_START_LINE},\$s/\`${escaped_old}\`/\`${escaped_new}\`/g" ./DOCKERHUB.md
+  sed -i "${README_START_LINE},\$s/\`${escaped_old}\`/\`${escaped_new}\`/g" ./README.md
+  sed -i "s/\"${escaped_old}\"/\"${escaped_new}\"/" ./versions.json
+  sed -i "s/^ARG IMAGEMAGICK_VERSION=\"${escaped_old}\"$/ARG IMAGEMAGICK_VERSION=\"${escaped_new}\"/" ./alpine/Dockerfile
+  sed -i "s/^ARG IMAGEMAGICK_VERSION=\"${escaped_old}\"$/ARG IMAGEMAGICK_VERSION=\"${escaped_new}\"/" ./debian/Dockerfile
   print_step_success
 }
 
