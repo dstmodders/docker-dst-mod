@@ -121,10 +121,11 @@ build_image() {
 
 cd "${BASE_DIR}/.." || exit 1
 
-while [[ "$#" -gt 0 ]]; do
-  case "$1" in
+while [ $# -gt 0 ]; do
+  key="$1"
+  case "${key}" in
     -p=* | --progress=*)
-      set_flag_progress "${1#*=}"
+      set_flag_progress "${key#*=}"
       ;;
     -p | --progress)
       set_flag_progress "${2:-}"
@@ -139,7 +140,7 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     *)
       if [ -z "${ARG_BUILD_SET}" ] || [ "${ARG_BUILD_SET}" = "all" ]; then
-        ARG_BUILD_SET="$1"
+        ARG_BUILD_SET="${key}"
       else
         die 'too many image sets specified'
       fi
