@@ -62,12 +62,11 @@ FLAG_PROGRESS=''
 
 set_flag_progress() {
   local value="$1"
-  if [ -n "${value}" ] && [[ "${value}" =~ ^([0-9]+|auto|plain|tty|rawjson)$ ]]; then
+  if [ -n "${value}" ] && [[ "${value}" =~ ^(auto|plain|tty|rawjson)$ ]]; then
     FLAG_PROGRESS="${value}"
     return 0
   else
-    # shellcheck disable=SC2016
-    die 'flag `--progress` value should be one of: "auto", "plain", "tty", "rawjson"'
+    die "flag '--progress' value should be one of: 'auto', 'plain', 'tty', 'rawjson'"
   fi
 }
 
@@ -97,8 +96,7 @@ build_image() {
     # printf '\n'
   else
     build_cmd='docker build'
-    # shellcheck disable=SC2016
-    printf -- '--> Using `docker build`. Consider installing `docker buildx` for multi-platform support'
+    printf -- "--> Using 'docker build'. Consider installing 'docker buildx' for multi-platform support"
     printf '\n'
   fi
 
@@ -121,10 +119,11 @@ build_image() {
 
 cd "${BASE_DIR}/.." || exit 1
 
-while [[ "$#" -gt 0 ]]; do
-  case "$1" in
+while [ $# -gt 0 ]; do
+  key="$1"
+  case "${key}" in
     -p=* | --progress=*)
-      set_flag_progress "${1#*=}"
+      set_flag_progress "${key#*=}"
       ;;
     -p | --progress)
       set_flag_progress "${2:-}"
@@ -139,7 +138,7 @@ while [[ "$#" -gt 0 ]]; do
       ;;
     *)
       if [ -z "${ARG_BUILD_SET}" ] || [ "${ARG_BUILD_SET}" = "all" ]; then
-        ARG_BUILD_SET="$1"
+        ARG_BUILD_SET="${key}"
       else
         die 'too many image sets specified'
       fi
@@ -151,9 +150,7 @@ done
 readonly ARG_BUILD_SET
 readonly FLAG_PROGRESS
 
-if ! is_installed docker; then
-  die 'Docker CLI is not installed'
-fi
+require_cmds docker
 
 if ! docker info > /dev/null 2>&1; then
   die 'Docker daemon is not running'
